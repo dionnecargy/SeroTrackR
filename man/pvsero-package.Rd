@@ -8,6 +8,14 @@
 \description{
 Data wrangling and cleaning, quality control checks and implementation of machine learning classification algorithm.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/dionnecargy/pvsero}
+  \item Report bugs at \url{https://github.com/dionnecargy/pvsero/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Dionne Argyropoulos \email{argyropoulos.d@wehi.edu.au}
 
