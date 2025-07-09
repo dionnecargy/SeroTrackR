@@ -34,3 +34,5 @@ Imports:
     stringr,
     tidyr,
     utils
+URL: https://github.com/dionnecargy/pvsero
+BugReports: https://github.com/dionnecargy/pvsero/issues
