@@ -1,0 +1,36 @@
+Package: pvsero
+Type: Package
+Title: Functions for the Sero Analysis
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Dionne", "Argyropoulos",
+      email = "argyropoulos.d@wehi.edu.au",
+      role = c("aut", "cre")
+    )
+  )
+Description: Data wrangling and cleaning, quality control checks and 
+  implementation of machine learning classification algorithm. 
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Depends: 
+    R (>= 4.1.0)
+Imports: 
+    dplyr,
+    ggplot2,
+    httr,
+    janitor,
+    magrittr,
+    meltr,
+    openxlsx,
+    plyr,
+    purrr,
+    readxl,
+    rmarkdown,
+    shiny.fluent,
+    stats,
+    stringr,
+    tidyr,
+    utils
