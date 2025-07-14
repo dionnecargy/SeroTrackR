@@ -20,7 +20,7 @@ renderClassificationTable <- function(mfi_to_rau_output, algorithm_type, counts_
                      "85% specificity", "90% specificity", "95% specificity")
   # Run classify_final_results
   all_classifications <- purrr::map_dfr(sens_spec_all, ~{
-    classify_final_results(
+    classifyResults(
       mfi_to_rau_output = mfi_to_rau_output,
       algorithm_type = algorithm_type,
       sens_spec = .x,
