@@ -207,7 +207,7 @@ readSeroData <- function(raw_data, raw_data_filenames, platform){
                       prefix = substr(Type, 1, 1)) %>% # Order so that standards and blanks are at the top
         dplyr::arrange(prefix, suffix) %>% # Order so that standards and blanks are at the top
         dplyr::left_join(platemap, by = "Well") %>%  # Join on the Well column
-        dplyr::select(-c(prefix, suffix, Region, Gate, Total, `% Agg Beads`, `Sampling Errors`, Well, dplyr::any_of("Description"))) %>% # Remove unnecessary columns, including Description if it exists
+        dplyr::select(-dplyr::any_of(c("prefix", "suffix", "Region", "Gate", "Total", "% Agg Beads", "Sampling Errors", "Well", "Description"))) %>% # Remove unnecessary columns if it exists
         dplyr::select(Location, Sample = Type, everything()) %>% # Rename columns to be same as magpix
         dplyr::mutate(dplyr::across(everything(), ~ gsub("NaN", 0, .)),  # Change "NaN" to 0s
                       dplyr::across(everything(), ~ gsub("\\*\\*\\*", "0", .)), #Change "***" to 0s
