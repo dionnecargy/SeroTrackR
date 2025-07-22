@@ -22,6 +22,7 @@
 #' - Data frame with exposure status for every sample.
 #' - Summary table with positive/negative results for each threshold.
 #' @export
+#' @import workflows parsnip
 #' @importFrom dplyr select mutate rename_with ends_with bind_cols ungroup inner_join
 #' @importFrom stringr str_replace
 #' @author Lauren Smith, Dionne Argyropoulos

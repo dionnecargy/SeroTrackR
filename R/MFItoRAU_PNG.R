@@ -13,6 +13,7 @@
 #' 2. Plot information for `plotModel` function
 #' 3. Data frame of RAU data for random forest classification use.
 #' @export
+#' @import drc
 #' @importFrom plyr join
 #' @importFrom dplyr distinct select inner_join bind_rows
 #' @author Connie Li Wai Suen, Dionne Argyropoulos
