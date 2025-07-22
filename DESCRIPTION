@@ -1,7 +1,7 @@
 Package: pvsero
 Type: Package
 Title: Functions for the Sero Analysis
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
     person(
       "Dionne", "Argyropoulos",
@@ -19,12 +19,14 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     dplyr,
+    drc,
     ggplot2,
     httr,
     janitor,
     magrittr,
     meltr,
     openxlsx,
+    parsnip,
     plyr,
     purrr,
     readxl,
@@ -33,6 +35,7 @@ Imports:
     stats,
     stringr,
     tidyr,
-    utils
+    utils,
+    workflows
 URL: https://github.com/dionnecargy/pvsero
 BugReports: https://github.com/dionnecargy/pvsero/issues
