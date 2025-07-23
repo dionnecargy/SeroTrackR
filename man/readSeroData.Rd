@@ -9,7 +9,7 @@ readSeroData(raw_data, platform)
 \arguments{
 \item{raw_data}{String with the raw data path (reactive).}
 
-\item{platform}{"magpix" or "bioplex" (reactive).}
+\item{platform}{"magpix", "bioplex" or "intelliflex" (reactive).}
 }
 \value{
 List of data frames: (i) raw data output, (ii) cleaned all results

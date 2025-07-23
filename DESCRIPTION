@@ -39,3 +39,6 @@ Imports:
     workflows
 URL: https://github.com/dionnecargy/pvsero
 BugReports: https://github.com/dionnecargy/pvsero/issues
+Suggests: 
+    knitr
+VignetteBuilder: knitr
