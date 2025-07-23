@@ -2,11 +2,11 @@
 #'
 #' A master function combining the entire PvSeroApp pipeline into one command to run in R.
 #'
-#' @param raw_data  String with the raw data path (reactive).
-#' @param raw_data_filenames  String with the raw data filenames (reactive).
-#' @param platform  "magpix" or "bioplex" (reactive).
-#' @param location  "PNG" or "ETH" to filter WEHI standard curve data (reactive).
-#' @param experiment_name User-input experiment name (reactive).
+#' @param raw_data  String with the raw data path.
+#' @param platform  "magpix" or "bioplex".
+#' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2... etc.
+#' @param location  "PNG" or "ETH" to filter WEHI standard curve data.
+#' @param experiment_name User-input experiment name.
 #' @param algorithm_type  User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
@@ -35,12 +35,12 @@
 #' @importFrom tools file_ext
 #'
 #' @author Dionne Argyropoulos
-runPvSeroPipeline <- function(raw_data, raw_data_filenames, platform, location, experiment_name, algorithm_type, sens_spec){
+runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experiment_name, algorithm_type, sens_spec){
 
   #############################################################
   # Step 1: Reading in Raw Data
   #############################################################
-  serodata_output           <- readSeroData(raw_data, raw_data_filenames, platform)
+  serodata_output           <- readSeroData(raw_data, platform)
   antigen_output            <- readAntigens(serodata_output)
   plate_list                <- readPlateLayout(plate_layout, antigen_output)
 

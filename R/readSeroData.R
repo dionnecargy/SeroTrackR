@@ -5,7 +5,6 @@
 #' location.
 #'
 #' @param raw_data String with the raw data path (reactive).
-#' @param raw_data_filenames String with the raw data filenames (reactive).
 #' @param platform "magpix" or "bioplex" (reactive).
 #' @return List of data frames: (i) raw data output, (ii) cleaned all results
 #' (iii) count data, (iv) blanks only, (v) standards only, (vi) run
@@ -18,10 +17,11 @@
 #' @importFrom tidyr pivot_wider
 #' @importFrom janitor row_to_names
 #' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
-readSeroData <- function(raw_data, raw_data_filenames, platform){
+readSeroData <- function(raw_data, platform){
 
   platemap_file <- system.file("extdata", "platemap.csv", package = "pvsero")
   platemap <- read.csv(platemap_file)
+  raw_data_filenames <- tolower(basename(raw_data))
 
   # Initialise master list to store files
   master_list <- list(

@@ -4,12 +4,10 @@
 \alias{readSeroData}
 \title{Read Raw Serological Data}
 \usage{
-readSeroData(raw_data, raw_data_filenames, platform)
+readSeroData(raw_data, platform)
 }
 \arguments{
 \item{raw_data}{String with the raw data path (reactive).}
-
-\item{raw_data_filenames}{String with the raw data filenames (reactive).}
 
 \item{platform}{"magpix" or "bioplex" (reactive).}
 }

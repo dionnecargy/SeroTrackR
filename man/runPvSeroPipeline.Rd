@@ -6,7 +6,7 @@
 \usage{
 runPvSeroPipeline(
   raw_data,
-  raw_data_filenames,
+  plate_layout,
   platform,
   location,
   experiment_name,
@@ -15,15 +15,15 @@ runPvSeroPipeline(
 )
 }
 \arguments{
-\item{raw_data}{String with the raw data path (reactive).}
+\item{raw_data}{String with the raw data path.}
 
-\item{raw_data_filenames}{String with the raw data filenames (reactive).}
+\item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2... etc.}
 
-\item{platform}{"magpix" or "bioplex" (reactive).}
+\item{platform}{"magpix" or "bioplex".}
 
-\item{location}{"PNG" or "ETH" to filter WEHI standard curve data (reactive).}
+\item{location}{"PNG" or "ETH" to filter WEHI standard curve data.}
 
-\item{experiment_name}{User-input experiment name (reactive).}
+\item{experiment_name}{User-input experiment name.}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
