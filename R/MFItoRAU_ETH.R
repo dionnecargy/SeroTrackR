@@ -21,7 +21,7 @@
 MFItoRAU_ETH <- function(antigen_output, plate_list, counts_QC_output){
 
   master_file <- antigen_output$results
-  L <- master_file %>% mutate(across(-c(Location, Sample, Plate), as.numeric))
+  L <- master_file %>% dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
   layout <- plate_list
 
   ##########################################################################################################
@@ -80,8 +80,8 @@ MFItoRAU_ETH <- function(antigen_output, plate_list, counts_QC_output){
     ##########################################################################################################
 
     eth_qa_sc <- subset_data %>%
-      filter(type.letter == "S") %>%
-      pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
+      dplyr::filter(type.letter == "S") %>%
+      tidyr::pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
       dplyr::mutate(dilution = 2 ^ (-as.numeric(gsub( # 2 = dilution factor
         "\\D", "", .data$`Sample`
       )) + 1))  %>%
@@ -89,8 +89,8 @@ MFItoRAU_ETH <- function(antigen_output, plate_list, counts_QC_output){
       tidyr::nest()
 
     eth_qa_mfi <- subset_data %>%
-      filter(type.letter == "U" | type.letter == "X") %>%
-      pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
+      dplyr::filter(type.letter == "U" | type.letter == "X") %>%
+      tidyr::pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
       dplyr::group_by(.data$antigen) %>%
       tidyr::nest()
 

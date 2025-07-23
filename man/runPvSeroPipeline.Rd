@@ -10,6 +10,7 @@ runPvSeroPipeline(
   platform,
   location,
   experiment_name,
+  classify,
   algorithm_type,
   sens_spec
 )
@@ -24,6 +25,8 @@ runPvSeroPipeline(
 \item{location}{"PNG" or "ETH" to filter WEHI standard curve data.}
 
 \item{experiment_name}{User-input experiment name.}
+
+\item{classify}{"Yes" or "No" depending on whether you would like classification or not.}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or

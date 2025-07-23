@@ -7,6 +7,7 @@
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2... etc.
 #' @param location  "PNG" or "ETH" to filter WEHI standard curve data.
 #' @param experiment_name User-input experiment name.
+#' @param classify "Yes" or "No" depending on whether you would like classification or not.
 #' @param algorithm_type  User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
@@ -35,7 +36,7 @@
 #' @importFrom tools file_ext
 #'
 #' @author Dionne Argyropoulos
-runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experiment_name, algorithm_type, sens_spec){
+runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experiment_name, classify, algorithm_type, sens_spec){
 
   #############################################################
   # Step 1: Reading in Raw Data
@@ -52,7 +53,7 @@ runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experi
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  mfi_to_rau_output         <- MFItoRAU_ETH(antigen_output, plate_list, getCountsQC_output)
+  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(antigen_output, plate_list, getCountsQC_output))
 
   #############################################################
   # Step 3: Plotting
@@ -66,7 +67,12 @@ runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experi
   #############################################################
   # Step 4: Classification
   #############################################################
-  classifyResults_output    <- classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, getCountsQC_output)
+  if(classify == "Yes"){
+    classifyResults_output    <- classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, getCountsQC_output)
+    return(list(classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
+  } else {
+    message("No Classification Performed")
+    return(list(mfi_to_rau_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
+  }
 
-  return(classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot)
 }
