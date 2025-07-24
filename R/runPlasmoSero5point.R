@@ -201,9 +201,9 @@ runPlasmoSero5point <- function(raw_data, platform, plate_layout, date){
       ) %>%
       # Make sure the assignment of species is correct based on the protein labelling
       mutate(species_specific_RAU = case_when(
-        species=="vivax" ~ rau_std2_restricted,
-        species=="falciparum" ~ rau_std2_restricted,
-        species=="knowlesi" ~ rau_std1_restricted
+        species=="vivax" ~ rau_std1_restricted,
+        species=="falciparum" ~ rau_std1_restricted,
+        species=="knowlesi" ~ rau_std2_restricted
       ))
   }
 
