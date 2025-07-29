@@ -81,12 +81,12 @@ runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format
       cat = case_when(
         grepl("Blank|^B", sample_id, ignore.case = TRUE) ~ "Blank",
         grepl("NC|naive", sample_id, ignore.case = TRUE) ~ "Naive",
-        grepl("ETH", sample_id, ignore.case = TRUE) ~ "ETH Standard",
-        grepl("PK", sample_id, ignore.case = TRUE) ~ "PK Standard",
+        grepl("ETH|PNG|Global", sample_id, ignore.case = TRUE) ~ "Pf/Pv Standard",
+        grepl("PK", sample_id, ignore.case = TRUE) ~ "Pk Standard",
         TRUE ~ "Unknown"
       ),
-      cat = factor(cat, levels = c("ETH Standard", "PK Standard", "Blank", "Naive", "Unknown")),
-      standard_cat = case_when(cat=="ETH Standard"|cat=="PK Standard" ~ sample_id),
+      cat = factor(cat, levels = c("Pf/Pv Standard", "Pk Standard", "Blank", "Naive", "Unknown")),
+      standard_cat = case_when(cat=="Pf/Pv Standard"|cat=="Pk Standard" ~ sample_id),
       species = case_when(
         str_detect(protein, "lf")~"vivax",
         str_detect(protein, "pk")~"knowlesi",
@@ -115,7 +115,7 @@ runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format
   # Subsequent code assumes proteins are in order for each standard and not reverse (i.e. ordered by protein)
 
   stds <- results_named_long %>%
-    dplyr::filter(cat =="ETH Standard" |cat== "PK Standard") %>%
+    dplyr::filter(cat =="Pf/Pv Standard" |cat== "Pk Standard") %>%
     dplyr::mutate(log_mfi = log(mfi)) %>%
     dplyr::group_split(standard_type, protein)
 
@@ -158,54 +158,54 @@ runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format
   for (i in 1:length(protein_split)) {
     protein_split_rau[[i]] <- protein_split[[i]] %>%
       dplyr::mutate(
-        max_s1_std1 =stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$log_mfi,
-        max_dil_std1 = stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$dilution,
-        slope_std1 = model_catch[[i]]$fit$par[1],
-        low_asym_std1 = model_catch[[i]]$fit$par[2],
-        upp_asym_std1 = model_catch[[i]]$fit$par[3],
-        ed50_std1 = model_catch[[i]]$fit$par[4],
-        asym_par_std1 = model_catch[[i]]$fit$par[5]
+        max_s1_stdpfpv =stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$log_mfi,
+        max_dil_stdpfpv = stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$dilution,
+        slope_stdpfpv = model_catch[[i]]$fit$par[1],
+        low_asym_stdpfpv = model_catch[[i]]$fit$par[2],
+        upp_asym_stdpfpv = model_catch[[i]]$fit$par[3],
+        ed50_stdpfpv = model_catch[[i]]$fit$par[4],
+        asym_par_stdpfpv = model_catch[[i]]$fit$par[5]
       ) %>%
       dplyr::mutate(
-        rau_std1 = case_when(
-          log_mfi>=max_s1_std1 ~ max_dil_std1,
-          log_mfi<max_s1_std1 ~ ed50_std1*((((upp_asym_std1-low_asym_std1)/(log_mfi-low_asym_std1))^(1/asym_par_std1) - 1 )^(1/slope_std1) ),
+        rau_stdpfpv = case_when(
+          log_mfi>=max_s1_stdpfpv ~ max_dil_stdpfpv,
+          log_mfi<max_s1_stdpfpv ~ ed50_stdpfpv*((((upp_asym_stdpfpv-low_asym_stdpfpv)/(log_mfi-low_asym_stdpfpv))^(1/asym_par_stdpfpv) - 1 )^(1/slope_stdpfpv) ),
           log_mfi<1/51200 ~ 1/51200
         )
       ) %>%
       dplyr::mutate(
-        max_s1_std2 =stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$log_mfi,
-        max_dil_std2 = stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$dilution,
-        slope_std2 = model_catch[[i+nprot]]$fit$par[1],
-        low_asym_std2 = model_catch[[i+nprot]]$fit$par[2],
-        upp_asym_std2 = model_catch[[i+nprot]]$fit$par[3],
-        ed50_std2 = model_catch[[i+nprot]]$fit$par[4],
-        asym_par_std2 = model_catch[[i+nprot]]$fit$par[5]
+        max_s1_stdpk =stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$log_mfi,
+        max_dil_stdpk = stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$dilution,
+        slope_stdpk = model_catch[[i+nprot]]$fit$par[1],
+        low_asym_stdpk = model_catch[[i+nprot]]$fit$par[2],
+        upp_asym_stdpk = model_catch[[i+nprot]]$fit$par[3],
+        ed50_stdpk = model_catch[[i+nprot]]$fit$par[4],
+        asym_par_stdpk = model_catch[[i+nprot]]$fit$par[5]
       ) %>%
       dplyr::mutate(
-        rau_std2 = case_when(
-          log_mfi>=max_s1_std2 ~ max_dil_std2,
-          log_mfi<max_s1_std2 ~ ed50_std2*((((upp_asym_std2-low_asym_std2)/(log_mfi-low_asym_std2))^(1/asym_par_std2) - 1 )^(1/slope_std2) )
+        rau_stdpk = case_when(
+          log_mfi>=max_s1_stdpk ~ max_dil_stdpk,
+          log_mfi<max_s1_stdpk ~ ed50_stdpk*((((upp_asym_stdpk-low_asym_stdpk)/(log_mfi-low_asym_stdpk))^(1/asym_par_stdpk) - 1 )^(1/slope_stdpk) )
         )
       ) %>%
       dplyr::mutate(
-        rau_std1_restricted = case_when(
-          rau_std1<1/51200 ~ 1/51200,
-          rau_std1>1/50 ~ 1/50,
-          is.na(rau_std1)~1/51200,
-          TRUE ~ rau_std1
+        rau_stdpfpv_restricted = case_when(
+          rau_stdpfpv<1/51200 ~ 1/51200,
+          rau_stdpfpv>1/50 ~ 1/50,
+          is.na(rau_stdpfpv)~1/51200,
+          TRUE ~ rau_stdpfpv
         ),
-        rau_std2_restricted = case_when(
-          rau_std2<1/51200 ~ 1/51200,
-          is.na(rau_std2)~1/51200,
-          rau_std2>1/50 ~ 1/50,
-          TRUE ~ rau_std2
+        rau_stdpk_restricted = case_when(
+          rau_stdpk<1/51200 ~ 1/51200,
+          is.na(rau_stdpk)~1/51200,
+          rau_stdpk>1/50 ~ 1/50,
+          TRUE ~ rau_stdpk
         )
       ) %>%
       dplyr::mutate(species_specific_RAU = case_when(
-        species=="vivax" ~ rau_std1_restricted,
-        species=="falciparum" ~ rau_std1_restricted,
-        species=="knowlesi" ~ rau_std2_restricted
+        species=="vivax" ~ rau_stdpfpv_restricted,
+        species=="falciparum" ~ rau_stdpfpv_restricted,
+        species=="knowlesi" ~ rau_stdpk_restricted
       ))
   }
 
