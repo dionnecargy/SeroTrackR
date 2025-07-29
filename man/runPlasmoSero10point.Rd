@@ -4,7 +4,12 @@
 \alias{runPlasmoSero10point}
 \title{Read Serological Data and 10-point Standard Curve}
 \usage{
-runPlasmoSero10point(raw_data, platform, plate_layout, date)
+runPlasmoSero10point(
+  raw_data,
+  platform,
+  plate_layout,
+  date = format(Sys.Date(), "\%Y\%m\%d")
+)
 }
 \arguments{
 \item{raw_data}{String with the raw data path.}

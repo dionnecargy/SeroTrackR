@@ -17,3 +17,14 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(pvsero)
 ```
+
+##save 
+```{r save}
+# When I'm ready to publish the vignette: 
+# devtools::build_vignettes()
+# devtools::document()
+# devtools::check()
+
+# then I can view the vignette at: browseVignettes("pvsero") or open it directly: vignette("PvSeroApp_R_Tutorial") 
+```
+

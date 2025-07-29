@@ -58,7 +58,7 @@ runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experi
   #############################################################
   # Step 3: Plotting
   #############################################################
-  stdcurve_plot             <- plotStds(antigen_output, location, experiment_name)
+  stdcurve_plot             <- suppressWarnings(plotStds(antigen_output, location, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
   blanks_plot               <- plotBlanks(antigen_output, experiment_name)

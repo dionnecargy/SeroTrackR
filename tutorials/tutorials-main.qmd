@@ -1,0 +1,164 @@
+---
+title: "Tutorials"
+author: "Dionne Argyropoulos"
+format: html
+editor: visual
+---
+
+## Load the Package and Data
+
+```{r setup}
+library(pvsero)
+library(tidyverse) # for data wrangling and visualisation
+library(targets) # for data visualisation of pipeline (below)
+
+your_raw_data <- c(
+  "PATH/TO/YOUR/FILE/plate1.csv",
+  "PATH/TO/YOUR/FILE/plate2.csv",
+  "PATH/TO/YOUR/FILE/plate3.csv"
+)
+your_plate_layout <- "PATH/TO/YOUR/FILE/plate_layout.xlsx"
+```
+
+## Using Tutorial Dataset: Load the Data
+
+```{r load tutorial data}
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "pvsero"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "pvsero"), 
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "pvsero")
+)
+your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "pvsero")
+```
+
+## Data Analysis: `runPvSeroPipeline()` 
+
+Run this global function `runPvSeroPipeline()` embedded within the `{pvsero}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
+
+### Run Classification: Yes {.tabset}
+
+```{r runPvSeroPipeline with classification}
+final_analysis <- runPvSeroPipeline(
+  raw_data = your_raw_data, 
+  plate_layout = your_plate_layout, 
+  platform = "magpix", 
+  location = "ETH", 
+  experiment_name = "experiment1", 
+  classify = "Yes", 
+  algorithm_type = "antibody_model", 
+  sens_spec = "maximised"
+)
+
+final_analysis
+```
+
+#### Classification 
+
+```{r classification tab 1}
+final_analysis[[1]]
+```
+
+#### Standard Curve Plot
+
+```{r std curve plot tab 1}
+final_analysis[[2]]
+```
+
+#### Bead Counts QC Plot
+
+```{r bead counts plot tab 1}
+final_analysis[[3]] # Plot
+final_analysis[[4]] # Samples to repeat 
+```
+
+#### Blanks QC Plot
+
+```{r blanks qc plot tab 1}
+final_analysis[[5]]
+```
+
+#### Model Output Plot
+
+```{r model output plot tab 1}
+final_analysis[[6]]
+```
+
+### Run Classification: No
+
+```{r runPvSeroPipeline without classification}
+no_classification_final_analysis <- runPvSeroPipeline(
+  raw_data = your_raw_data, 
+  plate_layout = your_plate_layout, 
+  platform = "magpix", 
+  location = "ETH", 
+  experiment_name = "experiment1", 
+  classify = "No", ########################## key if you do NOT want any classification performed i.e., you do not have PvSeroTaT antigens 
+  algorithm_type = "antibody_model", 
+  sens_spec = "maximised"
+)
+```
+#### MFI and RAU Data 
+
+```{r mfi and rau tab 2}
+no_classification_final_analysis[[1]]
+```
+
+#### Standard Curve Plot
+
+```{r std curve plot tab 2}
+no_classification_final_analysis[[2]]
+```
+
+#### Bead Counts QC Plot
+
+```{r bead counts plot tab 2}
+no_classification_final_analysis[[3]] # Plot
+no_classification_final_analysis[[4]] # Samples to repeat 
+```
+
+#### Blanks QC Plot
+
+```{r blanks qc plot tab 2}
+no_classification_final_analysis[[5]]
+```
+
+#### Model Output Plot
+
+```{r model output plot tab 2}
+no_classification_final_analysis[[6]]
+```
+
+## Create a PDF Report
+
+```{r create pdf output}
+
+```
+
+## Visualisation of the `{pvsero}` R Package: 
+
+We have used the `{targets}` R package to generate a pipeline! This allows us to:
+
+- Automatically detect the dependencies of each step 
+- One-command execution
+- Automatic caching 
+- Automatic detection of changes in data and/or code
+
+For more information on `{targets}` see this [tutorial](https://books.ropensci.org/targets/). 
+
+```{r targets}
+# source(here::here("_targets.R"))
+# tar_make() # execute pipeline
+# tar_visnetwork() # visualise pipeline
+```
+
+##save 
+```{r save}
+
+# When I'm ready to publish the vignette: 
+# devtools::build_vignettes()
+# devtools::document()
+# devtools::check()
+
+# then I can view the vignette at: browseVignettes("pvsero") or open it directly: vignette("PvSeroApp_R_Tutorial") 
+```
+

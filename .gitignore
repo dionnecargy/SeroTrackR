@@ -5,3 +5,8 @@
 .DS_Store
 .quarto
 inst/doc
+/doc/
+/Meta/
+/_targets
+/_targets.R
+/_targets.yaml

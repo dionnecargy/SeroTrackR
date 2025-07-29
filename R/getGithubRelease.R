@@ -7,14 +7,15 @@
 #' @param repo_name GitHub Repository Name
 #' @return Version tag string
 #' @export
-#' @importFrom httr GET
+#' @importFrom httr GET status_code content
+#' @importFrom jsonlite fromJSON
 #' @author Dionne Argyropoulos
 getGithubRelease <- function(repo_owner, repo_name) {
   url <- paste0("https://api.github.com/repos/", repo_owner, "/", repo_name, "/releases/latest")
   response <- httr::GET(url)
 
-  if (status_code(response) == 200) {
-    release_info <- fromJSON(content(response, "text"))
+  if (httr::status_code(response) == 200) {
+    release_info <- jsonlite::fromJSON(httr::content(response, "text"))
     return(release_info$tag_name)  # Extracts the tag name (release version)
   } else {
     return(NULL)

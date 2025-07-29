@@ -18,7 +18,7 @@
 #' @importFrom janitor row_to_names
 #'
 #' @author Dionne Argyropoulos, Caitlin Bourke
-runPlasmoSero10point <- function(raw_data, platform, plate_layout, date){
+runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format(Sys.Date(), "%Y%m%d")){
 
   ###############################################################################
   # Step 1: Read Raw Serological Data and Plate Layouts
