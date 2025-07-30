@@ -1,7 +1,7 @@
 Package: SeroTrackR
 Type: Package
 Title: Functions for the Sero Analysis
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
     person(
       "Dionne", "Argyropoulos",
