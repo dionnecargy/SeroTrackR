@@ -1,0 +1,98 @@
+---
+title: "Pk_Pv_Pf_Serology_R_Tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Pk_Pv_Pf_Serology_R_Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup pk analysis}
+library(pvsero)
+library(knitr)
+library(rmarkdown)
+library(tidyverse)
+```
+
+## 5-Point Standard Curve 
+
+### Step 1: Load your data! 
+
+Firstly, we will be using our example data that's in-built in the package. Here replace the `system.file()` argument with the file path for your package. 
+
+```{r}
+your_raw_data_5std <- c(
+  system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "pvsero"),
+  system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "pvsero")
+)
+your_plate_layout_5std <- system.file("extdata", "example_platelayout_pk_5std.xlsx", package = "pvsero")
+```
+
+### Step 2: Read your data and process MFI to RAU 
+
+Caitlin and Dionne have worked on a function to (a) process raw Serological data and (b) convert MFI to RAU. The `runPlasmoSero5point()` function will output three data frames: (i) Results from MAGPIX (MFI), (ii), Counts for each sample, (iii) Processed RAU values for each sample. These dataframes can be used for further analysis and can be transformed as you wish. 
+
+```{r}
+pk_analysis_1 <- runPlasmoSero5point(
+  raw_data = your_raw_data_5std, 
+  platform = "magpix", 
+  plate_layout = your_plate_layout_5std, 
+  date = "2025-07-30" # Optional: This will default to today's date
+)
+```
+
+### Standard Curve Plot: One Curve
+
+```{r}
+plotOneStdCurve(pk_analysis_1, "plate1")
+```
+
+### Standard Curve Plot: Compare Two Curves
+
+```{r}
+plotManyStdCurves(pk_analysis_1)
+```
+
+## 10-Point Standard Curve 
+
+### Step 1: Load your data! 
+
+```{r}
+your_raw_data_10std <- c(
+  system.file("extdata", "example_MAGPIX_pk_10std_plate1.csv", package = "pvsero"),
+  system.file("extdata", "example_MAGPIX_pk_10std_plate2.csv", package = "pvsero")
+)
+your_plate_layout_10std <- system.file("extdata", "example_platelayout_pk_10std.xlsx", package = "pvsero")
+```
+
+### Step 2: Read your data and process MFI to RAU 
+
+```{r}
+pk_analysis_2 <- runPlasmoSero10point(
+  raw_data = your_raw_data_10std, 
+  platform = "magpix", 
+  plate_layout = your_plate_layout_10std, 
+  date = "2025-07-30" # Optional: This will default to today's date
+)
+```
+
+### Standard Curve Plot: One Curve
+
+```{r}
+plotOneStdCurve(pk_analysis_2, "plate1")
+```
+
+### Standard Curve Plot: Compare Two Curves
+
+```{r}
+plotManyStdCurves(pk_analysis_2)
+```
+
+
