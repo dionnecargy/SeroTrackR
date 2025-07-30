@@ -114,106 +114,146 @@ runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format
   # The ordering is all stds for 'standard_type' 1 followed by all 'standard_type' 2
   # Subsequent code assumes proteins are in order for each standard and not reverse (i.e. ordered by protein)
 
-  stds <- results_named_long %>%
-    dplyr::filter(cat =="Pf/Pv Standard" |cat== "Pk Standard") %>%
-    dplyr::mutate(log_mfi = log(mfi)) %>%
-    dplyr::group_split(standard_type, protein)
+  # Group data by plate
+  plate_levels <- unique(results_named_long$plate)
 
-  # Creating an additional list of dfs is mfi reading for each of the proteins - and adding another column for log_mfi which is needed by the 5PL
-  protein_split <- results_named_long %>%
-    dplyr::mutate(log_mfi = log(mfi)) %>%
-    dplyr::group_split(protein)
+  stds_mod <- list()
+  model_catch <- list()
+  protein_split_rau <- list()
 
-  # Extract the number of proteins
-  nprot <- length(protein_split)
+  for (plt in  plate_levels){
 
-  # Extract the names of the proteins from the list of df
-  named_prot <- NULL
-  for (i in 1:length(protein_split)) {
-    named_prot[[i]] <- unique(protein_split[[i]]$protein)
-  }
-  named_prot <- unlist(named_prot)
+    # Filter for current plate
+    plate_data <- results_named_long %>%
+      dplyr::filter(plate == plt) %>%
+      dplyr::mutate(log_mfi = log(mfi), row = as.numeric(row)) %>%
+      dplyr::arrange(protein, col, row)
 
-  stds_mod <- NULL
-  model_catch <- NULL
-  protein_split_rau <- NULL
+    # Get standard curves for this plate
+    stds <- plate_data %>%
+      dplyr::filter(cat =="Pf/Pv Standard" |cat== "Pk Standard") %>%
+      dplyr::mutate(log_mfi = log(mfi)) %>%
+      dplyr::group_split(standard_type, protein)
 
-  suppressWarnings({
-    for (i in 1:length(stds)) {
-      stds_mod[[i]] <- stds[[i]] %>%
-        as_tibble() %>%
-        arrange((standard_dil)) %>%
-        mutate(dilution = c(1/50, 1/100, 1/200, 1/400, 1/800, 1/1600, 1/3200, 1/6400, 1/12800, 1/25600),
-               dilution_scaled = dilution*25600)
+    # Get sample data for all proteins
+    # Creating an additional list of dfs is mfi reading for each of the proteins - and adding another column for log_mfi which is needed by the 5PL
+    protein_split <- plate_data %>%
+      dplyr::mutate(log_mfi = log(mfi)) %>%
+      dplyr::group_split(protein)
 
-      model_catch[[i]] <- drm(
-        stds_mod[[i]]$log_mfi ~ stds_mod[[i]]$dilution,
-        fct = LL.5(names = c("slope", "low_asym", "upp_asym", "ED50", "asym_par"))
-      )
+    # Extract the number of proteins
+    nprot <- length(protein_split)
+    # Extract the names of the proteins from the list of df
+    named_prot <- NULL
+    for (i in 1:length(protein_split)) {
+      named_prot[[i]] <- unique(protein_split[[i]]$protein)
     }
-  })
+    named_prot <- unlist(named_prot)
 
-  names(model_catch) <- rep(named_prot,times = 2)
+    # Fit models per standard_type/protein
+    stds_mod_plate <- list()
+    model_catch_plate <- list()
 
-  for (i in 1:length(protein_split)) {
-    protein_split_rau[[i]] <- protein_split[[i]] %>%
-      dplyr::mutate(
-        max_s1_stdpfpv =stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$log_mfi,
-        max_dil_stdpfpv = stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$dilution,
-        slope_stdpfpv = model_catch[[i]]$fit$par[1],
-        low_asym_stdpfpv = model_catch[[i]]$fit$par[2],
-        upp_asym_stdpfpv = model_catch[[i]]$fit$par[3],
-        ed50_stdpfpv = model_catch[[i]]$fit$par[4],
-        asym_par_stdpfpv = model_catch[[i]]$fit$par[5]
-      ) %>%
-      dplyr::mutate(
-        rau_stdpfpv = case_when(
-          log_mfi>=max_s1_stdpfpv ~ max_dil_stdpfpv,
-          log_mfi<max_s1_stdpfpv ~ ed50_stdpfpv*((((upp_asym_stdpfpv-low_asym_stdpfpv)/(log_mfi-low_asym_stdpfpv))^(1/asym_par_stdpfpv) - 1 )^(1/slope_stdpfpv) ),
-          log_mfi<1/51200 ~ 1/51200
+    suppressWarnings({
+      for (i in 1:length(stds)) {
+        stds_mod[[i]] <- stds[[i]] %>%
+          tidyr::as_tibble() %>%
+          dplyr::mutate(row = as.numeric(row)) %>%
+          dplyr::arrange(protein, col, row) %>%
+          dplyr::mutate(
+            dilution = c(1/50, 1/100, 1/200, 1/400, 1/800, 1/1600, 1/3200, 1/6400, 1/12800, 1/25600),
+            dilution_scaled = dilution*25600
+          )
+        model_catch[[i]] <- drc::drm(
+          stds_mod[[i]]$log_mfi ~ stds_mod[[i]]$dilution,
+          fct = LL.5(names = c("slope", "low_asym", "upp_asym", "ED50", "asym_par"))
         )
-      ) %>%
-      dplyr::mutate(
-        max_s1_stdpk =stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$log_mfi,
-        max_dil_stdpk = stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$dilution,
-        slope_stdpk = model_catch[[i+nprot]]$fit$par[1],
-        low_asym_stdpk = model_catch[[i+nprot]]$fit$par[2],
-        upp_asym_stdpk = model_catch[[i+nprot]]$fit$par[3],
-        ed50_stdpk = model_catch[[i+nprot]]$fit$par[4],
-        asym_par_stdpk = model_catch[[i+nprot]]$fit$par[5]
-      ) %>%
-      dplyr::mutate(
-        rau_stdpk = case_when(
-          log_mfi>=max_s1_stdpk ~ max_dil_stdpk,
-          log_mfi<max_s1_stdpk ~ ed50_stdpk*((((upp_asym_stdpk-low_asym_stdpk)/(log_mfi-low_asym_stdpk))^(1/asym_par_stdpk) - 1 )^(1/slope_stdpk) )
+      }
+    })
+    names(model_catch) <- rep(named_prot,times = 2)
+
+    for (i in 1:length(protein_split)) {
+      df <- protein_split[[i]]
+      protein <- unique(df$protein)
+
+      idx_pfpv <- i
+      idx_pk <- i + nprot
+
+      rau_df <- df %>%
+        dplyr::mutate(
+          max_s1_stdpfpv =stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$log_mfi,
+          max_dil_stdpfpv = stds_mod[[i]][stds_mod[[1]]$standard_dil=="S1",]$dilution,
+          slope_stdpfpv = model_catch[[i]]$fit$par[1],
+          low_asym_stdpfpv = model_catch[[i]]$fit$par[2],
+          upp_asym_stdpfpv = model_catch[[i]]$fit$par[3],
+          ed50_stdpfpv = model_catch[[i]]$fit$par[4],
+          asym_par_stdpfpv = model_catch[[i]]$fit$par[5]
+        ) %>%
+        dplyr::mutate(
+          rau_stdpfpv = case_when(
+            log_mfi>=max_s1_stdpfpv ~ max_dil_stdpfpv,
+            log_mfi<max_s1_stdpfpv ~ ed50_stdpfpv*((((upp_asym_stdpfpv-low_asym_stdpfpv)/(log_mfi-low_asym_stdpfpv))^(1/asym_par_stdpfpv) - 1 )^(1/slope_stdpfpv) ),
+            log_mfi<1/51200 ~ 1/51200
+          )
+        ) %>%
+        dplyr::mutate(
+          max_s1_stdpk =stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$log_mfi,
+          max_dil_stdpk = stds_mod[[i+nprot]][stds_mod[[1+nprot]]$standard_dil=="S1",]$dilution,
+          slope_stdpk = model_catch[[i+nprot]]$fit$par[1],
+          low_asym_stdpk = model_catch[[i+nprot]]$fit$par[2],
+          upp_asym_stdpk = model_catch[[i+nprot]]$fit$par[3],
+          ed50_stdpk = model_catch[[i+nprot]]$fit$par[4],
+          asym_par_stdpk = model_catch[[i+nprot]]$fit$par[5]
+        ) %>%
+        dplyr::mutate(
+          rau_stdpk = case_when(
+            log_mfi>=max_s1_stdpk ~ max_dil_stdpk,
+            log_mfi<max_s1_stdpk ~ ed50_stdpk*((((upp_asym_stdpk-low_asym_stdpk)/(log_mfi-low_asym_stdpk))^(1/asym_par_stdpk) - 1 )^(1/slope_stdpk) )
+          )
+        ) %>%
+        dplyr::mutate(
+          rau_stdpfpv_restricted = case_when(
+            rau_stdpfpv<1/51200 ~ 1/51200,
+            rau_stdpfpv>1/50 ~ 1/50,
+            is.na(rau_stdpfpv)~1/51200,
+            TRUE ~ rau_stdpfpv
+          ),
+          rau_stdpk_restricted = case_when(
+            rau_stdpk<1/51200 ~ 1/51200,
+            is.na(rau_stdpk)~1/51200,
+            rau_stdpk>1/50 ~ 1/50,
+            TRUE ~ rau_stdpk
+          )
+        ) %>%
+        dplyr::mutate(species_specific_RAU = case_when(
+          species=="vivax" ~ rau_stdpfpv_restricted,
+          species=="falciparum" ~ rau_stdpfpv_restricted,
+          species=="knowlesi" ~ rau_stdpk_restricted
         )
-      ) %>%
-      dplyr::mutate(
-        rau_stdpfpv_restricted = case_when(
-          rau_stdpfpv<1/51200 ~ 1/51200,
-          rau_stdpfpv>1/50 ~ 1/50,
-          is.na(rau_stdpfpv)~1/51200,
-          TRUE ~ rau_stdpfpv
-        ),
-        rau_stdpk_restricted = case_when(
-          rau_stdpk<1/51200 ~ 1/51200,
-          is.na(rau_stdpk)~1/51200,
-          rau_stdpk>1/50 ~ 1/50,
-          TRUE ~ rau_stdpk
         )
-      ) %>%
-      dplyr::mutate(species_specific_RAU = case_when(
-        species=="vivax" ~ rau_stdpfpv_restricted,
-        species=="falciparum" ~ rau_stdpfpv_restricted,
-        species=="knowlesi" ~ rau_stdpk_restricted
-      ))
+
+      protein_split_rau[[paste0(plt, "_", protein)]] <- rau_df
+
+    }
   }
 
   ###############################################################################
   # Step 4: Final Results
   ###############################################################################
   # All results are in a long list depending on how many proteins there are - we make a long dataframe of this and return this!
-  rau_combined <- bind_rows(protein_split_rau) %>% dplyr::select(-c(well, col, row))
+  rau_combined <- dplyr::bind_rows(protein_split_rau) %>%
+    dplyr::select(-c(well, col, row)) %>%
+    dplyr::mutate(
+      to_remove = dplyr::case_when(
+        species == "falciparum" & standard_type == "Pk" ~ TRUE,
+        species == "vivax" & standard_type == "Pk" ~ TRUE,
+        species == "knowlesi" & str_detect(standard_type, "ETH|PNG|Global") ~ TRUE,
+        TRUE ~ FALSE
+      )
+    ) %>%
+    dplyr::filter(!to_remove) %>%
+    dplyr::select(-to_remove)
 
-  return(rau_combined)
+  return(list(results, counts, rau_combined))
+
 }

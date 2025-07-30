@@ -21,7 +21,7 @@ runPlasmoSero5point(
 \item{date}{String with today's date}
 }
 \value{
-A data frame containing all samples and their RAU values.
+A data frame containing: (i) Results from MAGPIX (MFI), (ii), Counts for each sample, (iii) Processed RAU values for each sample
 }
 \description{
 A function for generating RAU values with the two curves currently being used in the Pk analysis assay.
