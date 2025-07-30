@@ -1,15 +1,19 @@
 # <img src="hex/SeroTrackR_sticker.png" width="25%" height="25%" align="left"/> SeroTrackR
 
-The `{SeroTrackR}` R package compliments the PvSeroApp [see Github here](https://github.com/dionnecargy/PvSeroApp) for experienced users who are comfortable with implementing the code in their own R sessions. Also contains helper functions relevant for Plasmodium spp. projects for in-house and collaborator needs. 
+The `{SeroTrackR}` R package compliments the PvSeroApp [see Github here](https://github.com/dionnecargy/PvSeroApp) for experienced users who are comfortable with implementing the code in their own R sessions. 
 
-How to install the package:
+This package contains helper functions relevant for *Plasmodium* spp. projects for in-house and collaborator needs. 
+
+## How to install the package:
 
 ```{r}
 devtools::install_github("dionnecargy/SeroTrackR") # To download the package
 library(SeroTrackR) # To load the package 
 ```
 
-Next steps: Please see the [tutorial](https://dionnecargy.github.io/SeroTrackR/) or see the vignettes inside the package by running the following commands: 
+## How can I use the package?
+
+Please see the [tutorial](https://dionnecargy.github.io/SeroTrackR/) or see the vignettes inside the package by running the following commands: 
 
 ```{r}
 browseVignettes("SeroTrackR") 
