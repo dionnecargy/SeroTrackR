@@ -72,7 +72,7 @@ runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experi
     return(list(classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
   } else {
     message("No Classification Performed")
-    return(list(mfi_to_rau_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
+    return(list(mfi_to_rau_output[[2]], stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
   }
 
 }

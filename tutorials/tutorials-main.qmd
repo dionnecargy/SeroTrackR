@@ -1,30 +1,35 @@
 ---
 title: "Tutorials"
 author: "Dionne Argyropoulos"
+date: 2025-07-30
 format: 
   html: 
     theme: cosmo  # or flatly, etc.
     page-layout: full
     self-contained: true
+    toc: true
+    execute:
+      warning: false
+      message: false
 ---
 
 ## Load the Package and Data
 
 ```{r load package and data}
-library(pvsero)
+devtools::install_github("dionnecargy/pvsero") # To download the package
+library(pvsero) # To load the package 
 library(tidyverse) # for data wrangling and visualisation
 library(knitr)    # for RMarkdown visualisation and PDF generation
 library(targets) # for data visualisation of pipeline (below)
-
-# your_raw_data <- c(
-#   "PATH/TO/YOUR/FILE/plate1.csv",
-#   "PATH/TO/YOUR/FILE/plate2.csv",
-#   "PATH/TO/YOUR/FILE/plate3.csv"
-# )
-# your_plate_layout <- "PATH/TO/YOUR/FILE/plate_layout.xlsx"
 ```
 
-## Using Tutorial Dataset: Load the Data
+## Data Analysis: `runPvSeroPipeline()` 
+
+Run this global function `runPvSeroPipeline()` embedded within the `{pvsero}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
+
+### Using Tutorial Dataset: Load the Data
+
+We will be using the build-in files in the R package for this tutorial, as shown below. 
 
 ```{r load tutorial data}
 your_raw_data <- c(
@@ -35,11 +40,18 @@ your_raw_data <- c(
 your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "pvsero")
 ```
 
-## Data Analysis: `runPvSeroPipeline()` 
+To run your OWN data, follow the code below and uncomment (i.e., remove the hashtags): 
 
-Run this global function `runPvSeroPipeline()` embedded within the `{pvsero}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
+```{r}
+# your_raw_data <- c(
+#   "PATH/TO/YOUR/FILE/plate1.csv",
+#   "PATH/TO/YOUR/FILE/plate2.csv",
+#   "PATH/TO/YOUR/FILE/plate3.csv"
+# )
+# your_plate_layout <- "PATH/TO/YOUR/FILE/plate_layout.xlsx"
+```
 
-### Run Classification: Yes {.tabset}
+### Run Classification: Yes
 
 ```{r runPvSeroPipeline with classification}
 final_analysis <- runPvSeroPipeline(
@@ -52,23 +64,34 @@ final_analysis <- runPvSeroPipeline(
   algorithm_type = "antibody_model", 
   sens_spec = "maximised"
 )
-
-final_analysis
 ```
+::: {.tabset}
 
 #### Classification 
 
+This is a table containing the classification results (seropositive or seronegative) for each `SampleID`. In this case, the classification results are stored in the `pred_class_max` column as we chose the `sens_spec = "maximised"`. If you change it to another type of threshold, then the suffix of that column will change accordingly. 
+
+You will also see the relative antibody unit (RAU) values (columns with antigen names), whether the sample passed QC check (`QC_total`) and the `plate` that they were run on. 
+
 ```{r classification tab 1}
-final_analysis[[1]]
+final_analysis[[1]] %>%
+  head() %>% 
+  kable()
 ```
 
 #### Standard Curve Plot
+
+The standard curve plots are generated from the antibody data from the standards you indicated in your plate layout (e.g. S1-S10) and Median Fluorescent Intensity (MFI) units are displayed in log10-scale. In the case of the PvSeroTaT multi-antigen panel, the antigens will be displayed and in general your standard curves should look relatively linear (only when the y-axis is on logarithmic scale). 
 
 ```{r std curve plot tab 1}
 final_analysis[[2]]
 ```
 
 #### Bead Counts QC Plot
+
+A summary of the bead counts for each plate well are displayed, with blue indicating there are sufficient beads (≥15) or red when there are not enough. If any of the wells are red, they should be double-checked manually and re-run on a new plate if required.
+
+The function will inform you whether there are "No repeats necessary" or provide a list of samples to be re-run. In the example data, the beads in plate 2 wells A1 and A2 will need to be repeated
 
 ```{r bead counts plot tab 1}
 final_analysis[[3]] # Plot
@@ -77,15 +100,22 @@ final_analysis[[4]] # Samples to repeat
 
 #### Blanks QC Plot
 
+The Median Fluorescent Intensity (MFI) units for each antigen is displayed for your blank samples. In general, each blank sample should have ≤50 MFI for each antigen, if they are higher they should be cross-checked manually.
+
+In the example data, blank samples recorded higher MFI values for LF005 on plate 1 and should be checked to confirm this is expected from the assay.
+
 ```{r blanks qc plot tab 1}
 final_analysis[[5]]
 ```
 
 #### Model Output Plot
 
+The automated data processing in this app allows you to convert your Median Fluorescent Intensity (MFI) data into Relative Antibody Units (RAU) by fitting a 5-parameter logistic function to the standard curve on a per-antigen level. The results from this log-log conversion should look relatively linear for each antigen.
+
 ```{r model output plot tab 1}
 final_analysis[[6]]
 ```
+::: 
 
 ### Run Classification: No
 
@@ -101,38 +131,37 @@ no_classification_final_analysis <- runPvSeroPipeline(
   sens_spec = "maximised"
 )
 ```
+::: {.tabset}
+
 #### MFI and RAU Data 
 
 ```{r mfi and rau tab 2}
-no_classification_final_analysis[[1]]
+no_classification_final_analysis[[1]]  %>%
+  head() %>% 
+  kable()
 ```
 
-#### Standard Curve Plot
+#### QC Plots
+
+Repeat the same steps as above to find the QC plots! 
 
 ```{r std curve plot tab 2}
+#### Standard Curve Plot
 no_classification_final_analysis[[2]]
-```
 
 #### Bead Counts QC Plot
-
-```{r bead counts plot tab 2}
 no_classification_final_analysis[[3]] # Plot
 no_classification_final_analysis[[4]] # Samples to repeat 
-```
 
 #### Blanks QC Plot
-
-```{r blanks qc plot tab 2}
 no_classification_final_analysis[[5]]
-```
 
 #### Model Output Plot
-
-```{r model output plot tab 2}
 no_classification_final_analysis[[6]]
 ```
+:::
 
-## Create a PDF Report
+### Create a PDF Report
 
 ```{r create pdf output}
 renderQCReport(
@@ -174,17 +203,23 @@ pk_analysis_1 <- runPlasmoSero5point(
 
 #### Standard Curve Plot: One Curve
 
+As requested, this is a plot of ONE standard curve which you will specify. You can modify this plot as you see fit by piping other `ggplot2()` arguments. 
+
 ```{r}
 plotOneStdCurve(pk_analysis_1, "plate1")
 ```
 
 #### Standard Curve Plot: Compare Two Curves
 
+This function allows you to plot all of your standard curves. 
+
 ```{r}
 plotManyStdCurves(pk_analysis_1)
 ```
 
 ### 10-Point Standard Curve 
+
+These steps are very similar to the 5-point standard curve, except here we use the `runPlasmoSero10point()` function. 
 
 #### Step 1: Load your data! 
 
@@ -219,7 +254,7 @@ plotOneStdCurve(pk_analysis_2, "plate1")
 plotManyStdCurves(pk_analysis_2)
 ```
 
-## Visualisation of the `{pvsero}` R Package: 
+## Visualisation of the `{pvsero}` R Package
 
 We have used the `{targets}` R package to generate a pipeline! This allows us to:
 
@@ -231,7 +266,10 @@ We have used the `{targets}` R package to generate a pipeline! This allows us to
 For more information on `{targets}` see this [tutorial](https://books.ropensci.org/targets/). 
 
 ```{r targets}
-# source(here::here("_targets.R"))
-# tar_make() # execute pipeline
-# tar_visnetwork() # visualise pipeline
+library(visNetwork)
+
+tar_config_set(store = "../_targets", script = "../_targets.R")
+tar_make()  # optional: run pipeline
+network <- tar_network()
+visNetwork::visNetwork(nodes = network$nodes, edges = network$edges)
 ```
