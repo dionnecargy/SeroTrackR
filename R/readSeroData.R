@@ -19,7 +19,7 @@
 #' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
 readSeroData <- function(raw_data, platform){
 
-  platemap_file <- system.file("extdata", "platemap.csv", package = "pvsero")
+  platemap_file <- system.file("extdata", "platemap.csv", package = "SeroTrackR")
   platemap <- read.csv(platemap_file)
   raw_data_filenames <- tolower(basename(raw_data))
 

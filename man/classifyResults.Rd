@@ -12,7 +12,7 @@ classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
-- "antibody_model_excLF016" (PvSeroTat excluding LF016).}
+- "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
 - "maximised" (default),

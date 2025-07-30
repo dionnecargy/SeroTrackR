@@ -1,4 +1,4 @@
-Package: pvsero
+Package: SeroTrackR
 Type: Package
 Title: Functions for the Sero Analysis
 Version: 0.3.0
@@ -39,8 +39,8 @@ Imports:
     tidyr,
     utils,
     workflows
-URL: https://github.com/dionnecargy/pvsero
-BugReports: https://github.com/dionnecargy/pvsero/issues
+URL: https://github.com/dionnecargy/SeroTrackR
+BugReports: https://github.com/dionnecargy/SeroTrackR/issues
 Suggests: 
     knitr
 VignetteBuilder: knitr

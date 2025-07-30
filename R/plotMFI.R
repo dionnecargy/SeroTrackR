@@ -22,7 +22,7 @@ plotMFI <- function(mfi_to_rau_output, location){
     dplyr::mutate(Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # Reorder by plate number
                   MFI = as.numeric(MFI))
 
-  longitudinal_MFI <- system.file("extdata", "longitudinal_MFI.csv", package = "pvsero")
+  longitudinal_MFI <- system.file("extdata", "longitudinal_MFI.csv", package = "SeroTrackR")
   df_wehi <- read.csv(longitudinal_MFI)
 
   plot <- df_results %>%

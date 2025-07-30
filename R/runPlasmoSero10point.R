@@ -24,12 +24,12 @@ runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format
   # Step 1: Read Raw Serological Data and Plate Layouts
   ###############################################################################
 
-  # Read Serological Data: `pvsero::readSeroData()`
+  # Read Serological Data: `SeroTrackR::readSeroData()`
   df_sero <- readSeroData(
     raw_data = raw_data,
     platform = platform
   )
-  # Read Plate Layout Data `pvsero::readPlateLayout()`
+  # Read Plate Layout Data `SeroTrackR::readPlateLayout()`
   plate_list <- readPlateLayout(
     plate_layout = plate_layout,
     antigen_output = df_sero

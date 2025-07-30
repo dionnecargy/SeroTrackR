@@ -8,7 +8,7 @@
 #' (reactive).
 #' @param algorithm_type User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
-#' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
+#' - "antibody_model_excLF016" (PvSeroTaT excluding LF016).
 #' @param sens_spec User-selected Sensitivity/Specificity threshold:
 #' - "maximised" (default),
 #' - "85\% sensitivity",
@@ -41,10 +41,10 @@ classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts
   #############################################################################
   # Load files from package
   #############################################################################
-  antibody_model <- system.file("extdata", "PvSeroTaTmodel.rds", package = "pvsero")
-  antibody_model_excLF016 <- system.file("extdata", "random_forest_excludingLF016.rds", package = "pvsero")
-  threshold_values <- system.file("extdata", "threshold_values.csv", package = "pvsero")
-  excluding_LF016_threshold_values <- system.file("extdata", "excluding_LF016_threshold_values.csv", package = "pvsero")
+  antibody_model <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
+  antibody_model_excLF016 <- system.file("extdata", "random_forest_excludingLF016.rds", package = "SeroTrackR")
+  threshold_values <- system.file("extdata", "threshold_values.csv", package = "SeroTrackR")
+  excluding_LF016_threshold_values <- system.file("extdata", "excluding_LF016_threshold_values.csv", package = "SeroTrackR")
 
   #############################################################################
   # Model-specific functions

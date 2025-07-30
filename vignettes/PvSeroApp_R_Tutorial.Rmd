@@ -17,22 +17,22 @@ knitr::opts_chunk$set(
 ## Load the Package and Data
 
 ```{r setup 1}
-library(pvsero)
+library(SeroTrackR)
 library(knitr)
 library(rmarkdown)
 library(tidyverse)
 
 your_raw_data <- c(
-  system.file("extdata", "example_MAGPIX_plate1.csv", package = "pvsero"),
-  system.file("extdata", "example_MAGPIX_plate2.csv", package = "pvsero"), 
-  system.file("extdata", "example_MAGPIX_plate3.csv", package = "pvsero")
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"), 
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
 )
-your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "pvsero")
+your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
 ```
 
 ## Data Analysis: `runPvSeroPipeline()` 
 
-Run this global function `runPvSeroPipeline()` embedded within the `{pvsero}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
+Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
 
 ### Run Classification: Yes {.tabset}
 

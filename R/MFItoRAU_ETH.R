@@ -28,7 +28,7 @@ MFItoRAU_ETH <- function(antigen_output, plate_list, counts_QC_output){
   #### Reference Fit
   ##########################################################################################################
 
-  png_eth_stds <- system.file("extdata", "png_eth_stds.csv", package = "pvsero")
+  png_eth_stds <- system.file("extdata", "png_eth_stds.csv", package = "SeroTrackR")
   refs <- read.csv(png_eth_stds)
   # MAGIC PARAMETERS FOR THIS SECTION
   s1_concentration <- 1/50

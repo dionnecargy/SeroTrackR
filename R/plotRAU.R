@@ -22,7 +22,7 @@ plotRAU <- function(mfi_to_rau_output, location){
     dplyr::mutate(Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # Reorder by plate number
                   RAU = as.numeric(RAU))
 
-  longitudinal_RAU <- system.file("extdata", "longitudinal_RAU.csv", package = "pvsero")
+  longitudinal_RAU <- system.file("extdata", "longitudinal_RAU.csv", package = "SeroTrackR")
   df_wehi <- read.csv(longitudinal_RAU)
 
   plot <- df_results %>%

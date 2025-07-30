@@ -28,7 +28,7 @@ plotStds <- function(antigen_output, location, experiment_name){
 
   location_1 <- ifelse(location == "ETH", "ETH", "PNG")
 
-  all_stds_MFI <- system.file("extdata", "all_stds_MFI.csv", package = "pvsero")
+  all_stds_MFI <- system.file("extdata", "all_stds_MFI.csv", package = "SeroTrackR")
   wehi_stds <- read.csv(all_stds_MFI)
   wehi_stds <- wehi_stds %>% dplyr::filter(Location==location_1)
 
