@@ -1,0 +1,28 @@
+---
+title: "hex"
+author: "Dionne Argyropoulos"
+format: html
+---
+
+```{r}
+# Load the package
+library(hexSticker)
+
+# Generate hex sticker
+sticker(
+  subplot = "SeroTrackR_image.png",        # your image
+  package = "SeroTrackR",        # your package name
+  p_size = 30,                   # font size for the package name
+  p_color = "#3E3E3E",           # dark grey text
+  p_family = "Aller",            # nice readable font (optional)
+  s_x = 1,                       # x position of the image
+  s_y = 0.8,                     # y position
+  s_width = 0.5,                 # scale image size
+  s_height = 0.5,
+  h_fill = "#FFFFFF",            # hex background color
+  h_color = "#6A1B9A",           # border color (purple tone)
+  dpi = 600,
+  filename = "SeroTrackR_sticker.png"  # output file
+)
+
+```

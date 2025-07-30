@@ -1,3 +1,5 @@
+# <img src="https://github.com/dionnecargy/SeroTrackR/blob/main/hex/SeroTrackR_sticker.png" width="25%" height="25%" align="left"/> SeroTrackR
+
 The `{SeroTrackR}` R package compliments the PvSeroApp [see Github here](https://github.com/dionnecargy/PvSeroApp) for experienced users who are comfortable with implementing the code in their own R sessions. Also contains helper functions relevant for Plasmodium spp. projects for in-house and collaborator needs. 
 
 How to install the package:
