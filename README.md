@@ -6,3 +6,13 @@ How to install the package:
 devtools::install_github("dionnecargy/SeroTrackR") # To download the package
 library(SeroTrackR) # To load the package 
 ```
+
+Next steps: Please see the [tutorial](https://dionnecargy.github.io/SeroTrackR/) or see the vignettes inside the package by running the following commands: 
+
+```{r}
+browseVignettes("SeroTrackR") 
+
+# To run a specific vignette: 
+vignette("PvSeroApp_R_Tutorial")
+vignette("Pk_Pv_Pf_Serology_R_Tutorial")
+```
