@@ -1,3 +1,2 @@
 main:
-  script: ../_targets.R
-  store: ../_targets
+  script: /Users/Dionne/Documents/GitHub/pvsero/_targets.R

@@ -1,0 +1,23 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+serodata_output|stem|7d0b17f8d5c2fe1b|91ed48b76faeacf9|f6e63ba481b2ed7e|137449651||t20299.0905579049s|s22682b|22682|rds|local|vector|||1.189||
+antigen_output|stem|b29fae9fd01edf76|f0aa5a5b9b8e171f|3c128a4f8ac0dfcd|-1492506882||t20299.0905584292s|s22693b|22693|rds|local|vector|||0.005||
+plate_list|stem|17a80b898cc20d21|9c42685605b7c4c5|16c03b3b7a07b001|-904613889||t20299.0905589981s|s942b|942|rds|local|vector|||0.021||
+blanks_plot|stem|a9633a43477912ee|b36d99f403cc9272|2bc7792614521552|1083397567||t20299.0905597749s|s163757b|163757|rds|local|vector|||0.016||
+processCounts_output|stem|1d4d5d871173e5be|949bbc8d39a6f377|b41a6fc2f7e38ef3|-191151198||t20299.0905599985s|s4210b|4210|rds|local|vector|||0.005||
+stdcurve_plot|stem|d3b655a56e96c4c4|ba4d44f1b0b1d884|91d28b7a978717d7|-2065500604||t20299.0905611878s|s260073b|260073|rds|local|vector|||0.026|Ignoring unknown aesthetics: text|
+getCounts_output|stem|38f6072bbae99dae|9f21acffdec58b17|1c3c8ec8c70147af|1579961580||t20299.0905615617s|s1695b|1695|rds|local|vector|||0.023||
+getAntigenCounts_output|stem|8de729441af09e21|5be097ce6ede087a|9d28e014f3418d87|318860484||t20299.0905635302s|s13533b|13533|rds|local|vector|||0.158||
+sampleid_output|stem|85e18584c99c6287|da7e0f3053755bd6|9d28e014f3418d87|1128315728||t20299.0905637586s|s4993b|4993|rds|local|vector|||0.008||
+check_repeats_output|stem|3aa9f88046200559|db6ffeacd7012dac|c80e7e7229fac886|946194828||t20299.0905639879s|s193b|193|rds|local|vector|||0.011||
+plateqc_plot|stem|c033e10d8abffb22|45aff80416ba9d18|84a354c3d3796bb1|-231343352||t20299.0905647419s|s196461b|196461|rds|local|vector|||0.007||
+getCountsQC_output|stem|a8fa678d0ad150c3|c432e0a585042e94|75f74dd660c634c7|-36731239||t20299.0905650143s|s3727b|3727|rds|local|vector|||0.013||
+mfi_to_rau_output|stem|42735e87d744b8d0|a9466dbb2406f8de|c7b7b7ec23f4f7f9|-814714504||t20299.0905706101s|s40631b|40631|rds|local|vector|||0.469||
+classifyResults_output|stem|2e4e6b5907f6e151|ec3f3e7f9db24616|ea4d6d87dbae18fa|1438955132||t20299.0906064599s|s14701b|14701|rds|local|vector|||3.082||
+model_plot|stem|e52a550112a748d5|b773a24a822c1921|af5c6d9c7a636648|1030149348||t20299.0906105837s|s372527b|372527|rds|local|vector|||0.077||
+platform|object|d0457bd4380eceda
+location|object|4e6a2bcee365d311
+raw_magpix_files|object|d232665f4a32688e
+experiment_name|object|cd92662d8ceaea0a
+sens_spec|object|9c34fa8d8011f153
+algorithm_type|object|67f9ec1965b6ae2c
+plate_layout_file|object|e43633569830c6e1

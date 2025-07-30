@@ -20,7 +20,6 @@ devtools::install_github("dionnecargy/pvsero") # To download the package
 library(pvsero) # To load the package 
 library(tidyverse) # for data wrangling and visualisation
 library(knitr)    # for RMarkdown visualisation and PDF generation
-library(targets) # for data visualisation of pipeline (below)
 ```
 
 ## Data Analysis: `runPvSeroPipeline()` 
@@ -266,10 +265,17 @@ We have used the `{targets}` R package to generate a pipeline! This allows us to
 For more information on `{targets}` see this [tutorial](https://books.ropensci.org/targets/). 
 
 ```{r targets}
+#| message: false
+#| warning: false
+#| echo: false
+#| 
+library(targets) # for data visualisation of pipeline (below)
 library(visNetwork)
 
-tar_config_set(store = "../_targets", script = "../_targets.R")
-tar_make()  # optional: run pipeline
-network <- tar_network()
-visNetwork::visNetwork(nodes = network$nodes, edges = network$edges)
+tar_config_set(script = here::here("_targets.R"))
+tar_make()       # run pipeline
+tar_visnetwork() # visualise pipeline
+
+# network <- tar_network()
+# visNetwork::visNetwork(nodes = network$nodes, edges = network$edges)
 ```
