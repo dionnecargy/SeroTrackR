@@ -6,7 +6,6 @@ This package contains helper functions relevant for *Plasmodium* spp. projects f
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
 
 ## How to install the package:
 
