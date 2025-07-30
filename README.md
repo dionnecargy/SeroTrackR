@@ -5,7 +5,6 @@ The `{SeroTrackR}` R package compliments the PvSeroApp [see Github here](https:/
 This package contains helper functions relevant for *Plasmodium* spp. projects for in-house and collaborator needs. 
 
 <p>&nbsp;</p>
-<p>&nbsp;</p>
 
 ## How to install the package:
 
