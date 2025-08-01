@@ -5,7 +5,7 @@ utils::globalVariables(c(
   "glue", "mfi", "mfi_pred", "name", "new_fit", "plate", "png_fit", "protein",
   "ref_mfi", "sample_id", "sens_spec", "standard_cat", "standard_type",
   "status_code", "stdcurve", "type.letter", "well", "xPONENT", "Antigen", "Count",
-  "MFI", "Plate", "Program", "RAU", "SampleID", "content", "data_type", "dilution",
+  "MFI", "Plate", "Program", "RAU", "Run", "SampleID", "content", "data_type", "dilution",
   "fromJSON", "pred_class_max", "prefix", "seronegative", "seropositive",
-  "standard_dil", "suffix", "value", "."
+  "standard_dil", "suffix", "value", ".",  "species", "std_sample", "to_remove"
 ))

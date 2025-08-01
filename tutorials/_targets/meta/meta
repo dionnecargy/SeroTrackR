@@ -12,6 +12,8 @@ getCountsQC_output|stem|a8fa678d0ad150c3|c432e0a585042e94|75f74dd660c634c7|-3673
 mfi_to_rau_output|stem|42735e87d744b8d0|a9466dbb2406f8de|c7b7b7ec23f4f7f9|-814714504||t20299.0905706101s|s40631b|40631|rds|local|vector|||0.469||
 classifyResults_output|stem|2e4e6b5907f6e151|ec3f3e7f9db24616|ea4d6d87dbae18fa|1438955132||t20299.0906064599s|s14701b|14701|rds|local|vector|||3.082||
 model_plot|stem|e52a550112a748d5|b773a24a822c1921|af5c6d9c7a636648|1030149348||t20299.0906105837s|s372527b|372527|rds|local|vector|||0.077||
+serodata_output|stem|7d0b17f8d5c2fe1b|91ed48b76faeacf9|7aba2ab5c56b2175|137449651||t20299.1325809252s|s22682b|22682|rds|local|vector|||1.263||
+plate_list|stem|17a80b898cc20d21|9c42685605b7c4c5|5ae6e42439681014|-904613889||t20299.1325814103s|s942b|942|rds|local|vector|||0.019||
 platform|object|d0457bd4380eceda
 location|object|4e6a2bcee365d311
 raw_magpix_files|object|1f8bd8066aad755c
@@ -19,5 +21,3 @@ experiment_name|object|cd92662d8ceaea0a
 sens_spec|object|9c34fa8d8011f153
 algorithm_type|object|67f9ec1965b6ae2c
 plate_layout_file|object|33d705659c9da6a6
-serodata_output|stem|7d0b17f8d5c2fe1b|91ed48b76faeacf9|7aba2ab5c56b2175|137449651||t20299.1325809252s|s22682b|22682|rds|local|vector|||1.263||
-plate_list|stem|17a80b898cc20d21|9c42685605b7c4c5|5ae6e42439681014|-904613889||t20299.1325814103s|s942b|942|rds|local|vector|||0.019||

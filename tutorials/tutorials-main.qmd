@@ -279,3 +279,31 @@ tar_visnetwork() # visualise pipeline
 # network <- tar_network()
 # visNetwork::visNetwork(nodes = network$nodes, edges = network$edges)
 ```
+
+
+## FAQs
+
+### I have multiple plate layout files. How can I input them? 
+
+Use the `getPlateLayout()` function to create a master plate layout file to then input into the other functions in the package! 
+
+```{r}
+#| exec: false 
+getPlateLayout("../inst/extdata/")
+```
+
+Here replace "../inst/extdata/" with the main file that contains your folders. For example: 
+
+```bash
+.
+└── raw_data_files/
+    ├── plate_1/
+    │   ├── raw_magpix_data_plate1.csv
+    │   └── plate_layout_1.xlsx
+    ├── plate_2/
+    │   ├── raw_magpix_data_plate2.csv
+    │   └── plate_layout_2.xlsx
+    └── plate_3/
+        ├── raw_magpix_data_plate3.csv
+        └── plate_layout_3.xlsx
+```
