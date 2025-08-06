@@ -16,12 +16,8 @@ format:
 ## Load the Package and Data
 
 ```{r load package and data}
-
-
 devtools::install_github("dionnecargy/SeroTrackR") # To download the package
-
-# Add install for tidyverse and knitr and targets
-
+install.packages(c("tidyverse", "knitr", "targets")) # Download other packages in this tutorial
 
 library(SeroTrackR) # To load the package 
 library(tidyverse) # for data wrangling and visualisation
