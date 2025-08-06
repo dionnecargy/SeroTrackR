@@ -7,7 +7,7 @@
 getPlateLayout(folder_path = getwd())
 }
 \arguments{
-\item{folder_path}{A string containing your main folder for your project. Default = current working directory.}
+\item{folder_path}{A string containing your main folder for your project or the plate layout files. Default = current working directory.}
 }
 \value{
 An .xlsx file saved to your current working directory with multiple tabs, one tab for each plate layout.

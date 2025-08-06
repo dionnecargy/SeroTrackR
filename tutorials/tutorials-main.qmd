@@ -16,7 +16,13 @@ format:
 ## Load the Package and Data
 
 ```{r load package and data}
+
+
 devtools::install_github("dionnecargy/SeroTrackR") # To download the package
+
+# Add install for tidyverse and knitr and targets
+
+
 library(SeroTrackR) # To load the package 
 library(tidyverse) # for data wrangling and visualisation
 library(knitr)    # for RMarkdown visualisation and PDF generation
@@ -232,7 +238,8 @@ renderQCReport(
   your_raw_data, 
   your_plate_layout, 
   "magpix", 
-  location = "ETH"
+  location = "ETH",
+  path = "tutorials/" # defaults to your current working directory
 )
 ```
 
@@ -335,14 +342,9 @@ For more information on `{targets}` see this [tutorial](https://books.ropensci.o
 #| echo: false
 #| 
 library(targets) # for data visualisation of pipeline (below)
-library(visNetwork)
-
 tar_config_set(script = here::here("_targets.R"))
 tar_make()       # run pipeline
 tar_visnetwork() # visualise pipeline
-
-# network <- tar_network()
-# visNetwork::visNetwork(nodes = network$nodes, edges = network$edges)
 ```
 
 
@@ -378,4 +380,18 @@ you would write:
 ```{r}
 #| exec: false 
 # getPlateLayout("raw_data_files/")
+```
+
+you could ALSO write: 
+
+```{r}
+#| exec: false 
+getPlateLayout()
+```
+
+OR: 
+
+```{r}
+#| exec: false 
+# getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
 ```

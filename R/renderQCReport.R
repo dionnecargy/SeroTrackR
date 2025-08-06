@@ -157,7 +157,7 @@ renderQCReport <- function(
     rmarkdown::render(
       input = system.file("rmd/template.Rmd", package="SeroTrackR"),
       output_file = paste0(experiment_name, "_", date, "_", location, "_", version, "_QCreport.pdf"),
-      output_dir = here::here(),
+      output_dir = here::here(path),
       params = list(
         raw_data_filename = raw_data_filename,
         experiment_name = experiment_name,

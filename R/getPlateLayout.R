@@ -2,7 +2,7 @@
 #'
 #' Join multiple a plate layout files into one master file with multiple tabs
 #'
-#' @param folder_path A string containing your main folder for your project. Default = current working directory.
+#' @param folder_path A string containing your main folder for your project or the plate layout files. Default = current working directory.
 #'
 #' @returns An .xlsx file saved to your current working directory with multiple tabs, one tab for each plate layout.
 #' @export
@@ -11,17 +11,23 @@
 #'
 #' @author Dionne Argyropoulos
 getPlateLayout <- function(folder_path = getwd()) {
-  # Find all .xlsx files with "layout" in the name, recursively
-  layout_files <- list.files(
-    path = folder_path,
-    pattern = "layout.*\\.xlsx$",
-    recursive = TRUE,
-    full.names = TRUE,
-    ignore.case = TRUE
-  )
 
-  if (length(layout_files) == 0) {
-    stop("No layout Excel files found in the specified folder.")
+  # Case 1: folder_path is length 1 and it's a folder: search for "layout" files
+  if (length(folder_path) == 1 && dir.exists(folder_path)) {
+    layout_files <- list.files(
+      path = folder_path,
+      pattern = "layout.*\\.xlsx$",
+      recursive = TRUE,
+      full.names = TRUE,
+      ignore.case = TRUE
+    )
+
+    if (length(layout_files) == 0) {
+      stop("No layout Excel files found in the specified folder.")
+    }
+  } else {
+    # Case 2: folder_path is a vector of file paths: skip search
+    layout_files <- folder_path
   }
 
   # Initialise list
@@ -31,7 +37,6 @@ getPlateLayout <- function(folder_path = getwd()) {
     # Get sheet names
     sheet_names <- openxlsx::getSheetNames(file)
 
-    # Read each sheet and assign sheet name (truncated to 31 chars if needed)
     for (sheet in sheet_names) {
       df <- openxlsx::read.xlsx(file, sheet = sheet)
 
@@ -58,5 +63,4 @@ getPlateLayout <- function(folder_path = getwd()) {
   output_file <- file.path(getwd(), "plate_layout_all.xlsx")
   openxlsx::write.xlsx(plate_list_all, file = output_file, colNames = TRUE)
   message("File saved at: ", output_file)
-
 }
