@@ -3,6 +3,7 @@
 #' Join multiple a plate layout files into one master file with multiple tabs
 #'
 #' @param folder_path A string containing your main folder for your project or the plate layout files. Default = current working directory.
+#' @param output_file A string for the path for your output master file.
 #'
 #' @returns An .xlsx file saved to your current working directory with multiple tabs, one tab for each plate layout.
 #' @export
@@ -10,7 +11,7 @@
 #' @importFrom openxlsx getSheetNames read.xlsx write.xlsx
 #'
 #' @author Dionne Argyropoulos
-getPlateLayout <- function(folder_path = getwd()) {
+getPlateLayout <- function(folder_path = getwd(), output_file = NULL) {
 
   # Case 1: folder_path is length 1 and it's a folder: search for "layout" files
   if (length(folder_path) == 1 && dir.exists(folder_path)) {
@@ -59,8 +60,18 @@ getPlateLayout <- function(folder_path = getwd()) {
     }
   }
 
-  # Write to Excel
-  output_file <- file.path(getwd(), "plate_layout_all.xlsx")
+  # Define output file path if not provided
+  if (is.null(output_file)) {
+    output_file <- tempfile(fileext = ".xlsx")
+  }
+
+  # Write to file
   openxlsx::write.xlsx(plate_list_all, file = output_file, colNames = TRUE)
-  message("File saved at: ", output_file)
+
+  # Optionally return both file path and list
+  list(
+    path = output_file,
+    data = plate_list_all
+  )
+
 }

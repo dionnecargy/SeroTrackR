@@ -4,10 +4,12 @@
 \alias{getPlateLayout}
 \title{Find and create a master plate layout file}
 \usage{
-getPlateLayout(folder_path = getwd())
+getPlateLayout(folder_path = getwd(), output_file = NULL)
 }
 \arguments{
 \item{folder_path}{A string containing your main folder for your project or the plate layout files. Default = current working directory.}
+
+\item{output_file}{A string for the path for your output master file.}
 }
 \value{
 An .xlsx file saved to your current working directory with multiple tabs, one tab for each plate layout.
