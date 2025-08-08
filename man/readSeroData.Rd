@@ -4,12 +4,15 @@
 \alias{readSeroData}
 \title{Read Raw Serological Data}
 \usage{
-readSeroData(raw_data, platform)
+readSeroData(raw_data, platform, raw_data_filenames = NULL)
 }
 \arguments{
 \item{raw_data}{String with the raw data path (reactive).}
 
 \item{platform}{"magpix", "bioplex" or "intelliflex" (reactive).}
+
+\item{raw_data_filenames}{String with the raw data filename path (reactive).
+Default is NA as it can be deduced from raw_data. Needs to be a parameter for the PvSeroApp.}
 }
 \value{
 List of data frames: (i) raw data output, (ii) cleaned all results

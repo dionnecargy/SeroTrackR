@@ -7,5 +7,6 @@ utils::globalVariables(c(
   "status_code", "stdcurve", "type.letter", "well", "xPONENT", "Antigen", "Count",
   "MFI", "Plate", "Program", "RAU", "Run", "SampleID", "content", "data_type", "dilution",
   "fromJSON", "pred_class_max", "prefix", "seronegative", "seropositive",
-  "standard_dil", "suffix", "value", ".",  "species", "std_sample", "to_remove"
+  "standard_dil", "suffix", "value", ".",  "species", "std_sample", "to_remove",
+  "raw_data_filenames"
 ))

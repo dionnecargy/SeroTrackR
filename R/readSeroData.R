@@ -5,6 +5,8 @@
 #' location.
 #'
 #' @param raw_data String with the raw data path (reactive).
+#' @param raw_data_filenames String with the raw data filename path (reactive).
+#' Default is NA as it can be deduced from raw_data. Needs to be a parameter for the PvSeroApp.
 #' @param platform "magpix", "bioplex" or "intelliflex" (reactive).
 #' @return List of data frames: (i) raw data output, (ii) cleaned all results
 #' (iii) count data, (iv) blanks only, (v) standards only, (vi) run
@@ -17,11 +19,15 @@
 #' @importFrom tidyr pivot_wider
 #' @importFrom janitor row_to_names
 #' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
-readSeroData <- function(raw_data, platform){
+readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
   platemap_file <- system.file("extdata", "platemap.csv", package = "SeroTrackR")
   platemap <- read.csv(platemap_file)
-  raw_data_filenames <- tolower(basename(raw_data))
+  # raw_data_filenames <- tolower(basename(raw_data))
+
+  raw_data_filenames <- tolower(
+    if (is.null(raw_data_filenames)) basename(raw_data) else raw_data_filenames
+  )
 
   # Initialise master list to store files
   master_list <- list(
