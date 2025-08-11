@@ -13,7 +13,7 @@
 #' @author Dionne Argyropoulos
 getPlateLayout <- function(folder_path = getwd(), output_file = NULL) {
 
-  # Case 1: folder_path is length 1 and it's a folder
+  # Case 1: folder_path is length == 1 and is a folder
   if (length(folder_path) == 1 && dir.exists(folder_path)) {
     layout_files <- list.files(
       path = folder_path,
@@ -29,6 +29,7 @@ getPlateLayout <- function(folder_path = getwd(), output_file = NULL) {
     layout_files <- folder_path
   }
 
+  # Case 2: folder_path is length > 1 and contains file names
   plate_list_all <- list()
 
   for (file in layout_files) {
@@ -56,9 +57,11 @@ getPlateLayout <- function(folder_path = getwd(), output_file = NULL) {
 
   openxlsx::write.xlsx(plate_list_all, file = output_file, colNames = TRUE)
 
-  list(
+  final_plate_list <- list(
     path = output_file,
     data = plate_list_all
   )
+
+  return(final_plate_list)
 }
 
