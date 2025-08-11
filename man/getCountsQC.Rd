@@ -21,5 +21,5 @@ counts (`getAntigenCounts`) and the Well or Sample-specific counts
 (`getCounts`).
 }
 \author{
-author
+Dionne Argyropoulos
 }

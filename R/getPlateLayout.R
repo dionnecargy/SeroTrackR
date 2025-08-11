@@ -13,7 +13,7 @@
 #' @author Dionne Argyropoulos
 getPlateLayout <- function(folder_path = getwd(), output_file = NULL) {
 
-  # Case 1: folder_path is length 1 and it's a folder: search for "layout" files
+  # Case 1: folder_path is length 1 and it's a folder
   if (length(folder_path) == 1 && dir.exists(folder_path)) {
     layout_files <- list.files(
       path = folder_path,
@@ -22,56 +22,43 @@ getPlateLayout <- function(folder_path = getwd(), output_file = NULL) {
       full.names = TRUE,
       ignore.case = TRUE
     )
-
     if (length(layout_files) == 0) {
       stop("No layout Excel files found in the specified folder.")
     }
   } else {
-    # Case 2: folder_path is a vector of file paths: skip search
     layout_files <- folder_path
   }
 
-  # Initialise list
   plate_list_all <- list()
 
   for (file in layout_files) {
-    # Get sheet names
     sheet_names <- openxlsx::getSheetNames(file)
 
     for (sheet in sheet_names) {
       df <- openxlsx::read.xlsx(file, sheet = sheet)
 
-      # Excel sheet names must be ≤31 characters
-      safe_sheet_name <- substr(sheet, 1, 31)
-
-      # Handle duplicate sheet names across files
-      if (safe_sheet_name %in% names(plate_list_all)) {
-        counter <- 1
-        new_name <- paste0(substr(sheet, 1, 28), "_", counter)
-        while (new_name %in% names(plate_list_all)) {
-          counter <- counter + 1
-          new_name <- paste0(substr(sheet, 1, 28), "_", counter)
-        }
-        safe_sheet_name <- new_name
+      # Instead of renaming duplicates, enforce identical names to Antigen data
+      if (sheet %in% names(plate_list_all)) {
+        stop(sprintf(
+          "Duplicate plate name detected: '%s' in file '%s'.
+           Please rename sheets so each plate name is unique across all files.",
+          sheet, file
+        ))
       }
 
-      # Add to master list
-      plate_list_all[[safe_sheet_name]] <- df
+      plate_list_all[[sheet]] <- df
     }
   }
 
-  # Define output file path if not provided
   if (is.null(output_file)) {
     output_file <- tempfile(fileext = ".xlsx")
   }
 
-  # Write to file
   openxlsx::write.xlsx(plate_list_all, file = output_file, colNames = TRUE)
 
-  # Optionally return both file path and list
   list(
     path = output_file,
     data = plate_list_all
   )
-
 }
+

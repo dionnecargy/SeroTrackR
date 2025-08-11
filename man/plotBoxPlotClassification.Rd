@@ -8,7 +8,7 @@ plotBoxPlotClassification(all_classifications, selected_threshold)
 }
 \arguments{
 \item{all_classifications}{Data frame of `classifyResults()` for all
-Sens_Spec thresholds.}
+sens_spec thresholds.}
 
 \item{selected_threshold}{String with the threshold (reactive).}
 }

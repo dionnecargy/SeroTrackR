@@ -6,7 +6,7 @@
 #' be run first.
 #'
 #' @param all_classifications Data frame of `classifyResults()` for all
-#' Sens_Spec thresholds.
+#' sens_spec thresholds.
 #' @param selected_threshold String with the threshold (reactive).
 #' @return Box plots with RAU values for each protein stratified by
 #' classification (ggplot).
@@ -18,8 +18,8 @@
 plotBoxPlotClassification <- function(all_classifications, selected_threshold){
 
   all_classifications %>%
-    dplyr::filter(Sens_Spec == selected_threshold) %>%
-    tidyr::pivot_longer(-c(SampleID, Plate, QC_total, pred_class_max, Sens_Spec), names_to = "Antigen", values_to = "RAU") %>%
+    dplyr::filter(sens_spec == selected_threshold) %>%
+    tidyr::pivot_longer(-c(SampleID, Plate, QC_total, pred_class_max, sens_spec), names_to = "Antigen", values_to = "RAU") %>%
     dplyr::mutate(pred_class_max = factor(pred_class_max, levels = c("seronegative", "seropositive"))) %>%
     ggplot2::ggplot(aes(x = pred_class_max, y = RAU, fill = pred_class_max)) +
     ggplot2::geom_boxplot() +

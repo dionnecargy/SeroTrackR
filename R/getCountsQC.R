@@ -11,7 +11,7 @@
 #' @export
 #' @importFrom tidyr pivot_wider
 #' @importFrom dplyr select rename_with left_join all_of
-#' @author author
+#' @author Dionne Argyropoulos
 getCountsQC <- function(antigen_counts_output, counts_output){
 
   #############################################################################
