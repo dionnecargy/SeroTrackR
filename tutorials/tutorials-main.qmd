@@ -321,6 +321,24 @@ plotOneStdCurve(pk_analysis_2, "plate1")
 plotManyStdCurves(pk_analysis_2)
 ```
 
+## Data Analysis: LDH
+
+For the LDH data analysis, follow the steps below: 
+
+```{r example code for LDH}
+#| eval: FALSE
+
+runLDHpipeline(
+  raw_data = "your/raw/data.xlsx",                    # Mandatory
+  plate_layout = "your/plate/layout/file.xlsx",       # Mandatory
+  platform = "bioplex",                               # Defaults to "bioplex" but "magpix" also works
+  location = "ETH",                                   # Defaults to "ETH" but "PNG" also works
+  dilution = c(1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81), # Default values shown but other levels can be added
+  experiment_name = "experiment1",                    # Defaults to "experiment1"
+  file_path = NULL                                    # Defaults to current folder/working directory
+)
+```
+
 ## Visualisation of the `{SeroTrackR}` R Package
 
 We have used the `{targets}` R package to generate a pipeline! This allows us to:
@@ -336,13 +354,11 @@ For more information on `{targets}` see this [tutorial](https://books.ropensci.o
 #| message: false
 #| warning: false
 #| echo: false
-#| 
 library(targets) # for data visualisation of pipeline (below)
 tar_config_set(script = here::here("_targets.R"))
 tar_make()       # run pipeline
 tar_visnetwork() # visualise pipeline
 ```
-
 
 ## FAQs
 
@@ -352,6 +368,7 @@ Use the `getPlateLayout()` function to create a master plate layout file to then
 
 ```{r}
 #| exec: false 
+#| eval: FALSE
 getPlateLayout("../inst/extdata/")
 ```
 
@@ -375,19 +392,22 @@ you would write:
 
 ```{r}
 #| exec: false 
-# getPlateLayout("raw_data_files/")
+#| eval: FALSE
+getPlateLayout("raw_data_files/")
 ```
 
 you could ALSO write: 
 
 ```{r}
 #| exec: false 
+#| eval: FALSE
 getPlateLayout()
 ```
 
 OR: 
 
 ```{r}
-#| exec: false 
-# getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
+#| exec: false
+#| eval: FALSE
+getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
 ```
