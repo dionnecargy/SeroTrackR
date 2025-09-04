@@ -390,9 +390,17 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       # Plot models with plate in the title
       model_results <- list()
       for (i in names(model_list)) {
-        title <- paste("Plate:", plate_level, "- antigens:", i)  # Combine plate and antigens name
-        model_results[[i]] <- plot(model_list[[i]], main = title)
+        title <- paste("Plate:", plate_level, "- antigens:", i)
+
+        # Open a null device to prevent plotting on screen
+        png(filename = tempfile())   # or pdf(tempfile())
+        plot(model_list[[i]], main = title)
+        model_results[[i]] <- recordPlot()  # save the plot object
+        dev.off()
       }
+
+      # Replay a saved plot later:
+      model_results[[1]]  # will display the plot when called
 
       ##########################################################################################################
       #### MERGE DATA
