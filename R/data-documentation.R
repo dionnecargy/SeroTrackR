@@ -283,3 +283,16 @@ NULL
 #' @source Mueller Lab, WEHI
 #' @name random_forest_excludingLF016_rds
 NULL
+
+
+#' Pk/Pf/Pv Panel Antigens and Species List
+#'
+#' A list containing the Pk/Pf/Pv antigens names and associated species. In the future there will be multiple
+#' options, with this list here serving as the first list.
+#'
+#' This file is stored in inst/extdata
+#'
+#' @format A data frame with 17 rows and 2 columns.
+#' @source Longley Lab, WEHI
+#' @name PkPfPv_Panel_1
+NULL

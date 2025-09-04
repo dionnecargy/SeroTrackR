@@ -1,12 +1,16 @@
 utils::globalVariables(c(
-  ".pred_new", "1", "12", "Col", "Location", "Location.2", "QC_total",
-  "Repeat", "Row", "Sample", "Sens_Spec", "Sum", "Text", "Type", "Warning",
-  "antigen", "delete", "div", "error", "eth_fit", "fct_rev", "file_name",
-  "glue", "mfi", "mfi_pred", "name", "new_fit", "plate", "png_fit", "protein",
-  "ref_mfi", "sample_id", "sens_spec", "standard_cat", "standard_type",
-  "status_code", "stdcurve", "type.letter", "well", "xPONENT", "Antigen", "Count",
-  "MFI", "Plate", "Program", "RAU", "Run", "SampleID", "content", "data_type", "dilution",
-  "fromJSON", "pred_class_max", "prefix", "seronegative", "seropositive",
-  "standard_dil", "suffix", "value", ".",  "species", "std_sample", "to_remove",
-  "raw_data_filenames"
+  ".", ".pred_new", "1", "12",
+  "Antigen", "Antigens", "Beads", "Col", "Content", "Count",
+  "Dilution", "Location", "Location.2", "MFI", "Plate", "Program",
+  "QC_total", "RAU", "Repeat", "Row", "Run", "Sample", "SampleID",
+  "Sens_Spec", "Species", "Sum", "Text", "Type", "Warning",
+  "antigen", "asym_par", "content", "data_type", "delete", "dilution",
+  "div", "ed50", "error", "eth_fit", "fct_rev", "file_name", "fromJSON",
+  "glue", "log_mfi", "low_asym", "max_dil", "max_s1", "mfi", "mfi_pred",
+  "name", "new_fit", "plate", "plate_list", "png_fit", "pred_class_max",
+  "prefix", "protein", "rau", "rau_restricted", "raw_data_filenames",
+  "ref_mfi", "sample_id", "sens_spec", "seronegative", "seropositive",
+  "slope", "species", "standard_cat", "standard_dil", "standard_type",
+  "status_code", "std_sample", "stdcurve", "stds_to_keep", "suffix",
+  "to_remove", "type.letter", "upp_asym", "value", "well", "xPONENT"
 ))

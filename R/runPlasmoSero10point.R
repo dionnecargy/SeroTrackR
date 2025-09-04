@@ -1,4 +1,4 @@
-#' Read Serological Data and 10-point Standard Curve
+#' ARCHIVE: Read Serological Data and 10-point Standard Curve
 #'
 #' A function for generating RAU values with the two curves currently being used in the Pk analysis assay.
 #' This is reliant on a 5-fold 10-point serial dilution covering S1 to S10 for poth Pk pool and ETH pool.
@@ -18,7 +18,7 @@
 #' @importFrom janitor row_to_names
 #'
 #' @author Dionne Argyropoulos, Caitlin Bourke
-runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format(Sys.Date(), "%Y%m%d")){
+.runPlasmoSero10point <- function(raw_data, platform, plate_layout, date = format(Sys.Date(), "%Y%m%d")){
 
   ###############################################################################
   # Step 1: Read Raw Serological Data and Plate Layouts

@@ -1,5 +1,5 @@
 ---
-title: "Pk_Pv_Pf_Serology_R_Tutorial"
+title: "ARCHIVE: Pk/Pv/Pf Serology R Tutorial"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Pk_Pv_Pf_Serology_R_Tutorial}
@@ -40,7 +40,7 @@ your_plate_layout_5std <- system.file("extdata", "example_platelayout_pk_5std.xl
 Caitlin and Dionne have worked on a function to (a) process raw Serological data and (b) convert MFI to RAU. The `runPlasmoSero5point()` function will output three data frames: (i) Results from MAGPIX (MFI), (ii), Counts for each sample, (iii) Processed RAU values for each sample. These dataframes can be used for further analysis and can be transformed as you wish. 
 
 ```{r}
-pk_analysis_1 <- runPlasmoSero5point(
+pk_analysis_1 <- .runPlasmoSero5point(
   raw_data = your_raw_data_5std, 
   platform = "magpix", 
   plate_layout = your_plate_layout_5std, 
@@ -75,7 +75,7 @@ your_plate_layout_10std <- system.file("extdata", "example_platelayout_pk_10std.
 ### Step 2: Read your data and process MFI to RAU 
 
 ```{r}
-pk_analysis_2 <- runPlasmoSero10point(
+pk_analysis_2 <- .runPlasmoSero10point(
   raw_data = your_raw_data_10std, 
   platform = "magpix", 
   plate_layout = your_plate_layout_10std, 

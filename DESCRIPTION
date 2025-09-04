@@ -38,7 +38,8 @@ Imports:
     stringr,
     tidyr,
     utils,
-    workflows
+    workflows,
+    zoo
 URL: https://github.com/dionnecargy/SeroTrackR
 BugReports: https://github.com/dionnecargy/SeroTrackR/issues
 Suggests: 
