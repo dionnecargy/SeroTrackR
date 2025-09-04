@@ -14,7 +14,7 @@
 #' @importFrom dplyr filter mutate  select  group_split arrange rename inner_join
 #' @importFrom tidyr pivot_longer as_tibble pivot_wider
 #' @importFrom drc drm
-#' @importFrom purrr  reduce
+#' @importFrom purrr  reduce  map
 #'
 #' @author Dionne Argyropoulos, Caitlin Bourke
 MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
@@ -182,8 +182,14 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
   ###############################################################################
   # Step 4: Final Results
   ###############################################################################
-  # All results are in a long list depending on how many proteins there are - we make a long dataframe of this and return this!
-  rau_combined <- reduce(antigens_split_rau, ~ left_join(.x, .y, by = c("Location", "Location.2", "SampleID", "Sample", "Plate")))
+  # Define ID columns (common to all dfs)
+  id_cols <- c("SampleID", "Location", "Location.2", "Sample", "Plate")
+  # Split by prefix before "_"
+  by_prefix <- split(antigens_split_rau, sub("_.*", "", names(antigens_split_rau)))
+  # Left join within each prefix group
+  joined_list <- map(by_prefix, ~ reduce(.x, left_join, by = id_cols))
+  # Bind lists
+  rau_combined <- bind_rows(joined_list)
   # Join to counts_QC_output
   counts_data <- counts_QC_output %>%
     ungroup() %>%
