@@ -33,7 +33,7 @@ runPlasmoPipeline <- function(raw_data, platform = "magpix", plate_layout, panel
   #############################################################
   stdcurve_plot             <- suppressWarnings(plotStds_PkPfPv(readSeroData_Output, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
-  check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
+  check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, readPlateLayout_Output)
   blanks_plot               <- plotBlanks(readSeroData_Output, experiment_name)
 
   #############################################################
