@@ -39,7 +39,13 @@ runPlasmoPipeline <- function(raw_data, platform = "magpix", plate_layout, panel
   #############################################################
   # Step 4: Run new 5-point MFI to RAU
   #############################################################
-  mfi_outputs               <- MFItoRAU_Plasmo(readSeroData_Output, readPlateLayout_Output, panel, std_point, getCountsQC_output)
+  mfi_outputs               <- MFItoRAU_Plasmo(
+    serodata = readSeroData_Output,
+    plate_list = readPlateLayout_Output,
+    panel = panel,
+    std_point = std_point,
+    counts_QC_output = getCountsQC_output
+  )
 
   #############################################################
   # Outputs
