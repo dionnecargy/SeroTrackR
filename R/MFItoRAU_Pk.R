@@ -137,10 +137,10 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
           log_mfi<max_s1 ~ ed50*((((upp_asym-low_asym)/(log_mfi-low_asym))^(1/asym_par) - 1 )^(1/slope))
         )
         ) %>%
+        dplyr::mutate(rau = ifelse(is.na(rau), s_final_concentration, rau)) %>%
         dplyr::mutate(rau_restricted = case_when(
-          rau<s_final_concentration ~ s_final_concentration,
-          rau>s1_concentration ~ s1_concentration,
-          is.na(rau)~s_final_concentration,
+          rau<s_final_concentration   ~ s_final_concentration,
+          rau>s1_concentration        ~ s1_concentration,
           TRUE ~ rau
         )
         ) %>%
