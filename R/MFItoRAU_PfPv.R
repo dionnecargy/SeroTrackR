@@ -246,49 +246,48 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       model_results_all[[plate_level]] <- model_results
       MFI_RAU_results_all[[plate_level]] <- MFI_RAU_results
 
-      ##########################################################################################################
-      #### Joining all plate data
-      ##########################################################################################################
-
-      counts_data <- counts_QC_output %>%
-        ungroup() %>%
-        dplyr::select(SampleID, Location.2 = Location, Plate, QC_total)
-
-      final_results <- dplyr::bind_rows(results_all) %>%
-        dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
-
-      final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
-        dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
-
-      #############################################################################
-      # Re-arrange data for final outputs
-      #############################################################################
-
-      # Get all base marker names by stripping _Count
-      marker_bases <- names(final_results) %>%
-        grep("_MFI$", ., value = TRUE) %>%
-        sub("_MFI$", "", .)
-
-      # Create the desired column order
-      final_results_order <- c(
-        "SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total",
-        unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETH_Dilution"))))
-      )
-      final_MFI_RAU_order <- c(
-        "SampleID", "Plate", "QC_total",
-        unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETH_Dilution"))))
-      )
-
-      # Reordered data frame
-      final_results <- final_results %>%
-        dplyr::select(all_of(final_results_order))
-
-      final_MFI_RAU_results <- final_MFI_RAU_results %>%
-        dplyr::select(all_of(final_MFI_RAU_order))
-
-      return(list(final_results, final_MFI_RAU_results, model_results_all))
-
     }
+    ##########################################################################################################
+    #### Joining all plate data
+    ##########################################################################################################
+
+    counts_data <- counts_QC_output %>%
+      ungroup() %>%
+      dplyr::select(SampleID, Location.2 = Location, Plate, QC_total)
+
+    final_results <- dplyr::bind_rows(results_all) %>%
+      dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
+
+    final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
+      dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
+
+    #############################################################################
+    # Re-arrange data for final outputs
+    #############################################################################
+
+    # Get all base marker names by stripping _Count
+    marker_bases <- names(final_results) %>%
+      grep("_MFI$", ., value = TRUE) %>%
+      sub("_MFI$", "", .)
+
+    # Create the desired column order
+    final_results_order <- c(
+      "SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total",
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETH_Dilution"))))
+    )
+    final_MFI_RAU_order <- c(
+      "SampleID", "Plate", "QC_total",
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETH_Dilution"))))
+    )
+
+    # Reordered data frame
+    final_results <- final_results %>%
+      dplyr::select(all_of(final_results_order))
+
+    final_MFI_RAU_results <- final_MFI_RAU_results %>%
+      dplyr::select(all_of(final_MFI_RAU_order))
+
+    return(list(final_results, final_MFI_RAU_results, model_results_all))
 
   } else if (location == "PNG"){
 
