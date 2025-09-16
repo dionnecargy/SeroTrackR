@@ -27,6 +27,7 @@ runPlasmoPipeline <- function(raw_data, platform = "magpix", plate_layout, panel
   sampleid_output           <- getSampleID(processCounts_output, readPlateLayout_Output)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, readPlateLayout_Output)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+  message("QC Processes completed.")
 
   #############################################################
   # Step 3: Plotting
@@ -35,6 +36,7 @@ runPlasmoPipeline <- function(raw_data, platform = "magpix", plate_layout, panel
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, readPlateLayout_Output)
   blanks_plot               <- plotBlanks(readSeroData_Output, experiment_name)
+  message("QC Plotting completed.")
 
   #############################################################
   # Step 4: Run new 5-point MFI to RAU
@@ -46,6 +48,7 @@ runPlasmoPipeline <- function(raw_data, platform = "magpix", plate_layout, panel
     std_point = std_point,
     counts_QC_output = getCountsQC_output
   )
+  message("MFI to RAU conversion completed.")
 
   #############################################################
   # Outputs
