@@ -40,7 +40,7 @@ plotStds <- function(antigen_output, location, experiment_name){
     ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
     ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
     ggplot2::labs(x = "Standard Curve",
-                  y = "log(MFI)",
+                  y = "MFI",
                   title = experiment_name) +
     ggplot2::facet_wrap(~Antigen) +
     ggplot2::theme_bw() +

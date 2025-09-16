@@ -63,12 +63,18 @@ MFItoRAU_Plasmo <- function(serodata, plate_list, panel = "panel1", std_point, c
     dplyr::rename_with(~str_replace(., "_MFI", ""), ends_with("_MFI")) %>%
     tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "MFI") %>%
     dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")
-  PkPfPv_long_rau <- suppressWarnings(PkPfPv_Final_MFI_RAU %>%
-                                        dplyr::select(-ends_with("_MFI")) %>%
-                                        dplyr::rename_with(~str_replace(., "_Dilution", ""), ends_with("_Dilution")) %>%
-                                        tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "RAU") %>%
-                                        tidyr::separate(Antigens, c("Antigens", "Beads"), "_") %>%
-                                        dplyr::left_join(PkPfPv_Panel_1, by = "Antigens"))
+  PkPfPv_long_rau <- suppressWarnings(
+    PkPfPv_Final_MFI_RAU %>%
+      dplyr::select(-ends_with("_MFI")) %>%
+      dplyr::rename_with(~str_replace(., "_Dilution", ""), ends_with("_Dilution")) %>%
+      tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "RAU") %>%
+      tidyr::separate(Antigens, c("Antigens", "Beads"), "_") %>%
+      dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")) %>%
+    dplyr::mutate(RAU_Method = case_when(
+      Beads == "PNG" ~ "loglog",
+      Beads == "ETH" ~ "ETHtoPNG_loglog",
+      .default = "loglog")
+    ) %>% dplyr::select(-Beads)
   PkPfPv_long_mfi_rau <- suppressWarnings(PkPfPv_long_mfi %>%
                                             right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")))
 

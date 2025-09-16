@@ -31,7 +31,7 @@ plotMFI <- function(mfi_to_rau_output, location){
     ggplot2::geom_boxplot(aes(fill = Antigen)) +
     ggplot2::scale_y_log10(breaks = c(10, 100, 1000, 10000), limits = c(10, 10000), labels = c("10", "100", "1,000", "10,000")) +
     ggplot2::scale_fill_brewer(palette = "Paired", type = "qual") +
-    ggplot2::labs(x = "Antigen", y = "Antibody log(MFI)") +
+    ggplot2::labs(x = "Antigen", y = "Antibody MFI") +
     ggplot2::facet_wrap( ~ Plate) +
     ggplot2::theme_bw() +
     ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none")

@@ -89,7 +89,7 @@ plotStds_PkPfPv <- function(antigen_output, experiment_name){
     ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
     ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
     ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-    ggplot2::labs(x = "Standard Curve", y = "log(MFI)", title = experiment_name) +
+    ggplot2::labs(x = "Standard Curve", y = "MFI", title = experiment_name) +
     ggplot2::facet_wrap(~Antigen) +
     ggplot2::theme_bw() +
     ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
