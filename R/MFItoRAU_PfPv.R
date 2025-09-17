@@ -230,7 +230,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       eth_converted_locations_dilutions <- eth_converted_locations %>%
         dplyr::select(-mfi) %>%
         tidyr::pivot_wider(names_from = "antigen", values_from = "dilution") %>%
-        dplyr::rename_with(~paste0(.x, "_ETH_Dilution"), -c(SampleID, Location.2, Location, Sample, Plate)) ########## Relabel with "_ETH_Dilution" instead of "_Dilution"
+        dplyr::rename_with(~paste0(.x, "_ETHtoPNG_loglog_Dilution"), -c(SampleID, Location.2, Location, Sample, Plate)) ########## Relabel with "_ETHtoPNG_loglog_Dilution" instead of "_Dilution"
       eth_converted_wide <- eth_converted_locations_mfi %>%
         dplyr::left_join(eth_converted_locations_dilutions, by = c("SampleID", "Location.2", "Location", "Sample", "Plate"))
 
@@ -238,7 +238,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       #### Create output dataframes
       ##########################################################################################################
       # Save just MFI and RAU for downstream analyses
-      col_selection <- grepl("SampleID|Location.2|Plate|_MFI|\\_ETH_Dilution$", colnames(eth_converted_wide))
+      col_selection <- grepl("SampleID|Location.2|Plate|_MFI|\\_ETHtoPNG_loglog_Dilution$", colnames(eth_converted_wide))
       MFI_RAU_results <- eth_converted_wide[, col_selection]
 
       # Store results and models for current plate: `results_all` and `model_results_all` store all results and model plots for each plate.
@@ -273,11 +273,11 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
     # Create the desired column order
     final_results_order <- c(
       "SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total",
-      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETH_Dilution"))))
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNG_loglog_Dilution"))))
     )
     final_MFI_RAU_order <- c(
       "SampleID", "Plate", "QC_total",
-      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETH_Dilution"))))
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNG_loglog_Dilution"))))
     )
 
     # Reordered data frame
@@ -361,12 +361,12 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
             sample.X <- subset_data[r, "Sample"]
             Plate.X <- subset_data[r, "Plate"]
             results <- cbind(Location = location.X, Sample = sample.X, Plate = Plate.X,
-                             MFI = mfi.X, PNG_Dilution = dil.X, DilutionReciprocal = 1 / dil.X,
+                             MFI = mfi.X, loglog_Dilution = dil.X, DilutionReciprocal = 1 / dil.X,
                              MinStd = min(std), MaxDilution = min(dilution),
                              MaxStd = max(std), MinDilution = max(dilution))
 
             results.colnames <- c("Location", "Sample", "Plate",
-                                  paste0(i, "_", c("MFI", "PNG_Dilution", "DilutionReciprocal",
+                                  paste0(i, "_", c("MFI", "loglog_Dilution", "DilutionReciprocal",
                                                    "MinStd", "MaxDilution", "MaxStd",
                                                    "MinDilution")))
             colnames(results) <- results.colnames
@@ -447,7 +447,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       ##########################################################################################################
 
       # Save just MFI and RAU for downstream analyses
-      col_selection <- grepl("SampleID|Plate|_MFI|\\_PNG_Dilution$", colnames(results.df.wide))
+      col_selection <- grepl("SampleID|Plate|_MFI|\\_loglog_Dilution$", colnames(results.df.wide))
       MFI_RAU_results <- results.df.wide[, col_selection]
 
       # Store results and models for current plate: `results_all` and `model_results_all` store all results and model plots for each plate.

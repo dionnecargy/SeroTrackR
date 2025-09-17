@@ -138,7 +138,7 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
         )
         ) %>%
         dplyr::mutate(rau = ifelse(is.na(rau), s_final_concentration, rau)) %>%
-        dplyr::mutate(rau_restricted = case_when(
+        dplyr::mutate(rau = case_when(
           rau<s_final_concentration   ~ s_final_concentration,
           rau>s1_concentration        ~ s1_concentration,
           TRUE ~ rau
@@ -153,7 +153,7 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
           values_from = c(
             MFI, log_mfi, max_s1, max_dil, slope,
             low_asym, upp_asym, ed50, asym_par,
-            Dilution, rau_restricted
+            Dilution
           ),
           names_glue = "{antigens}_{.value}"
         ) %>%
