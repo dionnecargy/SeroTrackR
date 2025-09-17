@@ -76,7 +76,8 @@ MFItoRAU_Plasmo <- function(serodata, plate_list, panel = "panel1", std_point, c
       .default = "loglog")
     ) %>% dplyr::select(-Beads)
   PkPfPv_long_mfi_rau <- suppressWarnings(PkPfPv_long_mfi %>%
-                                            right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")))
+                                            right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")))%>%
+    dplyr::select(SampleID, Plate, Antigens, Species, MFI, RAU, RAU_Method)
 
   return(list(All_Results = PkPfPv_Final, MFI_RAU = PkPfPv_Final_MFI_RAU, MFI_RAU_long = PkPfPv_long_mfi_rau))
 
