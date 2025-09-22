@@ -71,8 +71,8 @@ MFItoRAU_Plasmo <- function(serodata, plate_list, panel = "panel1", std_point, c
       tidyr::separate(Antigens, c("Antigens", "Beads"), "_") %>%
       dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")) %>%
     dplyr::mutate(RAU_Method = case_when(
-      Beads == "PNG" ~ "loglog",
-      Beads == "ETH" ~ "ETHtoPNG_loglog",
+      Beads == "loglog" ~ "loglog",
+      Beads == "ETHtoPNGloglog" ~ "ETHtoPNGloglog",
       .default = "loglog")
     ) %>% dplyr::select(-Beads)
   PkPfPv_long_mfi_rau <- suppressWarnings(PkPfPv_long_mfi %>%

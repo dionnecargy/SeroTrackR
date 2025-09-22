@@ -230,7 +230,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       eth_converted_locations_dilutions <- eth_converted_locations %>%
         dplyr::select(-mfi) %>%
         tidyr::pivot_wider(names_from = "antigen", values_from = "dilution") %>%
-        dplyr::rename_with(~paste0(.x, "_ETHtoPNG_loglog_Dilution"), -c(SampleID, Location.2, Location, Sample, Plate)) ########## Relabel with "_ETHtoPNG_loglog_Dilution" instead of "_Dilution"
+        dplyr::rename_with(~paste0(.x, "_ETHtoPNGloglog_Dilution"), -c(SampleID, Location.2, Location, Sample, Plate)) ########## Relabel with "_ETHtoPNGloglog_Dilution" instead of "_Dilution"
       eth_converted_wide <- eth_converted_locations_mfi %>%
         dplyr::left_join(eth_converted_locations_dilutions, by = c("SampleID", "Location.2", "Location", "Sample", "Plate"))
 
@@ -238,7 +238,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       #### Create output dataframes
       ##########################################################################################################
       # Save just MFI and RAU for downstream analyses
-      col_selection <- grepl("SampleID|Location.2|Plate|_MFI|\\_ETHtoPNG_loglog_Dilution$", colnames(eth_converted_wide))
+      col_selection <- grepl("SampleID|Location.2|Plate|_MFI|\\_ETHtoPNGloglog_Dilution$", colnames(eth_converted_wide))
       MFI_RAU_results <- eth_converted_wide[, col_selection]
 
       # Store results and models for current plate: `results_all` and `model_results_all` store all results and model plots for each plate.
@@ -273,11 +273,11 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
     # Create the desired column order
     final_results_order <- c(
       "SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total",
-      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNG_loglog_Dilution"))))
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNGloglog_Dilution"))))
     )
     final_MFI_RAU_order <- c(
       "SampleID", "Plate", "QC_total",
-      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNG_loglog_Dilution"))))
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNGloglog_Dilution"))))
     )
 
     # Reordered data frame
