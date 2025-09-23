@@ -10,7 +10,9 @@ runPlasmoPipeline(
   plate_layout,
   panel = "panel1",
   std_point,
-  experiment_name = "experiment1"
+  experiment_name = "experiment1",
+  algorithm_type = "antibody_model",
+  sens_spec = "maximised"
 )
 }
 \arguments{
@@ -25,6 +27,19 @@ runPlasmoPipeline(
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 
 \item{experiment_name}{User-input experiment name. Default: "experiment1".}
+
+\item{algorithm_type}{User-selected algorithm choice:
+- "antibody_model" (PvSeroTaT model; default), or
+- "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
+
+\item{sens_spec}{User-selected Sensitivity/Specificity threshold:
+- "maximised" (default),
+- "85\% sensitivity",
+- "90\% sensitivity",
+- "95\% sensitivity",
+- "85\% specificity",
+- "90\% specificity".
+- "95\% specificity".}
 }
 \value{
 A data frame containing the MFI and RAU Dilution values for each sample, QC plots for standard curve, bead counts and blanks.
