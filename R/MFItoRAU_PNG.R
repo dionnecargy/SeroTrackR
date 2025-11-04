@@ -5,7 +5,7 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU) written by Connie Li Wai Suen.
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @param counts_QC_output Output from `getCountsQC()` (reactive).
 #' @return  A list of three data frames:
@@ -17,9 +17,9 @@
 #' @importFrom plyr join
 #' @importFrom dplyr distinct select inner_join bind_rows
 #' @author Connie Li Wai Suen, Dionne Argyropoulos
-MFItoRAU_PNG <- function(antigen_output, plate_list, counts_QC_output){
+MFItoRAU_PNG <- function(serodata_output, plate_list, counts_QC_output){
 
-  master_file <- antigen_output
+  master_file <- serodata_output
   L <- master_file$results
   layout <- plate_list
 

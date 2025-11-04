@@ -6,7 +6,7 @@
 #' `MFItoRAU_PNG.`
 #'
 #' @param mfi_to_rau_output Output from `MFItoRAU_PNG()` (reactive).
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @return List of dot and line plots of MFI to RAU model standard curve,
 #' with each one representing an individual plate (ggplot).
 #' @export
@@ -14,7 +14,7 @@
 #' @importFrom dplyr mutate across
 #' @importFrom tidyr pivot_longer
 #' @author Shazia Ruybal-Pesantez, Dionne Argyropoulos
-plotModel_PNG <- function(mfi_to_rau_output, antigen_output){
+plotModel_PNG <- function(mfi_to_rau_output, serodata_output){
 
   model_results <- mfi_to_rau_output[[3]]
 
@@ -35,7 +35,7 @@ plotModel_PNG <- function(mfi_to_rau_output, antigen_output){
   combined_data <- do.call(rbind, combined_data)
 
   ### Get Standards for points
-  stds_file <- antigen_output$stds
+  stds_file <- serodata_output$stds
   stds_log <-
     stds_file %>%
     dplyr::mutate(across(-c(Location, Sample, Plate), ~ as.numeric(.))) %>%

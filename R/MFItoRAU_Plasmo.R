@@ -4,7 +4,7 @@
 #' This function leverages `MFItoRAU_Pk()` and `MFItoRAU_PfPv()` to create a final MFI to RAU
 #' output for Pk/Pf/Pv analyses.
 #'
-#' @param serodata   Output of `readSeroData()`
+#' @param serodata_output   Output of `readserodata_output()`
 #' @param plate_list  Output of `readPlateLayout()`
 #' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
@@ -22,9 +22,9 @@
 #'
 #' @export
 #' @author Dionne Argyropoulos
-MFItoRAU_Plasmo <- function(serodata, plate_list, panel = "panel1", std_point, counts_QC_output){
+MFItoRAU_Plasmo <- function(serodata_output, plate_list, panel = "panel1", std_point, counts_QC_output){
 
-  processed_master    <- processPkPfPv(serodata, plate_list, panel = "panel1")
+  processed_master    <- processPkPfPv(serodata_output, plate_list, panel = "panel1")
   processed_PfPv      <- processed_master$PfPv
   processed_Pk        <- processed_master$Pk
 

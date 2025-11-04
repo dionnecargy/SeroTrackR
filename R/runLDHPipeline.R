@@ -28,13 +28,13 @@ runLDHPipeline <- function(
   # Step 1: Reading in Raw Data
   #############################################################
   serodata_output           <- readSeroData(raw_data, platform)
-  antigen_output            <- serodata_output
-  plate_list                <- readPlateLayout(plate_layout, antigen_output)
+  serodata_output            <- serodata_output
+  plate_list                <- readPlateLayout(plate_layout, serodata_output)
 
   #############################################################
   # Step 2: Quality Control and MFI to RAU
   #############################################################
-  processCounts_output      <- processCounts(antigen_output)
+  processCounts_output      <- processCounts(serodata_output)
   getCounts_output          <- getCounts(processCounts_output)
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
@@ -43,15 +43,15 @@ runLDHPipeline <- function(
   #############################################################
   # Step 3: Plotting
   #############################################################
-  stdcurve_plot             <- suppressWarnings(plotStds_all(antigen_output, experiment_name))
+  stdcurve_plot             <- suppressWarnings(plotStds_all(serodata_output, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
-  blanks_plot               <- plotBlanks(antigen_output, experiment_name)
+  blanks_plot               <- plotBlanks(serodata_output, experiment_name)
 
   #############################################################
   # Step 4: MFI to RAU Conversion
   #############################################################
-  mfitorau_output           <- MFItoRAU_LDH(antigen_output, plate_list, dilution, file_path)
+  mfitorau_output           <- MFItoRAU_LDH(serodata_output, plate_list, dilution, file_path)
 
   return(list(stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, mfitorau_output))
 }

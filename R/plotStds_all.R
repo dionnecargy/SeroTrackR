@@ -2,7 +2,7 @@
 #'
 #' This function gets the standards data and plots the standard curves for any antigens (i.e., non-PvSeroTaT specific).
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #' @return
 #' - Dot and line plot of standard curves (S1-S10)
@@ -12,8 +12,8 @@
 #' @import ggplot2
 #' @export
 #' @author Shazia Ruybal-Pesantez, Dionne Argyropoulos
-plotStds_all <- function(antigen_output, experiment_name){
-  master_file <- antigen_output
+plotStds_all <- function(serodata_output, experiment_name){
+  master_file <- serodata_output
   stds <- master_file$stds
 
   stds_1 <- stds %>%

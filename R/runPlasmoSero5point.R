@@ -32,7 +32,7 @@
   # Read Plate Layout Data `SeroTrackR::readPlateLayout()`
   plate_list <- readPlateLayout(
     plate_layout = plate_layout,
-    antigen_output = df_sero
+    serodata_output = df_sero
   )
 
   ###############################################################################

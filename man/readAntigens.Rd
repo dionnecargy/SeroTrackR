@@ -2,12 +2,9 @@
 % Please edit documentation in R/readAntigens.R
 \name{readAntigens}
 \alias{readAntigens}
-\title{Standardise Antigen Names}
+\title{ARCHIVE: Standardise Antigen Names}
 \usage{
-readAntigens(serodata_output)
-}
-\arguments{
-\item{serodata_output}{Output of `readSeroData`}
+readAntigens()
 }
 \value{
 List of data frames with relabelled column names for our antigen names.

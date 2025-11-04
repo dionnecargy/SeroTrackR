@@ -4,10 +4,10 @@
 \alias{plotStds_all}
 \title{Plot Raw Median Fluorescent Intensity of Standard Curve Data}
 \usage{
-plotStds_all(antigen_output, experiment_name)
+plotStds_all(serodata_output, experiment_name)
 }
 \arguments{
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 
 \item{experiment_name}{User-input experiment name (reactive).}
 }

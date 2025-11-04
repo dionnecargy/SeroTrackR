@@ -22,6 +22,7 @@
 #' @importFrom tidyr nest unnest pivot_wider
 #' @importFrom purrr map
 #' @importFrom plyr join
+#' @importFrom grDevices dev.off png recordPlot
 #' @import drc
 #'
 #' @author Dionne Argyropoulos, Connie Li Wai Suen, Eamon Conway

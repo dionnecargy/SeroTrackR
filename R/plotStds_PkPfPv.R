@@ -2,7 +2,7 @@
 #'
 #' This function gets the standards data and plots the standard curves for antigens in the Pk/Pf/Pv panel.
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #'
 #' @return
@@ -18,12 +18,12 @@
 #'
 #' @export
 #' @author Dionne Argyropoulos
-plotStds_PkPfPv <- function(antigen_output, experiment_name){
+plotStds_PkPfPv <- function(serodata_output, experiment_name){
 
   PkPfPv_Panel_1 <- system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR")
   PkPfPv_Panel_1 <- read.csv(PkPfPv_Panel_1)
 
-  master_file <- antigen_output
+  master_file <- serodata_output
   stds <- master_file$stds
 
   relabel_columns <- function(df) {

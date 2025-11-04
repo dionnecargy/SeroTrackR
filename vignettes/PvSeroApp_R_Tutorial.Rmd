@@ -70,9 +70,9 @@ no_classification_final_analysis <- runPvSeroPipeline(
 
 ```{r create pdf output}
 renderQCReport(
-  your_raw_data, 
-  your_plate_layout, 
-  "magpix", 
+  raw_data = your_raw_data, 
+  plate_layout = your_plate_layout, 
+  platform = "magpix", 
   location = "ETH"
 )
 ```

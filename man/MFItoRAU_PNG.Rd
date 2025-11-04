@@ -5,10 +5,10 @@
 \title{Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 conversion based on PNG standard}
 \usage{
-MFItoRAU_PNG(antigen_output, plate_list, counts_QC_output)
+MFItoRAU_PNG(serodata_output, plate_list, counts_QC_output)
 }
 \arguments{
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 
 \item{plate_list}{Output from `readPlateLayout()` (reactive).}
 

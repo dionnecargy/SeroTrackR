@@ -2,17 +2,17 @@
 #'
 #' A helper function to process counts data.
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @return Returns a long table of counts with "Warning" category (<15 == 1 and
 #' ≥ 15 == 0) for downstream wrangling.
 #' @export
 #' @importFrom dplyr mutate case_when
 #' @importFrom tidyr pivot_longer
 #' @author Dionne Argyropoulos
-processCounts <- function(antigen_output){
+processCounts <- function(serodata_output){
 
   # 1. Store Counts Data
-  counts_data <- antigen_output$counts
+  counts_data <- serodata_output$counts
 
   # 2. Data Wrangling
   counts_data <- counts_data %>%

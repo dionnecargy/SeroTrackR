@@ -4,10 +4,10 @@
 \alias{processPkPfPv}
 \title{Processing Serological Data for Pk/Pf/Pv MFI to RAU conversion}
 \usage{
-processPkPfPv(serodata, plate_list, panel = "panel1")
+processPkPfPv(serodata_output, plate_list, panel = "panel1")
 }
 \arguments{
-\item{serodata}{Output of `readSeroData()`}
+\item{serodata_output}{Output of `readSeroData()`}
 
 \item{plate_list}{Output of `readPlateLayout()`}
 
