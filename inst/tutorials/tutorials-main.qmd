@@ -15,13 +15,27 @@ format:
 
 ## Load the Package and Data
 
-```{r load package and data}
+```{r actual loading of package}
+#| echo: false
+#| warning: false
+#| message: false
 devtools::install_github("dionnecargy/SeroTrackR") # To download the package
 install.packages(c("tidyverse", "knitr", "targets"), repos = "https://cloud.r-project.org") # Download other packages in this tutorial
 
 library(SeroTrackR) # To load the package 
 library(tidyverse) # for data wrangling and visualisation
 library(knitr)    # for RMarkdown visualisation and PDF generation
+```
+
+```{r load package and data}
+#| eval: false
+#| exec: false
+devtools::install_github("dionnecargy/SeroTrackR") # To download the package
+install.packages(c("tidyverse", "knitr", "targets"), repos = "https://cloud.r-project.org") # Download other packages in this tutorial
+
+library(SeroTrackR) # To load the package 
+library(tidyverse)  # for data wrangling and visualisation
+library(knitr)      # for RMarkdown visualisation and PDF generation
 ```
 
 ## File Name Convention 
