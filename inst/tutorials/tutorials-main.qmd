@@ -19,6 +19,7 @@ format:
 #| echo: false
 #| warning: false
 #| message: false
+#| output: false
 devtools::install_github("dionnecargy/SeroTrackR") # To download the package
 install.packages(c("tidyverse", "knitr", "targets"), repos = "https://cloud.r-project.org") # Download other packages in this tutorial
 
@@ -255,7 +256,7 @@ renderQCReport(
   your_plate_layout, 
   "magpix", 
   location = "ETH",
-  path = "tutorials/" # defaults to your current working directory
+  path = "inst/tutorials/" # defaults to your current working directory
 )
 ```
 
