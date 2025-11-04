@@ -25,8 +25,12 @@ plotBoxPlotClassification <- function(all_classifications, selected_threshold){
     ggplot2::geom_boxplot() +
     ggplot2::scale_y_log10() +
     ggplot2::scale_fill_manual(values = c(seronegative = "#878787", seropositive = "#d6604d")) +
-    ggplot2::labs(title = paste0("Threshold Chosen: ", selected_threshold),
-                  x = "Classification", y = "RAU", fill = "Classification") +
+    ggplot2::labs(
+      title = paste0("Threshold Chosen: ", as.character(selected_threshold)),
+      x = "Classification",
+      y = "RAU",
+      fill = "Classification"
+    ) +
     ggplot2::facet_grid(~Antigen) +
     ggplot2:: theme_bw() +
     ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
