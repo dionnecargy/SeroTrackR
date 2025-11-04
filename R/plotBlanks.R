@@ -3,7 +3,7 @@
 #' This function gets the blank sample data and plots the blank sample Median
 #' Fluorescent Intensity (MFI) values.
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #' @return Bar plot showing whether MFI values for the blanks for each antigen
 #' per plate is above or below the threshold MFI = 50 (ggplot).
@@ -12,8 +12,8 @@
 #' @importFrom dplyr select mutate
 #' @importFrom tidyr pivot_longer
 #' @author Shazia Ruybal-Pesantez, Dionne Argyropoulos
-plotBlanks <- function(antigen_output, experiment_name){
-  master_file <- antigen_output
+plotBlanks <- function(serodata_output, experiment_name){
+  master_file <- serodata_output
   blanks <- master_file$blanks
   blanks %>%
     dplyr::select(-Location) %>%

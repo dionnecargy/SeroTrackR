@@ -6,14 +6,14 @@
 #' `MFItoRAU_ETH.`
 #'
 #' @param mfi_to_rau_output Output from `MFItoRAU_ETH()` (reactive).
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @return List of dot and line plots of MFI to RAU model standard curve,
 #' with each one representing an individual plate (ggplot).
 #' @export
 #' @import ggplot2
 #' @importFrom dplyr bind_rows
 #' @author Dionne Argyropoulos
-plotModel_ETH <- function(mfi_to_rau_output, antigen_output){
+plotModel_ETH <- function(mfi_to_rau_output, serodata_output){
 
   # Load model results
   model_results <- mfi_to_rau_output[[3]]

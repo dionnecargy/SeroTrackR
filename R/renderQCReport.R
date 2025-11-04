@@ -29,24 +29,23 @@ renderQCReport <- function(
   ###############################################################################
 
   serodata_output           <- readSeroData(raw_data, platform)
-  antigen_output            <- readAntigens(serodata_output)
-  raw_data_info             <- antigen_output$data_raw
+  raw_data_info             <- serodata_output$data_raw
   raw_data_filename         <- tolower(basename(raw_data))
-  plate_list                <- readPlateLayout(plate_layout, antigen_output)
+  plate_list                <- readPlateLayout(plate_layout, serodata_output)
   version                   <- getGithubRelease("dionnecargy", "PvSeroApp")
 
-  processCounts_output      <- processCounts(antigen_output)
+  processCounts_output      <- processCounts(serodata_output)
   getCounts_output          <- getCounts(processCounts_output)
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(antigen_output, plate_list, getCountsQC_output))
+  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(serodata_output, plate_list, getCountsQC_output))
 
-  stdcurve_plot             <- suppressWarnings(plotStds(antigen_output, location, experiment_name))
+  stdcurve_plot             <- suppressWarnings(plotStds(serodata_output, location, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
-  blanks_plot               <- plotBlanks(antigen_output, experiment_name)
-  model_plot                <- plotModel_ETH(mfi_to_rau_output, antigen_output)
+  blanks_plot               <- plotBlanks(serodata_output, experiment_name)
+  model_plot                <- plotModel_ETH(mfi_to_rau_output, serodata_output)
 
   ###############################################################################
   # ----- Create helper functions -----

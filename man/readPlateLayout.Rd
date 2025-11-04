@@ -4,13 +4,13 @@
 \alias{readPlateLayout}
 \title{Read Plate Layout/s}
 \usage{
-readPlateLayout(plate_layout, antigen_output)
+readPlateLayout(plate_layout, serodata_output)
 }
 \arguments{
 \item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2...
 etc. (reactive).}
 
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 }
 \value{
 A list of data frames, with each one representing an individual plate.

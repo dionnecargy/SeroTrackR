@@ -1,10 +1,10 @@
 ---
 title: "SeroTrackR"
 author: "Dionne Argyropoulos"
-date: 2025-07-30
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 format: 
   html: 
-    theme: cosmo  # or flatly, etc.
+    theme: cosmo
     page-layout: full
     self-contained: true
     toc: true
@@ -93,6 +93,10 @@ The standards S1-5 correspond to the following dilution concentrations:
 
 Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
 
+### Visualisation of the PvSeroApp Pipeline
+
+![](images/SeroTrackR_PvSeroApp.jpeg)
+
 ### Using Tutorial Dataset: Load the Data
 
 We will be using the build-in files in the R package for this tutorial, as shown below. 
@@ -109,12 +113,14 @@ your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", packag
 To run your OWN data, follow the code below and uncomment (i.e., remove the hashtags): 
 
 ```{r}
-# your_raw_data <- c(
-#   "PATH/TO/YOUR/FILE/plate1.csv",
-#   "PATH/TO/YOUR/FILE/plate2.csv",
-#   "PATH/TO/YOUR/FILE/plate3.csv"
-# )
-# your_plate_layout <- "PATH/TO/YOUR/FILE/plate_layout.xlsx"
+#| exec: false
+#| eval: false
+your_raw_data <- c(
+  "PATH/TO/YOUR/FILE/plate1.csv",
+  "PATH/TO/YOUR/FILE/plate2.csv",
+  "PATH/TO/YOUR/FILE/plate3.csv"
+)
+your_plate_layout <- "PATH/TO/YOUR/FILE/plate_layout.xlsx"
 ```
 
 ### Run Classification: Yes
@@ -242,6 +248,10 @@ renderQCReport(
 ## Data Analysis: Pk/Pv/Pf
 
 For all of these analyses you can run as many plates as you wish. 
+
+### Visualisation of the Pk/Pv/Pf Pipeline
+
+![](images/SeroTrackR_Pk_Pf_Pv.jpeg)
 
 ### 5-Point Standard Curve
 
@@ -404,7 +414,7 @@ results_10stdcurve$mfi_outputs$MFI_RAU_long %>%
 For the LDH data analysis, follow the steps below: 
 
 ```{r example code for LDH}
-#| eval: FALSE
+#| eval: false
 
 runLDHpipeline(
   raw_data = "your/raw/data.xlsx",                    # Mandatory
@@ -417,27 +427,6 @@ runLDHpipeline(
 )
 ```
 
-## Visualisation of the `{SeroTrackR}` R Package
-
-We have used the `{targets}` R package to generate a pipeline! This allows us to:
-
-- Automatically detect the dependencies of each step 
-- One-command execution
-- Automatic caching 
-- Automatic detection of changes in data and/or code
-
-For more information on `{targets}` see this [tutorial](https://books.ropensci.org/targets/). 
-
-```{r targets}
-#| message: false
-#| warning: false
-#| echo: false
-library(targets) # for data visualisation of pipeline (below)
-tar_config_set(script = here::here("_targets.R"))
-tar_make()       # run pipeline
-tar_visnetwork() # visualise pipeline
-```
-
 ## FAQs
 
 ### I have multiple plate layout files. How can I input them? 
@@ -446,7 +435,7 @@ Use the `getPlateLayout()` function to create a master plate layout file to then
 
 ```{r}
 #| exec: false 
-#| eval: FALSE
+#| eval: false
 getPlateLayout("../inst/extdata/")
 ```
 
@@ -470,7 +459,7 @@ you would write:
 
 ```{r}
 #| exec: false 
-#| eval: FALSE
+#| eval: false
 getPlateLayout("raw_data_files/")
 ```
 
@@ -478,7 +467,7 @@ you could ALSO write:
 
 ```{r}
 #| exec: false 
-#| eval: FALSE
+#| eval: false
 getPlateLayout()
 ```
 
@@ -486,6 +475,6 @@ OR:
 
 ```{r}
 #| exec: false
-#| eval: FALSE
+#| eval: false
 getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
 ```

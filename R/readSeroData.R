@@ -117,6 +117,7 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
       # 2. Create results
       results <- results %>%
+        relabel_columns() %>%
         dplyr::select(-dplyr::any_of("Total Events")) %>%
         dplyr::mutate(dplyr::across(everything(), ~ gsub("NaN", 0, .))) %>% # Change "NaN" to 0s
         dplyr::mutate(Sample = ifelse(Sample == "Blank", paste0("Blank", row_number()),
@@ -125,6 +126,7 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
       # 3. Load counts for QC
       counts <- counts %>%
+        relabel_columns() %>%
         dplyr::mutate(Sample = ifelse(Sample == "Blank", paste0("Blank", row_number()),
                                       ifelse(Sample == "B", paste0("Blank", row_number()), Sample))) %>% # Sequentially relabel Blank rows and keep other Sample values unchanged
         dplyr::select(-any_of("Total Events"))
@@ -207,6 +209,7 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
       colnames(df) <- gsub("\\s*\\(.*\\)", "", colnames(df)) # Clean up column names
       df <- df %>%
+        relabel_columns() %>%
         dplyr::mutate(Type = ifelse(Type == "B", "Blank", Type), # Re-label
                       suffix = as.numeric(gsub("\\D", "", Type)), # Order so that standards and blanks are at the top
                       prefix = substr(Type, 1, 1)) %>% # Order so that standards and blanks are at the top
@@ -333,6 +336,7 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
       # 2. Create results
       results <- results %>%
+        relabel_columns() %>%
         dplyr::select(-dplyr::any_of("Total Events")) %>%
         dplyr::mutate(dplyr::across(everything(), ~ gsub("NaN", 0, .))) %>% # Change "NaN" to 0s
         dplyr::mutate(Sample = ifelse(Sample == "Blank", paste0("Blank", row_number()),
@@ -341,6 +345,7 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
       # 3. Load counts for QC
       counts <- counts %>%
+        relabel_columns() %>%
         dplyr::mutate(Sample = ifelse(Sample == "Blank", paste0("Blank", row_number()),
                                       ifelse(Sample == "B", paste0("Blank", row_number()), Sample))) %>% # Sequentially relabel Blank rows and keep other Sample values unchanged
         dplyr::select(-any_of("Total Events"))
@@ -391,4 +396,41 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
   return(master_list)
 
+}
+
+#' Relabel column names to Standardised Naming Convention
+#'
+#' This is a helper function to be used inside `readSeroData()` to relabel
+#' columns for each plate.
+#'
+#' @param df  Data frame from `readSeroData()`.
+#'
+#' @returns A data fame with columns renamed
+#' @export
+#'
+#' @importFrom stringr str_detect
+#'
+#' @author Dionne Argyropoulos
+relabel_columns <- function(df) {
+  colnames(df) <- dplyr::case_when(
+    stringr::str_detect(colnames(df), regex("EBP", ignore_case = TRUE)) ~ "EBP",
+    stringr::str_detect(colnames(df), regex("LF005", ignore_case = TRUE)) ~ "LF005", # Happy to relabel to PvLF005 or Pv-fam-a
+    stringr::str_detect(colnames(df), regex("LF010", ignore_case = TRUE)) ~ "LF010", # Happy to relabel to PvLF010 or PvMSP5
+    stringr::str_detect(colnames(df), regex("LF016", ignore_case = TRUE)) ~ "LF016", # Happy to relabel to PvLF016 or PvMSP1-19
+    stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
+    stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87)", ignore_case = TRUE)) ~ "RBP2b.P87",
+    stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150", # Happy to relabel to PvPTEX150
+    stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
+    stringr::str_detect(colnames(df), regex("(MSP1-19|PfMSP1|MSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
+    stringr::str_detect(colnames(df), regex("AMA1", ignore_case = TRUE)) ~ "PfAMA1",
+    stringr::str_detect(colnames(df), regex("etramp5Ag1", ignore_case = TRUE)) ~ "Pfetramp5Ag1",
+    stringr::str_detect(colnames(df), regex("HSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
+    stringr::str_detect(colnames(df), regex("Gexp18", ignore_case = TRUE)) ~ "PfGexp18",
+    stringr::str_detect(colnames(df), regex("SSP2", ignore_case = TRUE)) ~ "PkSSP2",
+    stringr::str_detect(colnames(df), regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10",
+    stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~ "Pk8",
+    stringr::str_detect(colnames(df), regex("SERA3Ag2", ignore_case = TRUE)) ~ "PkSERA3Ag2",
+    TRUE ~ colnames(df) # Keep unmatched names as-is
+  )
+  return(df)
 }

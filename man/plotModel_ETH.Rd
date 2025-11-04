@@ -5,12 +5,12 @@
 \title{Plot the Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 Results Data based on ETH standard}
 \usage{
-plotModel_ETH(mfi_to_rau_output, antigen_output)
+plotModel_ETH(mfi_to_rau_output, serodata_output)
 }
 \arguments{
 \item{mfi_to_rau_output}{Output from `MFItoRAU_ETH()` (reactive).}
 
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 }
 \value{
 List of dot and line plots of MFI to RAU model standard curve,

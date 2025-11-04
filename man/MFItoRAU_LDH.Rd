@@ -6,7 +6,7 @@
 conversion for LDH}
 \usage{
 MFItoRAU_LDH(
-  antigen_output,
+  serodata_output,
   plate_list,
   dilution = c(1e+06, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25,
     152.42, 50.81),
@@ -14,7 +14,7 @@ MFItoRAU_LDH(
 )
 }
 \arguments{
-\item{antigen_output}{Output from `readAntigens()` or `readSeroData()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` or `readSeroData()` (reactive).}
 
 \item{plate_list}{Output from `readPlateLayout()` (reactive).}
 

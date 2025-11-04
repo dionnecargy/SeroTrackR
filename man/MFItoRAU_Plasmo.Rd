@@ -6,7 +6,7 @@
 conversion for Pk/Pf/Pv Master Function}
 \usage{
 MFItoRAU_Plasmo(
-  serodata,
+  serodata_output,
   plate_list,
   panel = "panel1",
   std_point,
@@ -14,7 +14,7 @@ MFItoRAU_Plasmo(
 )
 }
 \arguments{
-\item{serodata}{Output of `readSeroData()`}
+\item{serodata_output}{Output of `readserodata_output()`}
 
 \item{plate_list}{Output of `readPlateLayout()`}
 

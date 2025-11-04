@@ -5,7 +5,7 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU) written by Eamon Conway.
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @param counts_QC_output Output from `getCountsQC()` (reactive).
 #' @return  A list of three data frames:
@@ -18,9 +18,9 @@
 #' @importFrom purrr map
 #' @importFrom plyr join
 #' @author Eamon Conway, Dionne Argyropoulos
-MFItoRAU_ETH <- function(antigen_output, plate_list, counts_QC_output){
+MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
 
-  master_file <- antigen_output$results
+  master_file <- serodata_output$results
   L <- master_file %>% dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
   layout <- plate_list
 

@@ -5,7 +5,7 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU).
 #'
-#' @param antigen_output Output from `readAntigens()` or `readSeroData()` (reactive).
+#' @param serodata_output Output from `readSeroData()` or `readSeroData()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @param file_path A file path to write the .csv final file. Default: Current working directory.
 #' @param dilution  A list of numbers ranging from S1 to S10. Default: 1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81.
@@ -23,7 +23,7 @@
 #'
 #' @author Connie Li Wai Suen, Caitlin Bourke, Dionne Argyropoulos
 MFItoRAU_LDH <- function(
-    antigen_output,
+    serodata_output,
     plate_list,
     dilution = c(1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81),
     file_path = NULL
@@ -33,7 +33,7 @@ MFItoRAU_LDH <- function(
   # Step 1: Read raw serology data and plate layout
   #######################################################################
 
-  master_file   <- antigen_output
+  master_file   <- serodata_output
   L             <- master_file$results
   layout        <- plate_list
   dilution      <- dilution

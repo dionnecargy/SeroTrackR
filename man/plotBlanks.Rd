@@ -4,10 +4,10 @@
 \alias{plotBlanks}
 \title{Plot Raw Median Fluorescent Intensity Blanks Data}
 \usage{
-plotBlanks(antigen_output, experiment_name)
+plotBlanks(serodata_output, experiment_name)
 }
 \arguments{
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 
 \item{experiment_name}{User-input experiment name (reactive).}
 }

@@ -4,10 +4,10 @@
 \alias{plotStds}
 \title{Plot Raw Median Fluorescent Intensity of Standard Curve Data}
 \usage{
-plotStds(antigen_output, location, experiment_name)
+plotStds(serodata_output, location, experiment_name)
 }
 \arguments{
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 
 \item{location}{"PNG" or "ETH" to filter WEHI standard curve data (reactive).}
 

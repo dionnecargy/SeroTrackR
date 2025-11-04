@@ -10,12 +10,12 @@
 #'
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2...
 #' etc. (reactive).
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @return A list of data frames, with each one representing an individual plate.
 #' @export
 #' @importFrom openxlsx getSheetNames read.xlsx
 #' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
-readPlateLayout <- function(plate_layout, antigen_output) {
+readPlateLayout <- function(plate_layout, serodata_output) {
 
   if (is.null(plate_layout) || !file.exists(plate_layout)) {
     stop("ERROR: Invalid plate layout file provided.")
@@ -38,15 +38,15 @@ readPlateLayout <- function(plate_layout, antigen_output) {
   # Step 3: Name each element in the list after the corresponding sheet name
   names(plate_list) <- sheet_names
 
-  # Step 4: Check if 'Plate' column exists in antigen_output$results
-  antigen_output_results <- antigen_output$results
+  # Step 4: Check if 'Plate' column exists in serodata_output$results
+  antigen_output_results <- serodata_output$results
 
   if (!"Plate" %in% colnames(antigen_output_results)) {
-    stop("ERROR: 'Plate' column is missing from antigen_output$results.")
+    stop("ERROR: 'Plate' column is missing from serodata_output$results.")
   }
 
   # Step 5: Extract levels from 'Plate' column
-  antigen_output_levels <- unique(as.character(antigen_output$results$Plate))  # Convert factor to character
+  antigen_output_levels <- unique(as.character(serodata_output$results$Plate))  # Convert factor to character
 
   # Step 6: Compare plate names
   if (all(antigen_output_levels %in% sheet_names)) {

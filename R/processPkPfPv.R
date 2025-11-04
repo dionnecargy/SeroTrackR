@@ -3,7 +3,7 @@
 #' This is a pre-requisite function before running the `MFItoRAU_Plasmo()` so that the
 #' appropriate MFI to RAU conversions can be run for the respective antigens.
 #'
-#' @param serodata   Output of `readSeroData()`
+#' @param serodata_output   Output of `readSeroData()`
 #' @param plate_list  Output of `readPlateLayout()`
 #' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
 #'
@@ -18,12 +18,12 @@
 #' @importFrom utils read.csv
 #'
 #' @author Dionne Argyropoulos
-processPkPfPv <- function(serodata, plate_list, panel = "panel1"){
+processPkPfPv <- function(serodata_output, plate_list, panel = "panel1"){
 
   #############################################################
   # Step 1: Collect Data Inputs for Function
   #############################################################
-  master_file               <- serodata$results
+  master_file               <- serodata_output$results
   layout                    <- plate_list
   chosen_panel              <- panel
 
@@ -57,34 +57,6 @@ processPkPfPv <- function(serodata, plate_list, panel = "panel1"){
     pf_antigens <- panel %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
     pk_antigens <- panel %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
   }
-
-  # Convert User IDs for Antigens (Accounting for spelling errors/differences)
-  # Function to relabel column names
-  relabel_columns <- function(df) {
-    colnames(df) <- dplyr::case_when(
-      stringr::str_detect(colnames(df), regex("EBP", ignore_case = TRUE)) ~ "EBP",
-      stringr::str_detect(colnames(df), regex("LF005", ignore_case = TRUE)) ~ "LF005", # Happy to relabel to PvLF005 or Pv-fam-a
-      stringr::str_detect(colnames(df), regex("LF010", ignore_case = TRUE)) ~ "LF010", # Happy to relabel to PvLF010 or PvMSP5
-      stringr::str_detect(colnames(df), regex("LF016", ignore_case = TRUE)) ~ "LF016", # Happy to relabel to PvLF016 or PvMSP1-19
-      stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
-      stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87)", ignore_case = TRUE)) ~ "RBP2b.P87",
-      stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150", # Happy to relabel to PvPTEX150
-      stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
-      stringr::str_detect(colnames(df), regex("(MSP1-19|PfMSP1|MSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
-      stringr::str_detect(colnames(df), regex("AMA1", ignore_case = TRUE)) ~ "PfAMA1",
-      stringr::str_detect(colnames(df), regex("etramp5Ag1|tramp", ignore_case = TRUE)) ~ "Pfetramp5Ag1",
-      stringr::str_detect(colnames(df), regex("HSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
-      stringr::str_detect(colnames(df), regex("Gexp18", ignore_case = TRUE)) ~ "PfGexp18",
-      stringr::str_detect(colnames(df), regex("SSP2", ignore_case = TRUE)) ~ "PkSSP2",
-      stringr::str_detect(colnames(df), regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10",
-      stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~ "Pk8",
-      stringr::str_detect(colnames(df), regex("SERA3Ag2", ignore_case = TRUE)) ~ "PkSERA3Ag2",
-      TRUE ~ colnames(df) # Keep unmatched names as-is
-    )
-    return(df)
-  }
-
-  L <- L %>% relabel_columns()
 
   PfPv <- L %>%
     # Step 1: Filter for only Pv/Pf-relevant standard curve

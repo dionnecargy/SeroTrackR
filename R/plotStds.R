@@ -2,7 +2,7 @@
 #'
 #' This function gets the standards data and plots the standard curves.
 #'
-#' @param antigen_output Output from `readAntigens()` (reactive).
+#' @param serodata_output Output from `readSeroData()` (reactive).
 #' @param location "PNG" or "ETH" to filter WEHI standard curve data (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #' @return
@@ -14,9 +14,9 @@
 #' @import ggplot2
 #' @export
 #' @author Shazia Ruybal-Pesantez, Dionne Argyropoulos
-plotStds <- function(antigen_output, location, experiment_name){
+plotStds <- function(serodata_output, location, experiment_name){
 
-  master_file <- antigen_output
+  master_file <- serodata_output
   stds <- master_file$stds
 
   stds_1 <- stds %>%

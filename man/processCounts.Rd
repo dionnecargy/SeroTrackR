@@ -4,10 +4,10 @@
 \alias{processCounts}
 \title{Process Counts from Raw Serological Data file}
 \usage{
-processCounts(antigen_output)
+processCounts(serodata_output)
 }
 \arguments{
-\item{antigen_output}{Output from `readAntigens()` (reactive).}
+\item{serodata_output}{Output from `readSeroData()` (reactive).}
 }
 \value{
 Returns a long table of counts with "Warning" category (<15 == 1 and

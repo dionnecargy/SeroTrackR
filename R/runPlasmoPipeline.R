@@ -37,7 +37,7 @@ runPlasmoPipeline <- function(
   # Step 1: Reading in Raw Data
   #############################################################
   readSeroData_Output       <- readSeroData(raw_data = raw_data, platform)
-  readPlateLayout_Output    <- readPlateLayout(plate_layout = plate_layout, antigen_output = readSeroData_Output)
+  readPlateLayout_Output    <- readPlateLayout(plate_layout = plate_layout, serodata_output = readSeroData_Output)
 
   #############################################################
   # Step 2: Quality Control and MFI to RAU
@@ -62,7 +62,7 @@ runPlasmoPipeline <- function(
   # Step 4: Run new 5-point MFI to RAU
   #############################################################
   mfi_outputs               <- MFItoRAU_Plasmo(
-    serodata = readSeroData_Output,
+    serodata_output = readSeroData_Output,
     plate_list = readPlateLayout_Output,
     panel = panel,
     std_point = std_point,
