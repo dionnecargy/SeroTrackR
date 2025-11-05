@@ -11,6 +11,7 @@
 #' @return Box plots with RAU values for each protein stratified by
 #' classification (ggplot).
 #' @export
+#'
 #' @import ggplot2
 #' @importFrom dplyr filter mutate
 #' @importFrom tidyr pivot_longer
