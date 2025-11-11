@@ -5,17 +5,23 @@
 #' @param df Any processed data frame
 #' @return A table in the Fluent UI format
 #' @export
-#' @importFrom shiny.fluent Stack DetailsList
 #' @author Dionne Argyropoulos
 renderDetailsList <- function(df) {
-  div(
+
+  # Check if shiny.fluent is installed
+  if (!requireNamespace("shiny.fluent", quietly = TRUE)) {
+    stop("Package 'shiny.fluent' is required for renderDetailsList(). Please install it.", call. = FALSE)
+  }
+
+  # Use functions from shiny.fluent with :: prefix
+  htmltools::div(
     class = "ms-Grid-row",
-    div(
+    htmltools::div(
       class = "ms-Grid-col ms-sm12",  # Use ms-sm12 for full width on small screens
       shiny.fluent::Stack(
         tokens = list(childrenGap = 10),
         horizontal = TRUE,
-        div(
+        htmltools::div(
           style = "max-height: 600px; overflow: auto; width: 100%;",
           shiny.fluent::DetailsList(
             items = df,

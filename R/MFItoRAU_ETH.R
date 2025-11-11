@@ -13,10 +13,9 @@
 #' 2. Plot information for `plotModel` function.
 #' 3. Data frame of RAU data for random forest classification use.
 #' @export
-#' @importFrom dplyr group_by mutate across inner_join rowwise summarise right_join select left_join rename_with all_of
+#' @importFrom dplyr group_by mutate across inner_join rowwise summarise right_join select left_join rename_with all_of ungroup
 #' @importFrom tidyr nest unnest pivot_wider
 #' @importFrom purrr map
-#' @importFrom plyr join
 #' @author Eamon Conway, Dionne Argyropoulos
 MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
 
@@ -148,58 +147,69 @@ MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
     ##########################################################################################################
     #### MERGE DATA: Relabel Sample Names with Plate Layout
     ##########################################################################################################
-
-    # Bind to location
+    # Bind plate-subset data with RAU-converted data
     eth_converted_locations <- subset_data %>%
       dplyr::select(Location, Sample, Plate) %>%
       dplyr::right_join(estimate_eth, by = "Sample")
 
-    results.location <- matrix(unlist(strsplit(as.character(eth_converted_locations$Location), ",")), ncol = 2, byrow = TRUE)[, 2]
-    results.location <- substr(results.location, 1, nchar(results.location) - 1)
-    eth_converted_locations <- cbind(Location.2 = results.location, eth_converted_locations)
-
-    ## Matching SampleID from plate layout to corresponding sample.
-    location.1 <- matrix(unlist(strsplit(subset_data$Location, ",")), ncol=2, byrow=T)[,2]
-    location.1 <- substr(location.1, 1, nchar(location.1)-1)
-    location.2 <- data.frame(Location.2=location.1, alpha=gsub("[[:digit:]]", "", location.1), numeric=gsub("[^[:digit:]]", "", location.1), SampleID=NA, stringsAsFactors = FALSE)
-    for (i in location.2[, "Location.2"]){
-      plate_layout_current <- layout[[plate_level]]
-      names(plate_layout_current)[1] <- "Plate" # Relabel first column to be "Plate"
-      location.2[location.2$Location.2==i, "SampleID"] <- plate_layout_current[
-        plate_layout_current$Plate == unique(location.2[location.2$Location.2 == i, "alpha"]),
-        colnames(plate_layout_current) == unique(location.2[location.2$Location.2 == i, "numeric"])
-      ]
-    }
-    row_to_match <- location.2[,c("Location.2", "SampleID")]
-    row_to_match <- row_to_match %>% dplyr::distinct(SampleID, Location.2, .keep_all = T) %>% na.omit()
-
-    ## Using join() from plyr package to add SampleID information to results.df.wide. (default or given folder location and unique name)
-    eth_converted_locations <- plyr::join(eth_converted_locations, row_to_match, by="Location.2", type="left")
-
-    ## Move SampleID to first column
-    eth_converted_locations <- eth_converted_locations[, c("SampleID", colnames(eth_converted_locations)[!(colnames(eth_converted_locations) %in% "SampleID")])]
-
-    # Define column names to remain as characters
-    character_columns <- c("SampleID", "Location", "Location.2", "Sample", "antigen", "Plate")
-
-    # Convert specified columns to character
-    eth_converted_locations[character_columns] <- lapply(eth_converted_locations[character_columns], as.character)
-
-    # Convert all other columns (not in the specified list) to numeric
-    numeric_columns <- setdiff(names(eth_converted_locations), character_columns)
-    eth_converted_locations[numeric_columns] <- lapply(eth_converted_locations[numeric_columns], as.numeric)
-
-    # Make long data frame wide
-    eth_converted_locations_mfi <-eth_converted_locations %>%
+    # Pivot wider
+    eth_converted_wide.1 <- eth_converted_locations %>%
+      # Pivot wider: All MFI values
       dplyr::select(-dilution) %>%
       tidyr::pivot_wider(names_from = "antigen", values_from = "mfi") %>%
-      dplyr::rename_with(~paste0(.x, "_MFI"), -c(SampleID, Location.2, Location, Sample, Plate))
-    eth_converted_locations_dilutions <- eth_converted_locations %>%
+      dplyr::rename_with(~paste0(.x, "_MFI"), -c(Location, Sample, Plate))
+    eth_converted_wide.2 <- eth_converted_locations %>%
+      # Pivot wider: All Dilution values
       dplyr::select(-mfi) %>%
       tidyr::pivot_wider(names_from = "antigen", values_from = "dilution") %>%
-      dplyr::rename_with(~paste0(.x, "_Dilution"), -c(SampleID, Location.2, Location, Sample, Plate))
-    eth_converted_wide <- eth_converted_locations_mfi %>%
-      dplyr::left_join(eth_converted_locations_dilutions, by = c("SampleID", "Location.2", "Location", "Sample", "Plate"))
+      dplyr::rename_with(~paste0(.x, "_Dilution"), -c(Location, Sample, Plate))
+
+    eth_converted_wide <- dplyr::left_join(
+      eth_converted_wide.1,
+      eth_converted_wide.2,
+      by = c("Location", "Sample", "Plate")
+    )
+
+    # Add positional information
+    eth_converted_wide <- eth_converted_wide %>%
+      # Clean up the new Location.2 (remove trailing space and last character)
+      dplyr::mutate(
+        Location.2 = stringr::str_split_fixed(as.character(Location), ",", 2)[, 2],
+        Location.2 = stringr::str_trim(Location.2),
+        Location.2 = stringr::str_sub(Location.2, 1, -2)
+      ) %>%
+      dplyr::select(Location.2, everything())
+
+    plate_layout_current <- layout[[plate_level]] %>% dplyr::rename(Plate = 1)  # rename first column
+    plate_layout_current <- plate_layout_current %>%
+      tidyr::pivot_longer(
+        cols = `1`:`12`,
+        names_to = "numeric",
+        values_to = "SampleID"
+      ) %>%
+      dplyr::rename(alpha = Plate) %>%
+      tidyr::unite("Location.2", alpha:numeric, sep="", na.rm = T)
+
+    # Match SampleID from plate layout to corresponding sample
+    eth_converted_wide <- eth_converted_wide %>%
+      dplyr::left_join(plate_layout_current, by = "Location.2") %>%
+      # Keep only needed columns, distinct, and remove NA
+      dplyr::distinct(SampleID, Location.2, .keep_all = TRUE) %>%
+      tidyr::drop_na() %>%
+      # Move SampleID to first column
+      dplyr::select(SampleID, everything())
+
+    # Define column names to remain as characters
+    character_columns <- c("SampleID", "Location", "Location.2", "Sample", "Plate")
+
+    # Convert specified columns to character
+    eth_converted_wide <- eth_converted_wide %>%
+      dplyr::mutate(
+        # Convert specified columns to character
+        across(all_of(character_columns), as.character),
+        # Convert all other columns to numeric
+        across(!all_of(character_columns), as.numeric)
+      )
 
     ##########################################################################################################
     #### Create output dataframes
@@ -220,7 +230,7 @@ MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
   ##########################################################################################################
 
   counts_data <- counts_QC_output %>%
-    ungroup() %>%
+    dplyr::ungroup() %>%
     dplyr::select(SampleID, Location.2 = Location, Plate, QC_total)
 
   final_results <- dplyr::bind_rows(results_all) %>%

@@ -7,10 +7,18 @@
 #' @param repo_name GitHub Repository Name
 #' @return Version tag string
 #' @export
-#' @importFrom httr GET status_code content
-#' @importFrom jsonlite fromJSON
 #' @author Dionne Argyropoulos
 getGithubRelease <- function(repo_owner, repo_name) {
+
+  # Check if httr is installed
+  if (!requireNamespace("httr", quietly = TRUE)) {
+    stop("Package 'httr' is required for getGitHubRelease(). Please install it.", call. = FALSE)
+  }
+  # Check if jsonlite is installed
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("Package 'jsonlite' is required for getGitHubRelease(). Please install it.", call. = FALSE)
+  }
+
   url <- paste0("https://api.github.com/repos/", repo_owner, "/", repo_name, "/releases/latest")
   response <- httr::GET(url)
 

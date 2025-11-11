@@ -14,11 +14,15 @@
 #' @importFrom tidyr  pivot_longer  separate
 #' @importFrom stringr str_detect str_extract
 #' @importFrom utils read.csv
-#' @importFrom zoo na.locf
 #'
 #' @export
 #' @author Dionne Argyropoulos
 plotStds_PkPfPv <- function(serodata_output, experiment_name){
+
+  # Check if shiny.fluent is installed
+  if (!requireNamespace("zoo", quietly = TRUE)) {
+    stop("Package 'zoo' is required for plotStds_PkPfPv(). Please install it.", call. = FALSE)
+  }
 
   PkPfPv_Panel_1 <- system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR")
   PkPfPv_Panel_1 <- read.csv(PkPfPv_Panel_1)

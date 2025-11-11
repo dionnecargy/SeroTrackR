@@ -23,27 +23,26 @@ Imports:
     forcats,
     ggplot2,
     here,
-    httr,
     janitor,
-    jsonlite,
     magrittr,
     meltr,
     openxlsx,
     parsnip,
-    plyr,
     purrr,
     readxl,
     rmarkdown,
-    shiny.fluent,
     stats,
     stringr,
     tidyr,
     utils,
-    workflows,
-    zoo
+    workflows
 URL: https://github.com/dionnecargy/SeroTrackR
 BugReports: https://github.com/dionnecargy/SeroTrackR/issues
 Suggests: 
+    httr,
+    jsonlite,
     knitr,
-    tidyverse
+    shiny.fluent,
+    tidyverse,
+    zoo
 VignetteBuilder: knitr

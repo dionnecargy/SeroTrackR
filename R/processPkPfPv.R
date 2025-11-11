@@ -14,11 +14,15 @@
 #'
 #' @importFrom dplyr mutate across  select  pull filter case_when
 #' @importFrom stringr str_extract  str_detect  str_detect
-#' @importFrom zoo na.locf
 #' @importFrom utils read.csv
 #'
 #' @author Dionne Argyropoulos
 processPkPfPv <- function(serodata_output, plate_list, panel = "panel1"){
+
+  # Check if shiny.fluent is installed
+  if (!requireNamespace("zoo", quietly = TRUE)) {
+    stop("Package 'zoo' is required for processPkPfPv(). Please install it.", call. = FALSE)
+  }
 
   #############################################################
   # Step 1: Collect Data Inputs for Function

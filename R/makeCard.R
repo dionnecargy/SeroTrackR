@@ -9,15 +9,21 @@
 #' @param style Value for any css styling (reactive).
 #' @return A "card" in the Fluent UI format with content.
 #' @export
-#' @importFrom shiny.fluent Stack
 makeCard <- function(title, id, content, size = 12, style = "") {
-  div(
+
+  # Check if shiny.fluent is installed
+  if (!requireNamespace("shiny.fluent", quietly = TRUE)) {
+    stop("Package 'shiny.fluent' is required for makeCard(). Please install it.", call. = FALSE)
+  }
+
+  # Use functions from shiny.fluent with :: prefix
+  htmltools::div(
     id = id,
-    class = glue("card ms-depth-8 ms-sm{size} ms-xl{size}"),
+    class = glue::glue("card ms-depth-8 ms-sm{size} ms-xl{size}"),
     style = style,
     shiny.fluent::Stack(
       tokens = list(padding = 20, childrenGap = 5),
-      Text(variant = "large", title, block = TRUE),
+      shiny.fluent::Text(variant = "large", title, block = TRUE),
       content
     )
   )

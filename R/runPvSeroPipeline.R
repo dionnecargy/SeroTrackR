@@ -27,7 +27,6 @@
 #' @importFrom janitor row_to_names
 #' @importFrom meltr melt_csv2 melt_csv
 #' @importFrom openxlsx getSheetNames read.xlsx
-#' @importFrom plyr join
 #' @importFrom purrr map
 #' @importFrom readxl read_excel
 #' @importFrom rmarkdown render
@@ -52,7 +51,11 @@ runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experi
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(serodata_output, plate_list, getCountsQC_output))
+  if(location == "ETH"){
+    mfi_to_rau_output                <- suppressMessages(MFItoRAU_ETH(serodata_output, plate_list, getCountsQC_output))
+  } else if(location == "PNG"){
+    mfi_to_rau_output                <- suppressMessages(MFItoRAU_PNG(serodata_output, plate_list, getCountsQC_output))
+  }
 
   #############################################################
   # Step 3: Plotting
@@ -61,7 +64,12 @@ runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experi
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
   blanks_plot               <- plotBlanks(serodata_output, experiment_name)
-  model_plot                <- plotModel_ETH(mfi_to_rau_output, serodata_output)
+
+  if(location == "ETH"){
+    model_plot                <- plotModel_ETH(mfi_to_rau_output, serodata_output)
+  } else if(location == "PNG"){
+    model_plot                <- plotModel_PNG(mfi_to_rau_output, serodata_output)
+  }
 
   #############################################################
   # Step 4: Classification
