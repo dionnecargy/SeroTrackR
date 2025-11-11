@@ -24,6 +24,8 @@ Imports:
     ggplot2,
     here,
     janitor,
+    kableExtra,
+    knitr,
     magrittr,
     meltr,
     openxlsx,
@@ -44,7 +46,6 @@ Suggests:
     htmltools,
     httr,
     jsonlite,
-    knitr,
     shiny.fluent,
     tidyverse,
     zoo

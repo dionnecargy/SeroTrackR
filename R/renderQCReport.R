@@ -12,6 +12,12 @@
 #' @return Rendered PDF report.
 #' @export
 #'
+#' @importFrom dplyr filter select all_of rename
+#' @importFrom knitr kable asis_output
+#' @importFrom rmarkdown render
+#' @importFrom here here
+#' @importFrom kableExtra kable_styling
+#'
 #' @author Dionne Argyropoulos
 renderQCReport <- function(
     raw_data,
@@ -102,7 +108,7 @@ renderQCReport <- function(
       # Find cols with search string in any row
       matching_cols <- names(raw_data_info)[sapply(raw_data_info, function(col) any(grepl(search_str, col)))]
       # Filter the data frame to include only those cols
-      filtered_df <- raw_data_info %>% dplyr::select(all_of(matching_cols))
+      filtered_df <- raw_data_info %>% dplyr::select(dplyr::all_of(matching_cols))
       # Get the unknown column name
       col_name <- names(filtered_df)[1]
       # Find row indices where the string appears

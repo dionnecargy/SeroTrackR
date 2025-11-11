@@ -7,23 +7,31 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-if (!requireNamespace("ranger", quietly = TRUE)) {
-  install.packages("ranger")
-}
-library(ranger)
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
+setup <- function(){
+  needed <- c(
+    "knitr", "rmarkdown", "tidyverse", "kableExtra"
+  )
+  for(package in needed){
+    if(!sum(installed.packages() %in% package)){
+      install.packages(package)
+    }
+    
+    require(package, character.only = TRUE)
+  }
+}
+setup()
 ```
 
 ## Load the Package and Data
 
 ```{r setup 1}
 library(SeroTrackR)
-library(knitr)
-library(rmarkdown)
 library(tidyverse)
 
 your_raw_data <- c(
@@ -36,7 +44,7 @@ your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", packag
 
 ## Data Analysis: `runPvSeroPipeline()` 
 
-Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
+Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our application! 
 
 ### Run Classification: Yes {.tabset}
 

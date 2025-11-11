@@ -7,21 +7,30 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-if (!requireNamespace("ranger", quietly = TRUE)) {
-  install.packages("ranger")
-}
-library(ranger)
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
+setup <- function(){
+  needed <- c(
+    "knitr", "rmarkdown", "tidyverse", "kableExtra"
+  )
+  for(package in needed){
+    if(!sum(installed.packages() %in% package)){
+      install.packages(package)
+    }
+    
+    require(package, character.only = TRUE)
+  }
+}
+
+setup()
 ```
 
 ```{r setup pk analysis}
 library(SeroTrackR)
-library(knitr)
-library(rmarkdown)
 library(tidyverse)
 ```
 

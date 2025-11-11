@@ -4,6 +4,14 @@ date: "`r format(Sys.Date(), '%d-%m-%y')`"
 header-includes:
    - \usepackage[default]{sourcesanspro}
    - \usepackage[T1]{fontenc}
+   - \usepackage{booktabs}
+   - \usepackage{longtable}
+   - \usepackage{array}
+   - \usepackage{multirow}
+   - \usepackage{graphicx}
+   - \usepackage{float}
+   - \usepackage{colortbl}
+   - \usepackage{xcolor}
 mainfont: SourceSansPro
 output: 
   pdf_document: default
@@ -28,12 +36,12 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE, tidy = TRUE, fig.width=8, fig.height=6, fig.align="center", df_print = "kable")
-require(tidyverse)
-require(readxl)
-require(drc)
-require(here)
-require(knitr)
-require(kableExtra)
+library(SeroTrackR)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(rmarkdown)
 ```
 
 ***

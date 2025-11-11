@@ -4,9 +4,11 @@
 .httr-oauth
 .DS_Store
 .quarto
-inst/doc
+/inst/doc/
 /doc/
 /Meta/
 /_targets
 /_targets.R
 /_targets.yaml
+^doc$
+^Meta$
