@@ -13,6 +13,11 @@ renderDetailsList <- function(df) {
     stop("Package 'shiny.fluent' is required for renderDetailsList(). Please install it.", call. = FALSE)
   }
 
+  # Check if htmltools is installed
+  if (!requireNamespace("htmltools", quietly = TRUE)) {
+    stop("Package 'htmltools' is required for renderDetailsList(). Please install it.", call. = FALSE)
+  }
+
   # Use functions from shiny.fluent with :: prefix
   htmltools::div(
     class = "ms-Grid-row",

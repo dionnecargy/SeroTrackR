@@ -20,6 +20,11 @@ renderTwoCols <- function(
     stop("Package 'shiny.fluent' is required for renderTwoCols(). Please install it.", call. = FALSE)
   }
 
+  # Check if htmltools is installed
+  if (!requireNamespace("htmltools", quietly = TRUE)) {
+    stop("Package 'htmltools' is required for renderTwoCols(). Please install it.", call. = FALSE)
+  }
+
   # Use functions from shiny.fluent with :: prefix
   shiny.fluent::Stack(
     horizontal = TRUE,

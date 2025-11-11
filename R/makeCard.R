@@ -16,6 +16,16 @@ makeCard <- function(title, id, content, size = 12, style = "") {
     stop("Package 'shiny.fluent' is required for makeCard(). Please install it.", call. = FALSE)
   }
 
+  # Check if glue is installed
+  if (!requireNamespace("glue", quietly = TRUE)) {
+    stop("Package 'glue' is required for makeCard(). Please install it.", call. = FALSE)
+  }
+
+  # Check if htmltools is installed
+  if (!requireNamespace("htmltools", quietly = TRUE)) {
+    stop("Package 'htmltools' is required for makeCard(). Please install it.", call. = FALSE)
+  }
+
   # Use functions from shiny.fluent with :: prefix
   htmltools::div(
     id = id,
