@@ -4,7 +4,7 @@
 \name{SeroTrackR-package}
 \alias{SeroTrackR}
 \alias{SeroTrackR-package}
-\title{SeroTrackR: Functions for the Sero Analysis}
+\title{SeroTrackR: Tools for Serological Data Analysis and Visualization}
 \description{
 Data wrangling and cleaning, quality control checks and implementation of machine learning classification algorithm.
 }
