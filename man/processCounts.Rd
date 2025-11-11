@@ -11,7 +11,7 @@ processCounts(serodata_output)
 }
 \value{
 Returns a long table of counts with "Warning" category (<15 == 1 and
-≥ 15 == 0) for downstream wrangling.
+\eqn{>=}  15 == 0) for downstream wrangling.
 }
 \description{
 A helper function to process counts data.

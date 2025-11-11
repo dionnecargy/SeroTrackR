@@ -4,3 +4,9 @@
 ^doc$
 ^Meta$
 ^.*QCreport\.pdf$
+^.*\.pdf$
+^.*\.tex$
+^.*\.Rproj$
+^\.Rhistory$
+^\.RData$
+^\.DS_Store$

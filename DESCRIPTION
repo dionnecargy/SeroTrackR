@@ -29,6 +29,7 @@ Imports:
     openxlsx,
     parsnip,
     purrr,
+    ranger,
     readxl,
     rmarkdown,
     stats,

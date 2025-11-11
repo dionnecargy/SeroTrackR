@@ -4,7 +4,7 @@
 #'
 #' @param serodata_output Output from `readSeroData()` (reactive).
 #' @return Returns a long table of counts with "Warning" category (<15 == 1 and
-#' ≥ 15 == 0) for downstream wrangling.
+#' \eqn{>=}  15 == 0) for downstream wrangling.
 #' @export
 #' @importFrom dplyr mutate case_when
 #' @importFrom tidyr pivot_longer

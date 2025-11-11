@@ -7,7 +7,7 @@
 #' @param processed_counts Output from `processCounts()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @return (i) Data frame providing bead counts per antigen per well per plate.
-#' (ii) Designates whether wells should be repeated if there are ≤ 15 beads
+#' (ii) Designates whether wells should be repeated if there are \eqn{<=}  15 beads
 #' (repeat) or if they are sufficient with > 15 beads (sufficient beads).
 #' @export
 #' @importFrom dplyr select group_by summarise mutate ungroup left_join arrange

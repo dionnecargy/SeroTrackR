@@ -7,6 +7,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+if (!requireNamespace("ranger", quietly = TRUE)) {
+  install.packages("ranger")
+}
+library(ranger)
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

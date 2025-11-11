@@ -11,7 +11,7 @@ getCounts(processed_counts)
 }
 \value{
 (i) Data frame providing bead counts per well per plate. (ii)
-Designates whether wells should be repeated if there are ≤ 15 beads (repeat)
+Designates whether wells should be repeated if there are \eqn{<=}  15 beads (repeat)
 or if they are sufficient with > 15 beads (sufficient beads).
 }
 \description{
