@@ -77,14 +77,3 @@ no_classification_final_analysis <- runPvSeroPipeline(
   sens_spec = "maximised"
 )
 ```
-
-## Create a PDF Report
-
-```{r create pdf output}
-renderQCReport(
-  raw_data = your_raw_data, 
-  plate_layout = your_plate_layout, 
-  platform = "magpix", 
-  location = "ETH"
-)
-```

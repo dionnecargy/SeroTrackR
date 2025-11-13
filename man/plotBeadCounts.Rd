@@ -11,7 +11,8 @@ plotBeadCounts(antigen_counts_output)
 }
 \value{
 Dot plot with values > 15 threshold coloured in blue (sufficient
-beads) and ≤15 beads coloured in red (repeat) faceted by each antigen
+beads) and less than or equal to 15 beads coloured in red (repeat)
+faceted by each antigen
 (ggplot).
 }
 \description{

@@ -7,7 +7,7 @@
 #' @param counts_output Output from `getCounts()` (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #' @return Tile Plot showing binary result of "sufficient beads" with cut-off
-#' >15 beads and "repeat" ≤15 beads (ggplot).
+#' >15 beads and "repeat" less than or equal to 15 beads (ggplot).
 #' @export
 #' @import ggplot2
 #' @importFrom forcats fct_rev
