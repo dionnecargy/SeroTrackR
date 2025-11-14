@@ -12,3 +12,6 @@
 /_targets.yaml
 ^doc$
 ^Meta$
+^inst/doc$
+^docs$
+^report$
