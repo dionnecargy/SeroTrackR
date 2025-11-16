@@ -13,7 +13,7 @@ plotCounts(counts_output, experiment_name)
 }
 \value{
 Tile Plot showing binary result of "sufficient beads" with cut-off
->15 beads and "repeat" ≤15 beads (ggplot).
+>15 beads and "repeat" less than or equal to 15 beads (ggplot).
 }
 \description{
 This function gets the count data and plots the plate image, creating a new

@@ -30,7 +30,7 @@ setup()
 
 ## Load the Package and Data
 
-```{r setup 1}
+```{r setup 1, eval = FALSE}
 library(SeroTrackR)
 library(tidyverse)
 
@@ -48,7 +48,7 @@ Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}
 
 ### Run Classification: Yes {.tabset}
 
-```{r runPvSeroPipeline with classification}
+```{r runPvSeroPipeline with classification, eval = FALSE}
 final_analysis <- runPvSeroPipeline(
   raw_data = your_raw_data, 
   plate_layout = your_plate_layout, 
@@ -65,7 +65,7 @@ final_analysis
 
 ### Run Classification: No
 
-```{r runPvSeroPipeline without classification}
+```{r runPvSeroPipeline without classification, eval = FALSE}
 no_classification_final_analysis <- runPvSeroPipeline(
   raw_data = your_raw_data, 
   plate_layout = your_plate_layout, 
@@ -75,16 +75,5 @@ no_classification_final_analysis <- runPvSeroPipeline(
   classify = "No", ########################## key if you do NOT want any classification performed i.e., you do not have PvSeroTaT antigens 
   algorithm_type = "antibody_model", 
   sens_spec = "maximised"
-)
-```
-
-## Create a PDF Report
-
-```{r create pdf output}
-renderQCReport(
-  raw_data = your_raw_data, 
-  plate_layout = your_plate_layout, 
-  platform = "magpix", 
-  location = "ETH"
 )
 ```

@@ -18,6 +18,25 @@
 #' @importFrom here here
 #' @importFrom kableExtra kable_styling
 #'
+#' @examples
+#'
+#' ## Not run on CRAN because it is slow:
+#'if (interactive()) {
+#'   your_raw_data <- c(
+#'     system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'     system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+#'     system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+#'   )
+#'   your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+#'   renderQCReport(
+#'     raw_data = your_raw_data,
+#'     plate_layout = your_plate_layout,
+#'     platform = "magpix",
+#'     location = "ETH"
+#'   )
+#' }
+#' ## End(Not run)
+#'
 #' @author Dionne Argyropoulos
 renderQCReport <- function(
     raw_data,
