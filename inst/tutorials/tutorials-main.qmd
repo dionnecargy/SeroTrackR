@@ -1,0 +1,495 @@
+---
+title: "SeroTrackR"
+author: "Dionne Argyropoulos"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format: 
+  html: 
+    theme: cosmo
+    page-layout: full
+    self-contained: true
+    toc: true
+    execute:
+      warning: false
+      message: false
+---
+
+## Load the Package and Data
+
+```{r actual loading of package}
+#| echo: false
+#| warning: false
+#| message: false
+#| output: false
+devtools::install_github("dionnecargy/SeroTrackR") # To download the package
+install.packages(c("tidyverse", "knitr", "targets"), repos = "https://cloud.r-project.org") # Download other packages in this tutorial
+
+library(SeroTrackR) # To load the package 
+library(tidyverse) # for data wrangling and visualisation
+library(knitr)    # for RMarkdown visualisation and PDF generation
+```
+
+```{r load package and data}
+#| eval: false
+#| exec: false
+devtools::install_github("dionnecargy/SeroTrackR") # To download the package
+install.packages(c("tidyverse", "knitr", "targets"), repos = "https://cloud.r-project.org") # Download other packages in this tutorial
+
+library(SeroTrackR) # To load the package 
+library(tidyverse)  # for data wrangling and visualisation
+library(knitr)      # for RMarkdown visualisation and PDF generation
+```
+
+## File Name Convention 
+
+The following files are required for this app. You might like to organise your folder as follows:
+
+```bash
+my_R_project
+└── raw_data_files/
+    ├── raw_MAGPIX_data/
+    │   ├── raw_data_plate1.csv
+    │   ├── raw_data_plate2.csv
+    │   └── raw_data_plate3.csv
+    ├── raw_BioPlex_data/
+    │   ├── raw_data_plate4.xlsx
+    │   ├── raw_data_plate5.xlsx
+    │   └── raw_data_plate6.xlsx
+    ├── platelayout.xlsx
+    └── outputs/
+```
+
+### Raw Data Files 
+
+The `raw data` files should **all contain** "plate1", "plate2", "plate3", etc., in the file name. Ensure there are no special characters or spaces between the "plate" and number. To keep things simple, please also do not write any leading 0's before the number e.g., do not write "plate01".
+
+**For the MAGPIX and Intelliflex Machines**: 
+
+You can pre-program the MAGPIX machine so that you can export all the raw data directly from the machine once the plate reading is completed. There is no need to edit the raw data file that comes from the MAGPIX.
+
+Within your plate layout in the MAGPIX, you can use the "U" button for all unknown samples, "B" button for Background or Blank samples, and "S" for Standard Curve samples. For the control wells, please feel free to edit these labels so that the ID is just "B", "S1", "S2", "S3"...."S10".
+
+You can also write in the Operator i.e., who ran the assay! This is useful to track variation in plates between experiments.
+
+![](images/magpix_raw.png)
+
+**For the Bioplex Machines**: 
+
+Isolate names will tend to be written as 'X1', 'X2', 'X3'... and saved as an .xlsx file. Specifics on Bio-Plex machines will be added shortly.
+
+![](images/bioplex_raw.png)
+
+### Plate Layout File 
+
+The `plate layout` file should contain **all** of the plate layouts in each tab. For each 96-well plate that you run on the Luminex machine, prepare a plate layout that includes the sample labels that will match your raw data. The application will match the raw data to the corresponding sample based on the plate layout that you import.
+
+Make sure that your sample labels in the plate layout are as follows:
+
+- **Standards**: Labels start with "S" and then a number as required (e.g. S1, S2, S3 or Standard1, Standard2, Standard3).
+- **Blanks**: Labels start with "B" and then a number as required if there is more than one blank sample (.e.g 'B1', 'B2', or 'Blank 1', 'Blank2' etc).
+- **Unknown Samples**: Label your unknown samples according to your specific sample codes (e.g. ABC001, ABC002).
+
+The package expects standards to start with "S" and blanks to start with "B", but everything else with a label will be considered an unknown sample. If you have other types of samples, for example a positive control, you can use a different sample label to the other unknown study samples (i.e. "PositiveControl" in addition to the "ABC" study codes).
+
+![](images/plate_layout_1.png)
+
+The standards S1-10 correspond to the following dilution concentrations: 
+
+| S1    | S2    | S3    | S4    | S5    | S6     | S7     | S8     | S9      | S10     |
+|-------|-------|-------|-------|-------|--------|--------|--------|---------|---------|
+| 1/50  | 1/100 | 1/200 | 1/400 | 1/800 | 1/1600 | 1/3200 | 1/6400 | 1/12800 | 1/25600 |
+
+The standards S1-5 correspond to the following dilution concentrations: 
+
+| S1    | S2    | S3     | S4     | S5      |
+|-------|-------|--------|--------|---------|
+| 1/50  | 1/250 | 1/1250 | 1/6250 | 1/31250 |
+
+## Data Analysis: `runPvSeroPipeline()` 
+
+Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}` R package! This function contains all of the steps in order of how to perform the *Plasmodium vivax* serology test and treat protocol as found in our [application](https://dionnecargy.shinyapps.io/PvSeroApp/)! 
+
+### Visualisation of the PvSeroApp Pipeline
+
+![](images/SeroTrackR_PvSeroApp.jpeg)
+
+### Using Tutorial Dataset: Load the Data
+
+We will be using the build-in files in the R package for this tutorial, as shown below. 
+
+```{r load tutorial data}
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"), 
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+```
+
+To run your OWN data, follow the code below and uncomment (i.e., remove the hashtags): 
+
+```{r}
+#| exec: false
+#| eval: false
+your_raw_data <- c(
+  "PATH/TO/YOUR/FILE/plate1.csv",
+  "PATH/TO/YOUR/FILE/plate2.csv",
+  "PATH/TO/YOUR/FILE/plate3.csv"
+)
+your_plate_layout <- "PATH/TO/YOUR/FILE/plate_layout.xlsx"
+```
+
+### Run Classification: Yes
+
+```{r runPvSeroPipeline with classification}
+final_analysis <- runPvSeroPipeline(
+  raw_data = your_raw_data, 
+  plate_layout = your_plate_layout, 
+  platform = "magpix", 
+  location = "ETH", 
+  experiment_name = "experiment1", 
+  classify = "Yes", 
+  algorithm_type = "antibody_model", 
+  sens_spec = "maximised"
+)
+```
+::: {.tabset}
+
+#### Classification 
+
+This is a table containing the classification results (seropositive or seronegative) for each `SampleID`. In this case, the classification results are stored in the `pred_class_max` column as we chose the `sens_spec = "maximised"`. If you change it to another type of threshold, then the suffix of that column will change accordingly. 
+
+You will also see the relative antibody unit (RAU) values (columns with antigen names), whether the sample passed QC check (`QC_total`) and the `plate` that they were run on. 
+
+```{r classification tab 1}
+final_analysis[[1]] %>%
+  head() %>% 
+  kable()
+```
+
+#### Standard Curve Plot
+
+The standard curve plots are generated from the antibody data from the standards you indicated in your plate layout (e.g. S1-S10) and Median Fluorescent Intensity (MFI) units are displayed in log10-scale. In the case of the PvSeroTaT multi-antigen panel, the antigens will be displayed and in general your standard curves should look relatively linear (only when the y-axis is on logarithmic scale). 
+
+```{r std curve plot tab 1}
+final_analysis[[2]]
+```
+
+#### Bead Counts QC Plot
+
+A summary of the bead counts for each plate well are displayed, with blue indicating there are sufficient beads (≥15) or red when there are not enough. If any of the wells are red, they should be double-checked manually and re-run on a new plate if required.
+
+The function will inform you whether there are "No repeats necessary" or provide a list of samples to be re-run. In the example data, the beads in plate 2 wells A1 and A2 will need to be repeated
+
+```{r bead counts plot tab 1}
+final_analysis[[3]] # Plot
+final_analysis[[4]] # Samples to repeat 
+```
+
+#### Blanks QC Plot
+
+The Median Fluorescent Intensity (MFI) units for each antigen is displayed for your blank samples. In general, each blank sample should have ≤50 MFI for each antigen, if they are higher they should be cross-checked manually.
+
+In the example data, blank samples recorded higher MFI values for LF005 on plate 1 and should be checked to confirm this is expected from the assay.
+
+```{r blanks qc plot tab 1}
+final_analysis[[5]]
+```
+
+#### Model Output Plot
+
+The automated data processing in this app allows you to convert your Median Fluorescent Intensity (MFI) data into Relative Antibody Units (RAU) by fitting a 5-parameter logistic function to the standard curve on a per-antigen level. The results from this log-log conversion should look relatively linear for each antigen.
+
+```{r model output plot tab 1}
+final_analysis[[6]]
+```
+::: 
+
+### Run Classification: No
+
+```{r runPvSeroPipeline without classification}
+no_classification_final_analysis <- runPvSeroPipeline(
+  raw_data = your_raw_data, 
+  plate_layout = your_plate_layout, 
+  platform = "magpix", 
+  location = "ETH", 
+  experiment_name = "experiment1", 
+  classify = "No", ########################## key if you do NOT want any classification performed i.e., you do not have PvSeroTaT antigens 
+  algorithm_type = "antibody_model", 
+  sens_spec = "maximised"
+)
+```
+::: {.tabset}
+
+#### MFI and RAU Data 
+
+```{r mfi and rau tab 2}
+no_classification_final_analysis[[1]]  %>%
+  head() %>% 
+  kable()
+```
+
+#### QC Plots
+
+Repeat the same steps as above to find the QC plots! 
+
+```{r std curve plot tab 2}
+#### Standard Curve Plot
+no_classification_final_analysis[[2]]
+
+#### Bead Counts QC Plot
+no_classification_final_analysis[[3]] # Plot
+no_classification_final_analysis[[4]] # Samples to repeat 
+
+#### Blanks QC Plot
+no_classification_final_analysis[[5]]
+
+#### Model Output Plot
+no_classification_final_analysis[[6]]
+```
+:::
+
+### Create a PDF Report
+
+```{r create pdf output}
+renderQCReport(
+  your_raw_data, 
+  your_plate_layout, 
+  "magpix", 
+  location = "ETH",
+  path = "inst/tutorials/" # defaults to your current working directory
+)
+```
+
+## Data Analysis: Pk/Pv/Pf
+
+For all of these analyses you can run as many plates as you wish. 
+
+### Visualisation of the Pk/Pv/Pf Pipeline
+
+![](images/SeroTrackR_Pk_Pf_Pv.jpeg)
+
+### 5-Point Standard Curve
+
+#### Step 1: Load your data!
+
+Firstly, we will be using our example data that's in-built in the package. Here replace the `system.file()` argument with the file path for your package.
+
+```{r}
+your_raw_data_5std <- c(
+  system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout_5std <- system.file("extdata", "example_platelayout_pk_5std.xlsx", package = "SeroTrackR")
+```
+
+#### Step 2: Read your data and process MFI to RAU
+
+Caitlin and Dionne have worked on a function to (a) process raw Serological data and (b) convert MFI to RAU. The `runPlasmoPipeline()` function will output three data frames:
+
+1. All_Results: All columns of every MFI to RAU conversion 
+2. MFI_RAU: Just the SampleID, Plate, MFI and RAU values per antigen
+3. MFI_RAU_long: SampleID, Plate, MFI, RAU, Antigen, Species (long-format df)
+
+```{r}
+results_5stdcurve <- runPlasmoPipeline(
+  raw_data = your_raw_data_5std,
+  platform = "magpix",
+  plate_layout = your_plate_layout_5std,
+  panel = "panel1",
+  std_point = 5, 
+  experiment_name = "5-point standard curve"
+)
+```
+
+::: {.tabset}
+
+##### Standard Curve Plot
+
+```{r}
+results_5stdcurve$std_curve
+```
+
+##### Bead Counts QC Plot
+
+```{r}
+results_5stdcurve$bead_counts
+```
+
+##### Blanks QC Ploat
+
+```{r}
+results_5stdcurve$blanks
+```
+
+##### MFI to RAU Tables
+
+All results: 
+
+```{r}
+results_5stdcurve$mfi_outputs$All_Results %>%
+  head() %>% 
+  kable()
+```
+
+MFI and RAU only: 
+
+```{r}
+results_5stdcurve$mfi_outputs$MFI_RAU %>%
+  head() %>% 
+  kable()
+```
+
+MFI and RAU long table: 
+
+```{r}
+results_5stdcurve$mfi_outputs$MFI_RAU_long %>%
+  head() %>% 
+  kable()
+```
+
+:::
+
+### 10-Point Standard Curve
+
+These steps are very similar to the 5-point standard curve, except where indicated. 
+
+#### Step 1: Load your data!
+
+```{r}
+your_raw_data_10std <- c(
+  system.file("extdata", "example_MAGPIX_pk_10std_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_pk_10std_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout_10std <- system.file("extdata", "example_platelayout_pk_10std.xlsx", package = "SeroTrackR")
+```
+
+#### Step 2: Read your data and process MFI to RAU
+
+```{r}
+results_10stdcurve <- runPlasmoPipeline(
+  raw_data = your_raw_data_10std,
+  platform = "magpix",
+  plate_layout = your_plate_layout_10std,
+  panel = "panel1",
+  std_point = 10, ################################### here make sure you write 10! 
+  experiment_name = "10-point standard curve"
+)
+```
+
+::: {.tabset}
+
+##### Standard Curve Plot
+
+```{r}
+results_10stdcurve$std_curve
+```
+
+##### Bead Counts QC Plot
+
+```{r}
+results_10stdcurve$bead_counts
+```
+
+##### Blanks QC Ploat
+
+```{r}
+results_10stdcurve$blanks
+```
+
+##### MFI to RAU Tables
+
+All results: 
+
+```{r}
+results_10stdcurve$mfi_outputs$All_Results %>%
+  head() %>% 
+  kable()
+```
+
+MFI and RAU only: 
+
+```{r}
+results_10stdcurve$mfi_outputs$MFI_RAU %>%
+  head() %>% 
+  kable()
+```
+
+MFI and RAU long table: 
+
+```{r}
+results_10stdcurve$mfi_outputs$MFI_RAU_long %>%
+  head() %>% 
+  kable()
+```
+
+:::
+
+## Data Analysis: LDH
+
+For the LDH data analysis, follow the steps below: 
+
+```{r example code for LDH}
+#| eval: false
+
+runLDHpipeline(
+  raw_data = "your/raw/data.xlsx",                    # Mandatory
+  plate_layout = "your/plate/layout/file.xlsx",       # Mandatory
+  platform = "bioplex",                               # Defaults to "bioplex" but "magpix" also works
+  location = "ETH",                                   # Defaults to "ETH" but "PNG" also works
+  dilution = c(1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81), # Default values shown but other levels can be added
+  experiment_name = "experiment1",                    # Defaults to "experiment1"
+  file_path = NULL                                    # Defaults to current folder/working directory
+)
+```
+
+## FAQs
+
+### I have multiple plate layout files. How can I input them? 
+
+Use the `getPlateLayout()` function to create a master plate layout file to then input into the other functions in the package! 
+
+```{r}
+#| exec: false 
+#| eval: false
+getPlateLayout("../inst/extdata/")
+```
+
+Here replace "../inst/extdata/" with the main file that contains your folders. For example, if your folder looks like this: 
+
+```bash
+my_R_project/
+└── raw_data_files/
+    ├── plate_1/
+    │   ├── raw_magpix_data_plate1.csv
+    │   └── plate_layout_1.xlsx
+    ├── plate_2/
+    │   ├── raw_magpix_data_plate2.csv
+    │   └── plate_layout_2.xlsx
+    └── plate_3/
+        ├── raw_magpix_data_plate3.csv
+        └── plate_layout_3.xlsx
+```
+
+you would write: 
+
+```{r}
+#| exec: false 
+#| eval: false
+getPlateLayout("raw_data_files/")
+```
+
+you could ALSO write: 
+
+```{r}
+#| exec: false 
+#| eval: false
+getPlateLayout()
+```
+
+OR: 
+
+```{r}
+#| exec: false
+#| eval: false
+getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
+```
