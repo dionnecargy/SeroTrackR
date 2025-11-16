@@ -152,7 +152,7 @@ MFItoRAU_PNG <- function(serodata_output, plate_list, counts_QC_output){
     plate_layout_current <- plate_layout_current %>%
       dplyr::mutate(dplyr::across(tidyselect::matches("^[0-9]+$"), as.character)) %>%
       tidyr::pivot_longer(
-        cols = `1`:`12`,
+        cols = tidyselect::matches("^[.x]*[0-9]+$"),
         names_to = "numeric",
         values_to = "SampleID"
       ) %>%

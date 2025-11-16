@@ -29,7 +29,11 @@ getSampleID <- function(processed_counts, plate_list) {
 
     plate_layout_level <- plate_layout %>%
       dplyr::mutate(dplyr::across(tidyselect::matches("^[0-9]+$"), as.character)) %>%
-      tidyr::pivot_longer(cols = `1`:`12`, names_to = "Col", values_to = "SampleID") %>%
+      tidyr::pivot_longer(
+        cols = tidyselect::matches("^[.x]*[0-9]+$"),
+        names_to = "numeric",
+        values_to = "SampleID"
+      ) %>%
       dplyr::mutate(
         Location = paste0(Row, Col),
         Plate = plate_name  # Add Plate info here
