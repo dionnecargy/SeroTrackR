@@ -15,6 +15,7 @@
 #' @export
 #' @import drc
 #' @importFrom dplyr distinct select inner_join bind_rows
+#' @importFrom tidyselect matches
 #' @author Connie Li Wai Suen, Dionne Argyropoulos
 MFItoRAU_PNG <- function(serodata_output, plate_list, counts_QC_output){
 
@@ -149,6 +150,7 @@ MFItoRAU_PNG <- function(serodata_output, plate_list, counts_QC_output){
 
     plate_layout_current <- layout[[plate_level]] %>% dplyr::rename(Plate = 1)  # rename first column
     plate_layout_current <- plate_layout_current %>%
+      dplyr::mutate(dplyr::across(tidyselect::matches("^[0-9]+$"), as.character)) %>%
       tidyr::pivot_longer(
         cols = `1`:`12`,
         names_to = "numeric",

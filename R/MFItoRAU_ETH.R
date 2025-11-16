@@ -15,6 +15,7 @@
 #' @export
 #' @importFrom dplyr group_by mutate across inner_join rowwise summarise right_join select left_join rename_with all_of ungroup
 #' @importFrom tidyr nest unnest pivot_wider
+#' @importFrom tidyselect matches
 #' @importFrom purrr map
 #' @author Eamon Conway, Dionne Argyropoulos
 MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
@@ -182,6 +183,7 @@ MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
 
     plate_layout_current <- layout[[plate_level]] %>% dplyr::rename(Plate = 1)  # rename first column
     plate_layout_current <- plate_layout_current %>%
+      dplyr::mutate(dplyr::across(tidyselect::matches("^[0-9]+$"), as.character)) %>%
       tidyr::pivot_longer(
         cols = `1`:`12`,
         names_to = "numeric",

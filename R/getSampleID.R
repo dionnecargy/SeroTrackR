@@ -8,7 +8,8 @@
 #' the plate layout file. Henceforth "Sample ID" refers to the code in the
 #' plate layout file, while "Sample" is the code in the Luminex file.
 #' @export
-#' @importFrom dplyr left_join select mutate bind_rows
+#' @importFrom dplyr left_join select mutate bind_rows across
+#' @importFrom tidyselect matches
 #' @importFrom tidyr pivot_longer
 #' @author Dionne Argyropoulos
 getSampleID <- function(processed_counts, plate_list) {
@@ -27,6 +28,7 @@ getSampleID <- function(processed_counts, plate_list) {
     names(plate_layout)[1] <- "Row"
 
     plate_layout_level <- plate_layout %>%
+      dplyr::mutate(dplyr::across(tidyselect::matches("^[0-9]+$"), as.character)) %>%
       tidyr::pivot_longer(cols = `1`:`12`, names_to = "Col", values_to = "SampleID") %>%
       dplyr::mutate(
         Location = paste0(Row, Col),

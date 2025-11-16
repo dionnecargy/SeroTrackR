@@ -37,6 +37,7 @@ Imports:
     stats,
     stringr,
     tidyr,
+    tidyselect,
     utils,
     workflows
 URL: https://github.com/dionnecargy/SeroTrackR
