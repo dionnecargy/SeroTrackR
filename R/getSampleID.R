@@ -31,7 +31,7 @@ getSampleID <- function(processed_counts, plate_list) {
       dplyr::mutate(dplyr::across(tidyselect::matches("^[0-9]+$"), as.character)) %>%
       tidyr::pivot_longer(
         cols = tidyselect::matches("^[.x]*[0-9]+$"),
-        names_to = "numeric",
+        names_to = "Col",
         values_to = "SampleID"
       ) %>%
       dplyr::mutate(
