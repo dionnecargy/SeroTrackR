@@ -47,9 +47,9 @@ classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts
   # excluding_LF016_threshold_values <- system.file("extdata", "excluding_LF016_threshold_values.csv", package = "SeroTrackR")
 
   antibody_model <- readRDS(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds"))
-  antibody_model_excLF016 <- readRDS(url("https://github.com/dionnecargy/SeroTrackR/blob/master/inst/extdata/random_forest_excludingLF016.rds"))
-  threshold_values <- readRDS(url("https://github.com/dionnecargy/SeroTrackR/blob/master/inst/extdata/threshold_values.csv"))
-  excluding_LF016_threshold_values <- readRDS(url("https://github.com/dionnecargy/SeroTrackR/blob/master/inst/extdata/excluding_LF016_threshold_values.csv"))
+  antibody_model_excLF016 <- readRDS(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/random_forest_excludingLF016.rds"))
+  threshold_values <- readRDS(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv"))
+  excluding_LF016_threshold_values <- readRDS(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/excluding_LF016_threshold_values.csv"))
 
   #############################################################################
   # Model-specific functions
