@@ -277,9 +277,9 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
         data_raw <- df
 
         median_row_number     <- which(df$xPONENT == "Median")
-        endmedian_row_number  <- which(df$xPONENT == "Net MFI")
+        endmedian_row_number  <- which(df$xPONENT == "Mean")
         count_row_number      <- which(df$xPONENT == "Count")
-        endcount_row_number   <- which(df$xPONENT == "Avg MFI")
+        endcount_row_number   <- which(df$xPONENT == "%CV")
 
         results <- suppressMessages(readxl::read_excel(file, skip = median_row_number + 1, n_max = endmedian_row_number - median_row_number - 2))
         counts <- suppressMessages(readxl::read_excel(file, skip = count_row_number + 1, n_max = endcount_row_number - count_row_number - 2, col_names = TRUE))
@@ -307,9 +307,9 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
         data_raw <- df
 
         median_row_number     <- which(df$xPONENT == "Median")
-        endmedian_row_number  <- which(df$xPONENT == "Net MFI")
+        endmedian_row_number  <- which(df$xPONENT == "Mean")
         count_row_number      <- which(df$xPONENT == "Count")
-        endcount_row_number   <- which(df$xPONENT == "Avg MFI")
+        endcount_row_number   <- which(df$xPONENT == "%CV")
 
         results <- df[(median_row_number + 1):(endmedian_row_number - 1), ]
         colnames(results) <- results[1, ]
