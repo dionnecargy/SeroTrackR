@@ -1,0 +1,56 @@
+# Convert mfi to dilution using known standard curve fit.
+
+Convert mfi to dilution using known standard curve fit.
+
+## Usage
+
+``` r
+convert_mfi_to_dilution(mfi, params, min_relative_dilution)
+```
+
+## Arguments
+
+- mfi:
+
+  Known mfi of samples
+
+- params:
+
+  Known parameters for five parameter logistic fit.
+
+- min_relative_dilution:
+
+  Known minimum value of dilution in the standard curve. Relative means
+  setting S1 to a dilution/RAU/concentration of 1.
+
+## Value
+
+Returns the dilution of each sample in mfi.
+
+## Author
+
+Eamon Conway
+
+## Examples
+
+``` r
+# This function is typically used within larger analysis pipelines.
+# Below is a minimal runnable example using dummy values.
+
+# Dummy five-parameter logistic fit parameters:
+# a, b, c, d, e  (with e on the log scale)
+# Additional placeholders (f, g) included so params[6] and params[7] exist.
+dummy_params <- c(a = 10000, b = 1.2, c = 0.05, d = 50, e = log(0.01),
+                  f = -5, g = 5)
+
+# Example MFI value
+mfi_example <- 1500
+
+# Minimum relative dilution allowed
+min_rel_dil <- 1
+
+# Convert MFI to dilution
+convert_mfi_to_dilution(mfi_example, dummy_params, min_rel_dil)
+#> d 
+#> 1 
+```

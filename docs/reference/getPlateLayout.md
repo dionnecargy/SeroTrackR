@@ -1,0 +1,75 @@
+# Find and create a master plate layout file
+
+Join multiple a plate layout files into one master file with multiple
+tabs
+
+## Usage
+
+``` r
+getPlateLayout(folder_path = getwd(), output_file = NULL)
+```
+
+## Arguments
+
+- folder_path:
+
+  A string containing your main folder for your project or the plate
+  layout files. Default = current working directory.
+
+- output_file:
+
+  A string for the path for your output master file.
+
+## Value
+
+An .xlsx file saved to your current working directory with multiple
+tabs, one tab for each plate layout.
+
+## Author
+
+Dionne Argyropoulos
+
+## Examples
+
+``` r
+# \donttest{
+# Example 1: Create two example 96-well plates in-memory
+create_plate <- function(plate_name) {
+  rows <- LETTERS[1:8]
+  cols <- 1:12
+  df <- data.frame(plate = rows)
+  for (col in cols) {
+    df[[as.character(col)]] <- paste0(rows, col)
+  }
+  df$plate_id <- plate_name
+  df
+}
+
+plate1 <- create_plate("Plate1")
+plate2 <- create_plate("Plate2")
+
+# Combine plates into a list to simulate getPlateLayout() output
+master_layout <- list(
+  path = tempfile(fileext = ".xlsx"),  # placeholder path
+  data = list(Plate1 = plate1, Plate2 = plate2)
+)
+
+# The returned list contains:
+# 1. path: the file path to the (simulated) master Excel file
+# 2. data: a list of data.frames, one per plate
+names(master_layout$data)  # View sheet names
+#> [1] "Plate1" "Plate2"
+
+# Example 2: Access individual plates directly
+layout_files <- list(plate1, plate2)  # simulate individual Excel sheets
+
+master_layout2 <- list(
+  path = tempfile(fileext = ".xlsx"),  # placeholder path
+  data = setNames(layout_files, c("Plate1", "Plate2"))
+)
+
+# View the resulting plate names
+names(master_layout2$data)
+#> [1] "Plate1" "Plate2"
+# }
+```
