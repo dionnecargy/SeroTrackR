@@ -28,5 +28,8 @@ remotes::install_github("dionnecargy/SeroTrackR")
 
 ## Tutorials
 
-- [PvSeroApp in R Tutorial](articles/PvSeroApp_in_R_Tutorial.html)
-- [Pk/Pv/Pf Serology R Tutorial](articles/Pk/Pv/Pf_Serology_R_Tutorial.html)
+- [PvSeroApp in R Tutorial](articles/02_PvSeroApp_R_Tutorial.html)
+- [Pk/Pv/Pf Serology R Tutorial](articles/03_Pk_Pv_Pf_Serology_R_Tutorial.html)
+- [PvLDH Tutorial](articles/04_PvLDH_Tutorial.html)
+- [FAQs](articles/05_FAQs.html)
+

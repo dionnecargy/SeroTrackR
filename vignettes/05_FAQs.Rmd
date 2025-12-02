@@ -6,9 +6,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-## FAQs
 
-### I have multiple plate layout files. How can I input them? 
+## I have multiple plate layout files. How can I input them? 
 
 Use the `getPlateLayout()` function to create a master plate layout file to then input into the other functions in the package! 
 
