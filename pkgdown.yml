@@ -2,12 +2,12 @@ pandoc: '3.2'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  FAQs: FAQs.html
-  Pk_Pv_Pf_Serology_Tutorial: Pk_Pv_Pf_Serology_Tutorial.html
-  PvLDH_Tutorial: PvLDH_Tutorial.html
-  PvSeroApp_R_Tutorial: PvSeroApp_R_Tutorial.html
-  setup: setup.html
-last_built: 2025-12-02T07:29Z
+  01_setup: 01_setup.html
+  02_PvSeroApp_R_Tutorial: 02_PvSeroApp_R_Tutorial.html
+  03_Pk_Pv_Pf_Serology_Tutorial: 03_Pk_Pv_Pf_Serology_Tutorial.html
+  04_PvLDH_Tutorial: 04_PvLDH_Tutorial.html
+  05_FAQs: 05_FAQs.html
+last_built: 2025-12-02T07:55Z
 urls:
   reference: https://dionnecargy.github.io/SeroTrackR/reference
   article: https://dionnecargy.github.io/SeroTrackR/articles

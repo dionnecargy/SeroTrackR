@@ -72,12 +72,12 @@ if (requireNamespace("rmarkdown", quietly = TRUE)) {
 }
 #> 
 #> 
-#> processing file: filee2af316d6f0.Rmd
+#> processing file: file17bd03ab42e47.Rmd
 #> 1/1
-#> output file: filee2af316d6f0.knit.md
-#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/x86_64/pandoc +RTS -K512m -RTS filee2af316d6f0.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpOqiaKJ/filee2af50792825.html --lua-filter /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpOqiaKJ/rmarkdown-stre2af423abe69.html 
+#> output file: file17bd03ab42e47.knit.md
+#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/x86_64/pandoc +RTS -K512m -RTS file17bd03ab42e47.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/file17bd0b4a556d.html --lua-filter /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/rmarkdown-str17bd03d2e6ce5.html 
 #> 
-#> Output created: /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpOqiaKJ/filee2af50792825.html
-#> [1] "/var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpOqiaKJ/filee2af50792825.html"
+#> Output created: /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/file17bd0b4a556d.html
+#> [1] "/var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/file17bd0b4a556d.html"
 # }
 ```

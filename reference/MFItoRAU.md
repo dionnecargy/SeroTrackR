@@ -52,10 +52,6 @@ your_plate_layout <- system.file(
 
 # Step 1: Read serology data and plate layout
 sero_data  <- readSeroData(your_raw_data,"magpix")
-#> Registered S3 methods overwritten by 'meltr':
-#>   method           from 
-#>   print.date_names readr
-#>   print.locale     readr
 #> PASS: File example_magpix_plate1.csv successfully validated.
 #> PASS: File example_magpix_plate2.csv successfully validated.
 plate_list <- readPlateLayout(your_plate_layout, sero_data)
