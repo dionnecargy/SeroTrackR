@@ -1,11 +1,11 @@
 #' Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
-#' conversion based on PNG standard
+#' conversion
 #'
 #' This function fits a 5-parameter logistic standard curve to the dilutions
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU) written by Connie Li Wai Suen.
 #'
-#' @param serodata_output Output from `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @param counts_QC_output Output from `getCountsQC()` (reactive).
 #' @return  A list of three data frames:
@@ -17,9 +17,43 @@
 #' @importFrom dplyr distinct select inner_join bind_rows
 #' @importFrom tidyselect matches
 #' @author Connie Li Wai Suen, Dionne Argyropoulos
-MFItoRAU_PNG <- function(serodata_output, plate_list, counts_QC_output){
+#'
+#' @examples
+#' \donttest{
+#'
+#' # Step 0: Load example raw data
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+#' )
+#' your_plate_layout <- system.file(
+#'   "extdata",
+#'   "example_platelayout_1.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Step 1: Read serology data and plate layout
+#' sero_data  <- readSeroData(your_raw_data,"magpix")
+#' plate_list <- readPlateLayout(your_plate_layout, sero_data)
+#'
+#' # Step 2: Process counts and perform quality control
+#' counts      <- processCounts(sero_data)
+#' counts_raw  <- getCounts(counts)
+#' sample_ids  <- getSampleID(counts, plate_list)
+#' antigen_cts <- getAntigenCounts(counts, plate_list)
+#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#'
+#' # Step 3: Convert MFI to RAU using PNG beads
+#' mfi_to_rau <- MFItoRAU(
+#'   sero_data = sero_data,
+#'   plate_list = plate_list,
+#'   counts_QC_output = counts_qc
+#' )
+#'
+#' }
+MFItoRAU <- function(sero_data, plate_list, counts_QC_output){
 
-  master_file <- serodata_output
+  master_file <- sero_data
   L <- master_file$results
   layout <- plate_list
 

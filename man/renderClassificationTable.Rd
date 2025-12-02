@@ -7,7 +7,7 @@
 renderClassificationTable(mfi_to_rau_output, algorithm_type, counts_QC_output)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU_PNG()` or `MFItoRAU_ETH()`
+\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_ETH()`
 (reactive).}
 
 \item{algorithm_type}{User-selected algorithm choice:
@@ -22,6 +22,43 @@ A table of all classification outputs.
 \description{
 This function runs the classification algorithm for all possible sensitivity
 and specificity options.
+}
+\examples{
+\donttest{
+
+# Step 0: Load in Raw Data
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+
+# Step 1: Reading in Raw Data
+sero_data       <- readSeroData(raw_data = your_raw_data, "magpix")
+plate_list    <- readPlateLayout(
+  plate_layout = your_plate_layout,
+  sero_data = sero_data
+)
+
+# Step 2: Quality Control and MFI to RAU
+processCounts_output      <- processCounts(sero_data)
+getCounts_output          <- getCounts(processCounts_output)
+sampleid_output           <- getSampleID(processCounts_output, plate_list)
+getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
+getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+
+# Step 4: Run MFI to RAU (e.g., using ETH beads)
+mfi_to_rau_output  <- MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output)
+
+# Step 5: Render classification table
+renderClassificationTable(
+  mfi_to_rau_output = mfi_to_rau_output,
+  algorithm_type = "antibody_model",
+  counts_QC_output = getCountsQC_output
+)
+
+}
+
 }
 \author{
 Dionne Argyropoulos

@@ -1,6 +1,6 @@
 Package: SeroTrackR
 Type: Package
-Title: Tools for Serology-Based Data Analysis and Visualization
+Title: Serology-Based Data Analysis and Visualization
 Version: 0.5.0
 Authors@R: c(
     person(
@@ -27,7 +27,6 @@ Imports:
     kableExtra,
     knitr,
     magrittr,
-    meltr,
     openxlsx,
     parsnip,
     purrr,
@@ -47,6 +46,7 @@ Suggests:
     htmltools,
     httr,
     jsonlite,
+    meltr,
     shiny.fluent,
     tidyverse,
     zoo

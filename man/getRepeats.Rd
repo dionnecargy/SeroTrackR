@@ -21,6 +21,35 @@ text "No repeats necessary".
 This function gets the count data and outputs a table of the isolates to
 repeat or a statement to confirm that none need to be repeated.
 }
+\examples{
+\donttest{
+# Step 0: Load example raw data and plate layout
+raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+
+# Step 1: Read data and plate layout
+sero_data <- readSeroData(raw_data, platform = "magpix")
+plate_list <- readPlateLayout(plate_layout, sero_data)
+
+# Step 2: Process counts
+processed_counts <- processCounts(sero_data)
+counts_output <- getCounts(processed_counts)
+
+# Step 3: Identify samples to repeat
+repeats_table <- getRepeats(
+  counts_output = counts_output,
+  processed_counts = processed_counts,
+  plate_list = plate_list
+)
+
+# View results
+repeats_table
+}
+}
 \author{
 Dionne Argyropoulos
 }

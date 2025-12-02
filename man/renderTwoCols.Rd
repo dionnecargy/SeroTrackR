@@ -26,3 +26,21 @@ Fluent UI window with two columns.
 \description{
 This function creates two columns in the Fluent UI format.
 }
+\examples{
+# Minimal example using htmltools elements.
+# This example runs without starting a Shiny app and is safe for CRAN.
+
+if (requireNamespace("shiny.fluent", quietly = TRUE) &&
+    requireNamespace("htmltools", quietly = TRUE)) {
+
+  # Create simple content for each column
+  col1 <- list(htmltools::div("First column content"))
+  col2 <- list(htmltools::div("Second column content"))
+
+  # Render two columns with default widths
+  renderTwoCols(first_col = col1, second_col = col2)
+}
+}
+\author{
+Dionne Argyropoulos
+}

@@ -14,15 +14,28 @@
 #' @export
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
-#' @importFrom meltr melt_csv2 melt_csv
 #' @importFrom dplyr select filter across any_of bind_rows left_join arrange mutate
 #' @importFrom tidyr pivot_wider
 #' @importFrom janitor row_to_names
 #' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
+#' @examples
+#'
+#' # Example raw data files (MAGPIX platform)
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+#' )
+#'
+#' # Read and combine raw serology data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data,
+#'   platform = "magpix"
+#' )
 readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
 
   platemap_file <- system.file("extdata", "platemap.csv", package = "SeroTrackR")
-  platemap <- read.csv(platemap_file)
+  platemap <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/platemap.csv"))
 
   raw_data_filenames <- tolower(
     if (is.null(raw_data_filenames)) basename(raw_data) else raw_data_filenames
@@ -37,6 +50,11 @@ readSeroData <- function(raw_data, platform, raw_data_filenames = NULL){
     stds      = NULL,  # Placeholder for any stds data combined
     run       = NULL   # Placeholder for any run data combined
   )
+
+  if (!requireNamespace("meltr", quietly = TRUE)) {
+    stop("Package 'meltr' is required to read MagPix/Bioplex CSV files.
+       Please install it using install.packages('meltr').")
+  }
 
   # Loop through each file and process accordingly
   for (i in seq_along(raw_data)) {

@@ -6,7 +6,7 @@
 conversion for LDH}
 \usage{
 MFItoRAU_LDH(
-  serodata_output,
+  sero_data,
   plate_list,
   dilution = c(1e+06, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25,
     152.42, 50.81),
@@ -14,7 +14,7 @@ MFItoRAU_LDH(
 )
 }
 \arguments{
-\item{serodata_output}{Output from `readSeroData()` or `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` or `readSeroData()` (reactive).}
 
 \item{plate_list}{Output from `readPlateLayout()` (reactive).}
 
@@ -29,6 +29,40 @@ A data frame containing the MFI and RAU Dilution values for each sample
 This function fits a 5-parameter logistic standard curve to the dilutions
 of the positive controls for each protein and converts the MFI values
 into relative antibody units (RAU).
+}
+\examples{
+\donttest{
+# Example demonstrating multi-plate processing workflow.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data <- system.file("extdata", "example_BioPlex_PvLDH_plate1.xlsx", package = "SeroTrackR")
+
+your_plate_layout <- system.file(
+  "extdata", "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Read in raw BioPlex data
+sero_data <- readSeroData(
+  raw_data = your_raw_data,
+  platform = "bioplex"
+)
+
+# Read matching plate layout
+plate_list <- readPlateLayout(
+  plate_layout = your_plate_layout,
+  sero_data = sero_data
+)
+
+# Run MFI to RAU conversion
+mfi_outputs <- MFItoRAU_LDH(
+  sero_data = sero_data,
+  plate_list = plate_list
+)
+
+# View All Outputs
+mfi_outputs
+}
 }
 \author{
 Connie Li Wai Suen, Caitlin Bourke, Dionne Argyropoulos

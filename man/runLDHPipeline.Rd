@@ -8,7 +8,6 @@ runLDHPipeline(
   raw_data,
   plate_layout,
   platform = "bioplex",
-  location = "ETH",
   dilution = c(1e+06, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25,
     152.42, 50.81),
   experiment_name = "experiment1",
@@ -22,8 +21,6 @@ runLDHPipeline(
 
 \item{platform}{"magpix" or "bioplex". Default: "Bioplex"}
 
-\item{location}{"PNG" or "ETH" to filter WEHI standard curve data. Default: "ETH"/}
-
 \item{dilution}{A list of numbers ranging from S1 to S10. Default: 1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81.}
 
 \item{experiment_name}{User-input experiment name. Default: "experiment1".}
@@ -35,6 +32,29 @@ A data frame containing the MFI and RAU Dilution values for each sample, QC plot
 }
 \description{
 A master function combining the entire LDH pipeline into one command to run in R.
+}
+\examples{
+\donttest{
+
+# Example input files
+your_raw_data <- system.file(
+  "extdata",
+  "example_BioPlex_PvLDH_plate1.xlsx",
+  package = "SeroTrackR"
+)
+your_plate_layout <- system.file(
+  "extdata",
+  "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Run full LDH processing pipeline
+runLDHPipeline(
+  raw_data      = your_raw_data,        # Vector of raw data files
+  plate_layout  = your_plate_layout,    # Plate layout file
+)
+
+}
 }
 \author{
 Dionne Argyropoulos

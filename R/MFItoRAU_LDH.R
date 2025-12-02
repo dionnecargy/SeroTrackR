@@ -5,7 +5,7 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU).
 #'
-#' @param serodata_output Output from `readSeroData()` or `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` or `readSeroData()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @param file_path A file path to write the .csv final file. Default: Current working directory.
 #' @param dilution  A list of numbers ranging from S1 to S10. Default: 1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81.
@@ -22,8 +22,42 @@
 #' @importFrom utils write.csv
 #'
 #' @author Connie Li Wai Suen, Caitlin Bourke, Dionne Argyropoulos
+#'
+#' @examples
+#' \donttest{
+#' # Example demonstrating multi-plate processing workflow.
+#' # These files are included in the SeroTrackR package under inst/extdata.
+#'
+#' your_raw_data <- system.file("extdata", "example_BioPlex_PvLDH_plate1.xlsx", package = "SeroTrackR")
+#'
+#' your_plate_layout <- system.file(
+#'   "extdata", "example_platelayout_1.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Read in raw BioPlex data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data,
+#'   platform = "bioplex"
+#' )
+#'
+#' # Read matching plate layout
+#' plate_list <- readPlateLayout(
+#'   plate_layout = your_plate_layout,
+#'   sero_data = sero_data
+#' )
+#'
+#' # Run MFI to RAU conversion
+#' mfi_outputs <- MFItoRAU_LDH(
+#'   sero_data = sero_data,
+#'   plate_list = plate_list
+#' )
+#'
+#' # View All Outputs
+#' mfi_outputs
+#' }
 MFItoRAU_LDH <- function(
-    serodata_output,
+    sero_data,
     plate_list,
     dilution = c(1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81),
     file_path = NULL
@@ -33,7 +67,7 @@ MFItoRAU_LDH <- function(
   # Step 1: Read raw serology data and plate layout
   #######################################################################
 
-  master_file   <- serodata_output
+  master_file   <- sero_data
   L             <- master_file$results
   layout        <- plate_list
   dilution      <- dilution
@@ -190,9 +224,6 @@ MFItoRAU_LDH <- function(
   }
 
   final_results <- dplyr::bind_rows(results_all)
-
-  # Write the results as a file
-  write.csv(final_results, file = paste0(here::here(file_path), "LDH_MFI_RAU.csv"), row.names = F)
 
   # Return final file
   return(final_results)

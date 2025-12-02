@@ -6,8 +6,65 @@
 #' @param mfi Known mfi of samples
 #' @param dilution Known dilution of samples
 #' @param control Optional list of control parameters for the underlying call to optim.
+#'
+#' @return standard curve log logistic
 #' @export
 #' @author Eamon Conway
+#' @examples
+#' # This function is typically called within data-processing workflows.
+#' # Workflow-style example (not run on CRAN)
+#'
+#' \donttest{
+#'
+#' # This block demonstrates how fit_standard_curve() is typically used
+#' # inside the MFItoRAU_ETH-conversion pipeline.
+#'
+#' # Step 1 — Prepare master file (normally from readSeroData)
+#' master_file <- data.frame(
+#'   Location = c("A1","A2","A3"),
+#'   Sample   = c("S1","S2","S3"),
+#'   Plate    = c("Plate1","Plate1","Plate1"),
+#'   Ag1 = c(12000, 8000, 4000),
+#'   Ag2 = c(9000,  5000, 2500)
+#' )
+#'
+#' # Convert antigen columns to numeric
+#' L <- master_file |>
+#'   dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
+#'
+#' # Fake plate layout (normally from readPlateLayout)
+#' layout <- list(Plate1 = data.frame(Location = c("A1","A2","A3"), WellType = "STD"))
+#'
+#'
+#' # Step 2 — Load reference standard curve MFI values (dummy data)
+#' refs <- data.frame(
+#'   std_plate = rep("StdPlate1", 5),
+#'   antigen   = rep("Ag1", 5),
+#'   dilution  = c(1, 1/2, 1/4, 1/8, 1/16),
+#'   eth_mfi   = c(14000, 7000, 3500, 1800, 900),
+#'   png_mfi   = c(15000, 7600, 3800, 1900, 950)
+#' )
+#'
+#'
+#' # Step 3 — Define optimisation settings
+#' control <- list(
+#'   maxit  = 10000,
+#'   abstol = 1e-8,
+#'   reltol = 1e-6
+#' )
+#'
+#'
+#' # Step 4 — Fit ETH and PNG curves per standard-plate × antigen
+#' ref_fit <- refs |>
+#'   dplyr::group_by(.data$std_plate, .data$antigen) |>
+#'   tidyr::nest() |>
+#'   dplyr::mutate(
+#'     eth_fit = purrr::map(data, ~ fit_standard_curve(.x$eth_mfi, .x$dilution, control)),
+#'     png_fit = purrr::map(data, ~ fit_standard_curve(.x$png_mfi, .x$dilution, control))
+#'   )
+#'
+#' ref_fit
+#' }
 fit_standard_curve <- function(mfi, dilution, control = NULL) {
   if (is.null(mfi) | is.null(dilution)) {
     error("Require both mfi and dilution to run.")

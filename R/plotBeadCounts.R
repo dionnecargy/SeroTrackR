@@ -11,7 +11,36 @@
 #' (ggplot).
 #' @export
 #' @import ggplot2
+#'
 #' @author Dionne Argyropoulos
+#'
+#' @examples
+#' \donttest{
+#'
+#' # Step 0: Load example raw data
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+#' )
+#' your_plate_layout <- system.file(
+#'   "extdata",
+#'   "example_platelayout_1.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Step 1: Read serology data and plate layout
+#' sero_data  <- readSeroData(your_raw_data,"magpix")
+#' plate_list <- readPlateLayout(your_plate_layout, sero_data)
+#'
+#' # Step 2: Process counts and perform quality control
+#' counts      <- processCounts(sero_data)
+#' counts_raw  <- getCounts(counts)
+#' sample_ids  <- getSampleID(counts, plate_list)
+#' antigen_cts <- getAntigenCounts(counts, plate_list)
+#'
+#' # Step 3: Plot Bead Counts
+#' plotBeadCounts(antigen_cts)
+#' }
 plotBeadCounts <- function(antigen_counts_output){
 
   antigen_counts_output$Plate <- factor(antigen_counts_output$Plate, levels = unique(antigen_counts_output$Plate[order(as.numeric(str_extract(antigen_counts_output$Plate, "\\d+")))])) # reorder by plate number

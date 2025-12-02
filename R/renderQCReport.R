@@ -18,26 +18,35 @@
 #' @importFrom here here
 #' @importFrom kableExtra kable_styling
 #'
+#' @author Dionne Argyropoulos
+#'
 #' @examples
 #'
-#' ## Not run on CRAN because it is slow:
-#'if (interactive()) {
+#' ## Not run on CRAN because it requires interactive rendering and can be slow:
+#' if (interactive()) {
+#'
+#'   # Example raw data files (MAGPIX platform)
 #'   your_raw_data <- c(
 #'     system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
 #'     system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
 #'     system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
 #'   )
-#'   your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+#'
+#'   # Example plate layout file
+#'   your_plate_layout <- system.file(
+#'     "extdata",
+#'     "example_platelayout_1.xlsx",
+#'     package = "SeroTrackR"
+#'   )
+#'
+#'   # Generate the QC PDF report
 #'   renderQCReport(
-#'     raw_data = your_raw_data,
+#'     raw_data     = your_raw_data,
 #'     plate_layout = your_plate_layout,
-#'     platform = "magpix",
-#'     location = "ETH"
+#'     platform     = "magpix",
+#'     location     = "ETH"
 #'   )
 #' }
-#' ## End(Not run)
-#'
-#' @author Dionne Argyropoulos
 renderQCReport <- function(
     raw_data,
     plate_layout,
@@ -53,24 +62,24 @@ renderQCReport <- function(
   # ----- Load Data functions -----
   ###############################################################################
 
-  serodata_output           <- readSeroData(raw_data, platform)
-  raw_data_info             <- serodata_output$data_raw
+  sero_data           <- readSeroData(raw_data, platform)
+  raw_data_info             <- sero_data$data_raw
   raw_data_filename         <- tolower(basename(raw_data))
-  plate_list                <- readPlateLayout(plate_layout, serodata_output)
+  plate_list                <- readPlateLayout(plate_layout, sero_data)
   version                   <- getGithubRelease("dionnecargy", "PvSeroApp")
 
-  processCounts_output      <- processCounts(serodata_output)
+  processCounts_output      <- processCounts(sero_data)
   getCounts_output          <- getCounts(processCounts_output)
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(serodata_output, plate_list, getCountsQC_output))
+  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output))
 
-  stdcurve_plot             <- suppressWarnings(plotStds(serodata_output, location, experiment_name))
+  stdcurve_plot             <- suppressWarnings(plotStds(sero_data, location, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
-  blanks_plot               <- plotBlanks(serodata_output, experiment_name)
-  model_plot                <- plotModel_ETH(mfi_to_rau_output, serodata_output)
+  blanks_plot               <- plotBlanks(sero_data, experiment_name)
+  model_plot                <- plotModel_ETH(mfi_to_rau_output, sero_data)
 
   ###############################################################################
   # ----- Create helper functions -----

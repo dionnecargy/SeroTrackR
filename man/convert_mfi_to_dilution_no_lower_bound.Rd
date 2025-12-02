@@ -20,6 +20,23 @@ Returns the dilution of each sample in mfi.
 Convert mfi to dilution using known standard curve fit and no lower bound unless you are below the asymptote of the standard curve.
 In this situation we set your value to min_relative_dilution. I dunno argue?
 }
+\examples{
+# This function is usually called inside higher-level analysis steps.
+# Below is a minimal runnable example using dummy values.
+
+# Dummy five-parameter logistic fit parameters:
+# a, b, c, d, e  (with e typically on the log scale)
+dummy_params <- c(a = 10000, b = 1.2, c = 0.05, d = 50, e = log(0.01), f = 0, g = 5)
+
+# Example MFI value
+mfi_example <- 1500
+
+# Minimum relative dilution from the standard curve
+min_rel_dil <- 1
+
+# Convert MFI to dilution without applying a lower bound
+convert_mfi_to_dilution_no_lower_bound(mfi_example, dummy_params, min_rel_dil)
+}
 \author{
 Eamon Conway
 }

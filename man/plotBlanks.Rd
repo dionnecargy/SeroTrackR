@@ -4,10 +4,10 @@
 \alias{plotBlanks}
 \title{Plot Raw Median Fluorescent Intensity Blanks Data}
 \usage{
-plotBlanks(serodata_output, experiment_name)
+plotBlanks(sero_data, experiment_name)
 }
 \arguments{
-\item{serodata_output}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` (reactive).}
 
 \item{experiment_name}{User-input experiment name (reactive).}
 }
@@ -18,6 +18,32 @@ per plate is above or below the threshold MFI = 50 (ggplot).
 \description{
 This function gets the blank sample data and plots the blank sample Median
 Fluorescent Intensity (MFI) values.
+}
+\examples{
+\donttest{
+# Example demonstrating how to process bead count data.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+
+# Read in raw MAGPIX data
+sero_data <- readSeroData(
+  raw_data = your_raw_data,
+  platform = "magpix"
+)
+
+# Plot blanks
+plotBlanks(
+  sero_data = sero_data,
+  experiment_name = "experiment1"
+)
+
+}
+
 }
 \author{
 Shazia Ruybal-Pesantez, Dionne Argyropoulos

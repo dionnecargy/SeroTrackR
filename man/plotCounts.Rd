@@ -20,6 +20,32 @@ This function gets the count data and plots the plate image, creating a new
 facet (i.e., panel) for each antigen and each line represents the
 different plates so that they can be visualised.
 }
+\examples{
+\donttest{
+
+# Step 0: Load example raw data
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout <- system.file(
+  "extdata",
+  "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Step 1: Read serology data and plate layout
+sero_data  <- readSeroData(your_raw_data,"magpix")
+plate_list <- readPlateLayout(your_plate_layout, sero_data)
+
+# Step 2: Process counts and perform quality control
+counts <- processCounts(sero_data)
+getCounts_output <- getCounts(counts)
+
+# Step 3: Plot Counts
+plotCounts(getCounts_output, "experiment1")
+}
+}
 \author{
 Shazia Ruybal-Pesántez, Dionne Argyropoulos
 }

@@ -19,6 +19,30 @@ plate layout file, while "Sample" is the code in the Luminex file.
 \description{
 A helper function to extract Sample ID based on plate name and row/col
 }
+\examples{
+\donttest{
+
+# Step 0: Load example raw data
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout <- system.file(
+  "extdata",
+  "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Step 1: Read serology data and plate layout
+sero_data  <- readSeroData(your_raw_data,"magpix")
+plate_list <- readPlateLayout(your_plate_layout, sero_data)
+
+# Step 2: Process counts and perform quality control
+counts      <- processCounts(sero_data)
+counts_raw  <- getCounts(counts)
+sample_ids  <- getSampleID(counts, plate_list)
+}
+}
 \author{
 Dionne Argyropoulos
 }

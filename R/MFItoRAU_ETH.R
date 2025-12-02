@@ -5,7 +5,7 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU) written by Eamon Conway.
 #'
-#' @param serodata_output Output from `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` (reactive).
 #' @param plate_list Output from `readPlateLayout()` (reactive).
 #' @param counts_QC_output Output from `getCountsQC()` (reactive).
 #' @return  A list of three data frames:
@@ -18,9 +18,43 @@
 #' @importFrom tidyselect matches
 #' @importFrom purrr map
 #' @author Eamon Conway, Dionne Argyropoulos
-MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
+#'
+#' @examples
+#' \donttest{
+#'
+#' # Step 0: Load example raw data
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+#' )
+#' your_plate_layout <- system.file(
+#'   "extdata",
+#'   "example_platelayout_1.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Step 1: Read serology data and plate layout
+#' sero_data  <- readSeroData(your_raw_data,"magpix")
+#' plate_list <- readPlateLayout(your_plate_layout, sero_data)
+#'
+#' # Step 2: Process counts and perform quality control
+#' counts      <- processCounts(sero_data)
+#' counts_raw  <- getCounts(counts)
+#' sample_ids  <- getSampleID(counts, plate_list)
+#' antigen_cts <- getAntigenCounts(counts, plate_list)
+#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#'
+#' # Step 3: Convert MFI to RAU using ETH beads
+#' mfi_to_rau <- MFItoRAU_ETH(
+#'   sero_data = sero_data,
+#'   plate_list         = plate_list,
+#'   counts_QC_output   = counts_qc
+#' )
+#'
+#' }
+MFItoRAU_ETH <- function(sero_data, plate_list, counts_QC_output){
 
-  master_file <- serodata_output$results
+  master_file <- sero_data$results
   L <- master_file %>% dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
   layout <- plate_list
 
@@ -28,8 +62,7 @@ MFItoRAU_ETH <- function(serodata_output, plate_list, counts_QC_output){
   #### Reference Fit
   ##########################################################################################################
 
-  png_eth_stds <- system.file("extdata", "png_eth_stds.csv", package = "SeroTrackR")
-  refs <- read.csv(png_eth_stds)
+  refs <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/png_eth_stds.csv"))
   # MAGIC PARAMETERS FOR THIS SECTION
   s1_concentration <- 1/50
   current_min_relative_dilution <- 2.0^-10

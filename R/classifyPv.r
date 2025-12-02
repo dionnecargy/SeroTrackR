@@ -1,12 +1,12 @@
 #' Random Forest Classification for Pv only in Pk/Pf/Pv analysis
 #'
 #' This function classifies unknown samples as recently exposed or not
-#' (Note: MFItoRAU_PNG() or MFItoRAU_ETH() needs to be run first to convert to
+#' (Note: MFItoRAU() or MFItoRAU_ETH() needs to be run first to convert to
 #' RAU). This is a slightly modified function for ONLY use in Pk/Pf/Pv analysis.
 #' The only difference is that ETHtoPNGloglog_Dilution is used to identify the
 #' correct columns to then classify.
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU_PNG()` or `MFItoRAU_ETH()`
+#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_ETH()`
 #' (reactive).
 #' @param algorithm_type User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
@@ -28,6 +28,49 @@
 #' @importFrom dplyr select mutate rename_with ends_with bind_cols ungroup inner_join
 #' @importFrom stringr str_replace
 #' @author Lauren Smith, Dionne Argyropoulos
+#'
+#' @examples
+#' \donttest{
+#'
+#' # Step 0: Load example raw data
+#' raw_files_5std <- c(
+#'   system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+#' )
+#' plate_layout_5std <- system.file(
+#'   "extdata",
+#'   "example_platelayout_pk_5std.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Step 1: Read in serology data and plate layout
+#' sero_data  <- readSeroData(raw_files_5std, "magpix")
+#' plate_list <- readPlateLayout(plate_layout_5std, sero_data)
+#'
+#' # Step 2: Process counts and QC
+#' counts      <- processCounts(sero_data)
+#' counts_raw  <- getCounts(counts)
+#' sample_ids  <- getSampleID(counts, plate_list)
+#' antigen_cts <- getAntigenCounts(counts, plate_list)
+#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#'
+#' # Step 3: Convert MFI to RAU using 5-point standard curve
+#' mfi_results <- MFItoRAU_Plasmo(
+#'   sero_data = sero_data,
+#'   plate_list         = plate_list,
+#'   panel              = "panel1",
+#'   std_point          = 5,
+#'   counts_QC_output   = counts_qc
+#' )
+#'
+#' # Step 4: Classify Pv samples
+#' pv_classified <- classifyPv(
+#'   mfi_to_rau_output= mfi_results,
+#'   algorithm_type   = "antibody_model",
+#'   sens_spec        = "maximised",
+#'   counts_QC_output = counts_qc
+#' )
+#' }
 classifyPv <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output) {
 
   #############################################################################

@@ -3,7 +3,7 @@
 #' This function gets the blank sample data and plots the blank sample Median
 #' Fluorescent Intensity (MFI) values.
 #'
-#' @param serodata_output Output from `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #' @return Bar plot showing whether MFI values for the blanks for each antigen
 #' per plate is above or below the threshold MFI = 50 (ggplot).
@@ -12,8 +12,34 @@
 #' @importFrom dplyr select mutate
 #' @importFrom tidyr pivot_longer
 #' @author Shazia Ruybal-Pesantez, Dionne Argyropoulos
-plotBlanks <- function(serodata_output, experiment_name){
-  master_file <- serodata_output
+#'
+#' @examples
+#' \donttest{
+#' # Example demonstrating how to process bead count data.
+#' # These files are included in the SeroTrackR package under inst/extdata.
+#'
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+#' )
+#'
+#' # Read in raw MAGPIX data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data,
+#'   platform = "magpix"
+#' )
+#'
+#' # Plot blanks
+#' plotBlanks(
+#'   sero_data = sero_data,
+#'   experiment_name = "experiment1"
+#' )
+#'
+#' }
+#'
+plotBlanks <- function(sero_data, experiment_name){
+  master_file <- sero_data
   blanks <- master_file$blanks
   blanks %>%
     dplyr::select(-Location) %>%

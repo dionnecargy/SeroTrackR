@@ -18,6 +18,14 @@ Version tag string
 A short function to obtain the github version from the repository. This is
 a generalisable function that can be used for any version tags on a repo.
 }
+\examples{
+
+getGithubRelease(
+ repo_owner = "dionnecargy",
+ repo_name = "SeroTrackR"
+)
+
+}
 \author{
 Dionne Argyropoulos
 }

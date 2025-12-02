@@ -8,6 +8,14 @@
 #' @return Version tag string
 #' @export
 #' @author Dionne Argyropoulos
+#'
+#' @examples
+#'
+#' getGithubRelease(
+#'  repo_owner = "dionnecargy",
+#'  repo_name = "SeroTrackR"
+#' )
+#'
 getGithubRelease <- function(repo_owner, repo_name) {
 
   # Check if httr is installed

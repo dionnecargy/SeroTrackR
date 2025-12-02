@@ -10,12 +10,39 @@
 #'
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2...
 #' etc. (reactive).
-#' @param serodata_output Output from `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` (reactive).
 #' @return A list of data frames, with each one representing an individual plate.
 #' @export
 #' @importFrom openxlsx getSheetNames read.xlsx
 #' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
-readPlateLayout <- function(plate_layout, serodata_output) {
+#'
+#' @examples
+#'
+#' # Example input files
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+#' )
+#'
+#' your_plate_layout <- system.file(
+#'   "extdata",
+#'   "example_platelayout_1.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Step 1: Read and combine serological data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data,
+#'   platform = "magpix"
+#' )
+#
+#' # Step 2: Read plate layout
+#' plate_list <- readPlateLayout(
+#'   plate_layout = your_plate_layout,
+#'   sero_data = sero_data
+#' )
+readPlateLayout <- function(plate_layout, sero_data) {
 
   if (is.null(plate_layout) || !file.exists(plate_layout)) {
     stop("ERROR: Invalid plate layout file provided.")
@@ -38,15 +65,15 @@ readPlateLayout <- function(plate_layout, serodata_output) {
   # Step 3: Name each element in the list after the corresponding sheet name
   names(plate_list) <- sheet_names
 
-  # Step 4: Check if 'Plate' column exists in serodata_output$results
-  antigen_output_results <- serodata_output$results
+  # Step 4: Check if 'Plate' column exists in sero_data$results
+  antigen_output_results <- sero_data$results
 
   if (!"Plate" %in% colnames(antigen_output_results)) {
-    stop("ERROR: 'Plate' column is missing from serodata_output$results.")
+    stop("ERROR: 'Plate' column is missing from sero_data$results.")
   }
 
   # Step 5: Extract levels from 'Plate' column
-  antigen_output_levels <- unique(as.character(serodata_output$results$Plate))  # Convert factor to character
+  antigen_output_levels <- unique(as.character(sero_data$results$Plate))  # Convert factor to character
 
   # Step 6: Compare plate names
   if (all(antigen_output_levels %in% sheet_names)) {

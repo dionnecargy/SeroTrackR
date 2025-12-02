@@ -8,6 +8,23 @@
 #' @param second_width Percent width of the column space (default: 50\%).
 #' @return Fluent UI window with two columns.
 #' @export
+#'
+#' @author Dionne Argyropoulos
+#'
+#' @examples
+#' # Minimal example using htmltools elements.
+#' # This example runs without starting a Shiny app and is safe for CRAN.
+#'
+#' if (requireNamespace("shiny.fluent", quietly = TRUE) &&
+#'     requireNamespace("htmltools", quietly = TRUE)) {
+#'
+#'   # Create simple content for each column
+#'   col1 <- list(htmltools::div("First column content"))
+#'   col2 <- list(htmltools::div("Second column content"))
+#'
+#'   # Render two columns with default widths
+#'   renderTwoCols(first_col = col1, second_col = col2)
+#' }
 renderTwoCols <- function(
     first_col,
     second_col,

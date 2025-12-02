@@ -25,7 +25,6 @@
 #'
 #' @import workflows parsnip  ggplot2 drc dplyr
 #' @importFrom janitor row_to_names
-#' @importFrom meltr melt_csv2 melt_csv
 #' @importFrom openxlsx getSheetNames read.xlsx
 #' @importFrom purrr map
 #' @importFrom readxl read_excel
@@ -35,40 +34,79 @@
 #' @importFrom tools file_ext
 #'
 #' @author Dionne Argyropoulos
+#'
+#' @examples
+#'
+#' \donttest{
+#' # Example data supplied with the package
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+#' )
+#'
+#' plate_layout <- system.file(
+#'   "extdata", "example_platelayout_1.xlsx", package = "SeroTrackR"
+#' )
+#'
+#' # Run full pipeline including classification
+#' runPvSeroPipeline(
+#'   raw_data = your_raw_data,
+#'   plate_layout = plate_layout,
+#'   platform = "magpix",
+#'   location = "PNG",
+#'   experiment_name = "experiment1",
+#'   algorithm_type = "antibody_model",
+#'   sens_spec = "maximised",
+#'   classify = "Yes"
+#' )
+#'
+#' # Run processing pipeline only (no classification)
+#' runPvSeroPipeline(
+#'   raw_data = your_raw_data,
+#'   plate_layout = plate_layout,
+#'   platform = "magpix",
+#'   location = "PNG",
+#'   experiment_name = "experiment1",
+#'   algorithm_type = "antibody_model",
+#'   sens_spec = "maximised",
+#'   classify = "No"
+#' )
+#' }
 runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experiment_name, classify, algorithm_type, sens_spec){
 
   #############################################################
   # Step 1: Reading in Raw Data
   #############################################################
-  serodata_output           <- readSeroData(raw_data, platform)
-  plate_list                <- readPlateLayout(plate_layout, serodata_output)
+  sero_data           <- readSeroData(raw_data, platform)
+  plate_list                <- readPlateLayout(plate_layout, sero_data)
 
   #############################################################
   # Step 2: Quality Control and MFI to RAU
   #############################################################
-  processCounts_output      <- processCounts(serodata_output)
+  processCounts_output      <- processCounts(sero_data)
   getCounts_output          <- getCounts(processCounts_output)
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
   if(location == "ETH"){
-    mfi_to_rau_output                <- suppressMessages(MFItoRAU_ETH(serodata_output, plate_list, getCountsQC_output))
+    mfi_to_rau_output                <- suppressMessages(MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output))
   } else if(location == "PNG"){
-    mfi_to_rau_output                <- suppressMessages(MFItoRAU_PNG(serodata_output, plate_list, getCountsQC_output))
+    mfi_to_rau_output                <- suppressMessages(MFItoRAU(sero_data, plate_list, getCountsQC_output))
   }
 
   #############################################################
   # Step 3: Plotting
   #############################################################
-  stdcurve_plot             <- suppressWarnings(plotStds(serodata_output, location, experiment_name))
+  stdcurve_plot             <- suppressWarnings(plotStds(sero_data, location, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
-  blanks_plot               <- plotBlanks(serodata_output, experiment_name)
+  blanks_plot               <- plotBlanks(sero_data, experiment_name)
 
   if(location == "ETH"){
-    model_plot                <- plotModel_ETH(mfi_to_rau_output, serodata_output)
+    model_plot                <- plotModel_ETH(mfi_to_rau_output, sero_data)
   } else if(location == "PNG"){
-    model_plot                <- plotModel_PNG(mfi_to_rau_output, serodata_output)
+    model_plot                <- plotModel(mfi_to_rau_output, sero_data)
   }
 
   #############################################################

@@ -13,17 +13,14 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
-setup <- function(){
-  needed <- c(
-    "knitr", "rmarkdown", "tidyverse", "kableExtra"
-  )
-  for(package in needed){
-    if(!sum(installed.packages() %in% package)){
-      install.packages(package)
+setup <- function() {
+  needed <- c("knitr", "rmarkdown", "tidyverse", "kableExtra")
+  
+  lapply(needed, function(pkg) {
+    if (requireNamespace(pkg, quietly = TRUE)) {
+      library(pkg, character.only = TRUE)
     }
-    
-    require(package, character.only = TRUE)
-  }
+  })
 }
 
 setup()

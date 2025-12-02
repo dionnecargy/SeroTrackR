@@ -6,7 +6,7 @@
 conversion for Pk/Pf/Pv Master Function}
 \usage{
 MFItoRAU_Plasmo(
-  serodata_output,
+  sero_data,
   plate_list,
   panel = "panel1",
   std_point,
@@ -14,7 +14,7 @@ MFItoRAU_Plasmo(
 )
 }
 \arguments{
-\item{serodata_output}{Output of `readserodata_output()`}
+\item{sero_data}{Output of `readserodata_output()`}
 
 \item{plate_list}{Output of `readPlateLayout()`}
 
@@ -33,6 +33,51 @@ A list of three data frames:
 \description{
 This function leverages `MFItoRAU_Pk()` and `MFItoRAU_PfPv()` to create a final MFI to RAU
 output for Pk/Pf/Pv analyses.
+}
+\examples{
+\donttest{
+# Example demonstrating multi-plate 5-standard processing workflow.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data_5std <- c(
+  system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout_5std <- system.file(
+  "extdata", "example_platelayout_pk_5std.xlsx",
+  package = "SeroTrackR"
+)
+
+# Read in raw MAGPIX data
+sero_data <- readSeroData(
+  raw_data = your_raw_data_5std,
+  platform = "magpix"
+)
+
+# Read matching plate layout
+plate_list <- readPlateLayout(
+  plate_layout = your_plate_layout_5std,
+  sero_data = sero_data
+)
+# Quality control
+processCounts_output      <- processCounts(sero_data)
+getCounts_output          <- getCounts(processCounts_output)
+sampleid_output           <- getSampleID(processCounts_output, plate_list)
+getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
+getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+
+# Run MFI to RAU conversion
+mfi_outputs               <- MFItoRAU_Plasmo(
+  sero_data = sero_data,
+  plate_list = plate_list,
+  panel = "panel1",
+  std_point = 5,
+  counts_QC_output = getCountsQC_output
+)
+
+# View All Outputs
+mfi_outputs
+}
 }
 \author{
 Dionne Argyropoulos

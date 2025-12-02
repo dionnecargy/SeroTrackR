@@ -3,7 +3,7 @@
 #' This is a pre-requisite function before running the `MFItoRAU_Plasmo()` so that the
 #' appropriate MFI to RAU conversions can be run for the respective antigens.
 #'
-#' @param serodata_output   Output of `readSeroData()`
+#' @param sero_data   Output of `readSeroData()`
 #' @param plate_list  Output of `readPlateLayout()`
 #' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
 #'
@@ -17,7 +17,42 @@
 #' @importFrom utils read.csv
 #'
 #' @author Dionne Argyropoulos
-processPkPfPv <- function(serodata_output, plate_list, panel = "panel1"){
+#'
+#' @examples
+#' \donttest{
+#' # Example demonstrating multi-plate 5-standard processing workflow.
+#' # These files are included in the SeroTrackR package under inst/extdata.
+#'
+#' your_raw_data_5std <- c(
+#'   system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+#' )
+#'
+#' your_plate_layout_5std <- system.file(
+#'   "extdata", "example_platelayout_pk_5std.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Read in raw MAGPIX data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data_5std,
+#'   platform = "magpix"
+#' )
+#'
+#' # Read matching plate layout
+#' plate_list <- readPlateLayout(
+#'   plate_layout = your_plate_layout_5std,
+#'   sero_data = sero_data
+#' )
+#'
+#' # Process multi-species panel
+#' processed_master <- processPkPfPv(
+#'   sero_data = sero_data,
+#'   plate_list,
+#'   panel = "panel1"
+#' )
+#' }
+processPkPfPv <- function(sero_data, plate_list, panel = "panel1"){
 
   # Check if shiny.fluent is installed
   if (!requireNamespace("zoo", quietly = TRUE)) {
@@ -27,22 +62,22 @@ processPkPfPv <- function(serodata_output, plate_list, panel = "panel1"){
   #############################################################
   # Step 1: Collect Data Inputs for Function
   #############################################################
-  master_file               <- serodata_output$results
+  master_file               <- sero_data$results
   layout                    <- plate_list
   chosen_panel              <- panel
 
   #############################################################
-  # Interim Pre-Processing Step for ZOOMAL project
+  # Interim Pre-Processing Step for Pk project
   #############################################################
   L                         <- master_file %>%
     dplyr::mutate(
       dplyr::across(-c(Location, Sample, Plate), as.numeric),
       # Extract suffix (anything inside parentheses)
-      suffix = str_extract(Sample, "\\s*\\([^\\)]+\\)"),
+      suffix = stringr::str_extract(Sample, "\\s*\\([^\\)]+\\)"),
       # Carry forward last seen suffix
       suffix = zoo::na.locf(suffix, na.rm = FALSE),
       # Add suffix only to S-samples that don't already have one
-      Sample = ifelse(str_detect(Sample, "^S\\d+$"), paste0(Sample, suffix), Sample)
+      Sample = ifelse(stringr::str_detect(Sample, "^S\\d+$"), paste0(Sample, suffix), Sample)
     ) %>%
     dplyr::select(-suffix)
 
@@ -52,10 +87,10 @@ processPkPfPv <- function(serodata_output, plate_list, panel = "panel1"){
 
   # Extract Reference IDs for Antigens
   if(panel == "panel1"){
-    PkPfPv_Panel_1 <- system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR")
-    pv_antigens <- read.csv(PkPfPv_Panel_1) %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)
-    pf_antigens <- read.csv(PkPfPv_Panel_1) %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
-    pk_antigens <- read.csv(PkPfPv_Panel_1) %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
+    PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+    pv_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)
+    pf_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
+    pk_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
   } else {
     pv_antigens <- panel %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)
     pf_antigens <- panel %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)

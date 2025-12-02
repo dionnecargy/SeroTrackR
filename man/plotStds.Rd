@@ -4,10 +4,10 @@
 \alias{plotStds}
 \title{Plot Raw Median Fluorescent Intensity of Standard Curve Data}
 \usage{
-plotStds(serodata_output, location, experiment_name)
+plotStds(sero_data, location, experiment_name)
 }
 \arguments{
-\item{serodata_output}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` (reactive).}
 
 \item{location}{"PNG" or "ETH" to filter WEHI standard curve data (reactive).}
 
@@ -20,6 +20,33 @@ underneath (ggplot).
 }
 \description{
 This function gets the standards data and plots the standard curves.
+}
+\examples{
+\donttest{
+# Example demonstrating how to process bead count data.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+
+# Read in raw MAGPIX data
+sero_data <- readSeroData(
+  raw_data = your_raw_data,
+  platform = "magpix"
+)
+
+# Plot Standards
+plotStds(
+  sero_data = sero_data,
+  location = "ETH",
+  experiment_name = "experiment1"
+)
+
+}
+
 }
 \author{
 Shazia Ruybal-Pesantez, Dionne Argyropoulos

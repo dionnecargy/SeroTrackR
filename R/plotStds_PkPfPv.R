@@ -2,7 +2,7 @@
 #'
 #' This function gets the standards data and plots the standard curves for antigens in the Pk/Pf/Pv panel.
 #'
-#' @param serodata_output Output from `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` (reactive).
 #' @param experiment_name User-input experiment name (reactive).
 #'
 #' @return
@@ -17,17 +17,41 @@
 #'
 #' @export
 #' @author Dionne Argyropoulos
-plotStds_PkPfPv <- function(serodata_output, experiment_name){
+#'
+#' @examples
+#' \donttest{
+#' # Example demonstrating how to process bead count data.
+#' # These files are included in the SeroTrackR package under inst/extdata.
+#'
+#' your_raw_data <- c(
+#'    system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+#'    system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+#' )
+#'
+#' # Read in raw MAGPIX data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data,
+#'   platform = "magpix"
+#' )
+#'
+#' # Plot Standards
+#' plotStds_PkPfPv(
+#'   sero_data = sero_data,
+#'   experiment_name = "experiment1"
+#' )
+#'
+#' }
+#'
+plotStds_PkPfPv <- function(sero_data, experiment_name){
 
   # Check if shiny.fluent is installed
   if (!requireNamespace("zoo", quietly = TRUE)) {
     stop("Package 'zoo' is required for plotStds_PkPfPv(). Please install it.", call. = FALSE)
   }
 
-  PkPfPv_Panel_1 <- system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR")
-  PkPfPv_Panel_1 <- read.csv(PkPfPv_Panel_1)
+  PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
 
-  master_file <- serodata_output
+  master_file <- sero_data
   stds <- master_file$stds
 
   relabel_columns <- function(df) {

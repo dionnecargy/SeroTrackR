@@ -4,10 +4,10 @@
 \alias{processCounts}
 \title{Process Counts from Raw Serological Data file}
 \usage{
-processCounts(serodata_output)
+processCounts(sero_data)
 }
 \arguments{
-\item{serodata_output}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` (reactive).}
 }
 \value{
 Returns a long table of counts with "Warning" category (<15 == 1 and
@@ -15,6 +15,29 @@ Returns a long table of counts with "Warning" category (<15 == 1 and
 }
 \description{
 A helper function to process counts data.
+}
+\examples{
+\donttest{
+# Example demonstrating how to process bead count data.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+
+# Read in raw MAGPIX data
+sero_data <- readSeroData(
+  raw_data = your_raw_data,
+  platform = "magpix"
+)
+
+# Process counts
+processed_master <- processCounts(sero_data = sero_data)
+
+}
+
 }
 \author{
 Dionne Argyropoulos

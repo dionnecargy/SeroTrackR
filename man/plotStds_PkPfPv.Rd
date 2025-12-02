@@ -4,10 +4,10 @@
 \alias{plotStds_PkPfPv}
 \title{Plot Raw Median Fluorescent Intensity of Pk/Pf/Pv Standard Curve Data}
 \usage{
-plotStds_PkPfPv(serodata_output, experiment_name)
+plotStds_PkPfPv(sero_data, experiment_name)
 }
 \arguments{
-\item{serodata_output}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` (reactive).}
 
 \item{experiment_name}{User-input experiment name (reactive).}
 }
@@ -17,6 +17,31 @@ plotStds_PkPfPv(serodata_output, experiment_name)
 }
 \description{
 This function gets the standards data and plots the standard curves for antigens in the Pk/Pf/Pv panel.
+}
+\examples{
+\donttest{
+# Example demonstrating how to process bead count data.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data <- c(
+   system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+   system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+)
+
+# Read in raw MAGPIX data
+sero_data <- readSeroData(
+  raw_data = your_raw_data,
+  platform = "magpix"
+)
+
+# Plot Standards
+plotStds_PkPfPv(
+  sero_data = sero_data,
+  experiment_name = "experiment1"
+)
+
+}
+
 }
 \author{
 Dionne Argyropoulos

@@ -20,6 +20,29 @@ Intensity (MFI). This is an interim function used for the plotCounts
 function. This function relies on the `readAntigens` and `readSeroData` data
 processing functions.
 }
+\examples{
+\donttest{
+
+# Step 0: Load example raw data
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout <- system.file(
+  "extdata",
+  "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Step 1: Read serology data and plate layout
+sero_data  <- readSeroData(your_raw_data,"magpix")
+plate_list <- readPlateLayout(your_plate_layout, sero_data)
+
+# Step 2: Process counts and perform quality control
+counts      <- processCounts(sero_data)
+counts_raw  <- getCounts(counts)
+}
+}
 \author{
 Shazia Ruybal-Pesántez, Dionne Argyropoulos
 }

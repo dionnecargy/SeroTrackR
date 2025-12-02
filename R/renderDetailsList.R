@@ -6,6 +6,25 @@
 #' @return A table in the Fluent UI format
 #' @export
 #' @author Dionne Argyropoulos
+#'
+#' @examples
+#' # Minimal example using a small data frame.
+#' # This example is safe for CRAN because it runs only if
+#' # shiny.fluent and htmltools are installed.
+#'
+#' if (requireNamespace("shiny.fluent", quietly = TRUE) &&
+#'     requireNamespace("htmltools", quietly = TRUE)) {
+#'
+#'   # Tiny example data frame
+#'   example_df <- data.frame(
+#'     Sample = c("A", "B"),
+#'     Value = c(10, 20),
+#'     stringsAsFactors = FALSE
+#'   )
+#'
+#'   # Render Fluent UI DetailsList
+#'   renderDetailsList(example_df)
+#' }
 renderDetailsList <- function(df) {
 
   # Check if shiny.fluent is installed

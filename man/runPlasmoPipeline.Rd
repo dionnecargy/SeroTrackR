@@ -47,6 +47,46 @@ A data frame containing the MFI and RAU Dilution values for each sample, QC plot
 \description{
 Run Pk/Pf/Pv Data Analysis Pipeline from Start to End
 }
+\examples{
+\donttest{
+
+# Helper to avoid repetition in examples
+run_example_std <- function(std_point) {
+  # Load raw data for given standard curve
+  your_raw_data <- c(
+    system.file("extdata",
+                paste0("example_MAGPIX_pk_", std_point, "std_plate1.csv"),
+                package = "SeroTrackR"),
+    system.file("extdata",
+                paste0("example_MAGPIX_pk_", std_point, "std_plate2.csv"),
+                package = "SeroTrackR")
+  )
+
+  layout_file <- system.file(
+    "extdata",
+    paste0("example_platelayout_pk_", std_point, "std.xlsx"),
+    package = "SeroTrackR"
+  )
+
+  # Run pipeline
+  runPlasmoPipeline(
+    raw_data = your_raw_data,
+    platform = "magpix",
+    plate_layout = layout_file,
+    panel = "panel1",
+    std_point = std_point,
+    experiment_name = paste0(std_point, "-point standard curve")
+  )
+}
+
+# ---- 5-point standard curve ----
+results_5std <- run_example_std(5)
+
+# ---- 10-point standard curve ----
+results_10std <- run_example_std(10)
+
+}
+}
 \author{
 Dionne Argyropoulos
 }

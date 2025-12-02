@@ -1,10 +1,10 @@
 #' Random Forest Classification
 #'
 #' This function classifies unknown samples as recently exposed or not
-#' (Note: MFItoRAU_PNG() or MFItoRAU_ETH() needs to be run first to convert to
+#' (Note: MFItoRAU() or MFItoRAU_ETH() needs to be run first to convert to
 #' RAU).
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU_PNG()` or `MFItoRAU_ETH()`
+#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_ETH()`
 #' (reactive).
 #' @param algorithm_type User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
@@ -26,6 +26,46 @@
 #' @importFrom dplyr select mutate rename_with ends_with bind_cols ungroup inner_join
 #' @importFrom stringr str_replace
 #' @author Lauren Smith, Dionne Argyropoulos
+#' @examples
+#' \donttest{
+#'
+#' # Step 0: Load example raw data
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+#' )
+#' your_plate_layout <- system.file(
+#'   "extdata",
+#'   "example_platelayout_1.xlsx",
+#'   package = "SeroTrackR"
+#' )
+#'
+#' # Step 1: Read serology data and plate layout
+#' sero_data  <- readSeroData(your_raw_data,"magpix")
+#' plate_list <- readPlateLayout(your_plate_layout, sero_data)
+#'
+#' # Step 2: Process counts and perform quality control
+#' counts      <- processCounts(sero_data)
+#' counts_raw  <- getCounts(counts)
+#' sample_ids  <- getSampleID(counts, plate_list)
+#' antigen_cts <- getAntigenCounts(counts, plate_list)
+#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#'
+#' # Step 3: Convert MFI to RAU using ETH beads
+#' mfi_to_rau <- MFItoRAU_ETH(
+#'   sero_data = sero_data,
+#'   plate_list         = plate_list,
+#'   counts_QC_output   = counts_qc
+#' )
+#'
+#' # Step 4: Perform Pv classification
+#' pv_classified <- classifyResults(
+#'   mfi_to_rau_output = mfi_to_rau,
+#'   algorithm_type    = "antibody_model",
+#'   sens_spec         = "maximised",
+#'   counts_QC_output  = counts_qc
+#' )
+#' }
 classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output) {
 
   #############################################################################
@@ -41,11 +81,6 @@ classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts
   #############################################################################
   # Load files from package
   #############################################################################
-  # antibody_model <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
-  # antibody_model_excLF016 <- system.file("extdata", "random_forest_excludingLF016.rds", package = "SeroTrackR")
-  # threshold_values <- system.file("extdata", "threshold_values.csv", package = "SeroTrackR")
-  # excluding_LF016_threshold_values <- system.file("extdata", "excluding_LF016_threshold_values.csv", package = "SeroTrackR")
-
   antibody_model <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
   antibody_model_excLF016 <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/random_forest_excludingLF016.rds")
   threshold_values <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")

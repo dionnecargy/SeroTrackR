@@ -40,23 +40,31 @@ Generate QC PDF Report
 }
 \examples{
 
-## Not run on CRAN because it is slow:
+## Not run on CRAN because it requires interactive rendering and can be slow:
 if (interactive()) {
+
+  # Example raw data files (MAGPIX platform)
   your_raw_data <- c(
     system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
     system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
     system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
   )
-  your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+
+  # Example plate layout file
+  your_plate_layout <- system.file(
+    "extdata",
+    "example_platelayout_1.xlsx",
+    package = "SeroTrackR"
+  )
+
+  # Generate the QC PDF report
   renderQCReport(
-    raw_data = your_raw_data,
+    raw_data     = your_raw_data,
     plate_layout = your_plate_layout,
-    platform = "magpix",
-    location = "ETH"
+    platform     = "magpix",
+    location     = "ETH"
   )
 }
-## End(Not run)
-
 }
 \author{
 Dionne Argyropoulos

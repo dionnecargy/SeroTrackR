@@ -4,10 +4,10 @@
 \alias{processPkPfPv}
 \title{Processing Serological Data for Pk/Pf/Pv MFI to RAU conversion}
 \usage{
-processPkPfPv(serodata_output, plate_list, panel = "panel1")
+processPkPfPv(sero_data, plate_list, panel = "panel1")
 }
 \arguments{
-\item{serodata_output}{Output of `readSeroData()`}
+\item{sero_data}{Output of `readSeroData()`}
 
 \item{plate_list}{Output of `readPlateLayout()`}
 
@@ -21,6 +21,41 @@ A list of two data frames:
 \description{
 This is a pre-requisite function before running the `MFItoRAU_Plasmo()` so that the
 appropriate MFI to RAU conversions can be run for the respective antigens.
+}
+\examples{
+\donttest{
+# Example demonstrating multi-plate 5-standard processing workflow.
+# These files are included in the SeroTrackR package under inst/extdata.
+
+your_raw_data_5std <- c(
+  system.file("extdata", "example_MAGPIX_pk_5std_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_pk_5std_plate2.csv", package = "SeroTrackR")
+)
+
+your_plate_layout_5std <- system.file(
+  "extdata", "example_platelayout_pk_5std.xlsx",
+  package = "SeroTrackR"
+)
+
+# Read in raw MAGPIX data
+sero_data <- readSeroData(
+  raw_data = your_raw_data_5std,
+  platform = "magpix"
+)
+
+# Read matching plate layout
+plate_list <- readPlateLayout(
+  plate_layout = your_plate_layout_5std,
+  sero_data = sero_data
+)
+
+# Process multi-species panel
+processed_master <- processPkPfPv(
+  sero_data = sero_data,
+  plate_list,
+  panel = "panel1"
+)
+}
 }
 \author{
 Dionne Argyropoulos

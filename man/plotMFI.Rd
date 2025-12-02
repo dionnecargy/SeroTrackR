@@ -7,7 +7,7 @@
 plotMFI(mfi_to_rau_output, location)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU_PNG()` or `MFItoRAU_ETH()`
+\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_ETH()`
 (reactive).}
 
 \item{location}{"PNG" or "ETH" (reactive).}
@@ -17,6 +17,42 @@ Box plots with MFI values for each protein (ggplot).
 }
 \description{
 Boxplot of the MFI values.
+}
+\examples{
+\donttest{
+
+# Step 0: Load example raw data
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR")
+)
+your_plate_layout <- system.file(
+  "extdata",
+  "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Step 1: Read serology data and plate layout
+sero_data  <- readSeroData(your_raw_data,"magpix")
+plate_list <- readPlateLayout(your_plate_layout, sero_data)
+
+# Step 2: Process counts and perform quality control
+counts      <- processCounts(sero_data)
+counts_raw  <- getCounts(counts)
+sample_ids  <- getSampleID(counts, plate_list)
+antigen_cts <- getAntigenCounts(counts, plate_list)
+counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+
+# Step 3: Convert MFI to RAU using ETH beads
+mfi_to_rau <- MFItoRAU_ETH(
+  sero_data = sero_data,
+  plate_list         = plate_list,
+  counts_QC_output   = counts_qc
+)
+
+# Step 4: Plot MFI values
+plotMFI(mfi_to_rau, "MFI")
+}
 }
 \author{
 Dionne Argyropoulos

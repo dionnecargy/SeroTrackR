@@ -2,17 +2,40 @@
 #'
 #' A helper function to process counts data.
 #'
-#' @param serodata_output Output from `readSeroData()` (reactive).
+#' @param sero_data Output from `readSeroData()` (reactive).
 #' @return Returns a long table of counts with "Warning" category (<15 == 1 and
 #' \eqn{>=}  15 == 0) for downstream wrangling.
 #' @export
 #' @importFrom dplyr mutate case_when
 #' @importFrom tidyr pivot_longer
 #' @author Dionne Argyropoulos
-processCounts <- function(serodata_output){
+#'
+#' @examples
+#' \donttest{
+#' # Example demonstrating how to process bead count data.
+#' # These files are included in the SeroTrackR package under inst/extdata.
+#'
+#' your_raw_data <- c(
+#'   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+#'   system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+#' )
+#'
+#' # Read in raw MAGPIX data
+#' sero_data <- readSeroData(
+#'   raw_data = your_raw_data,
+#'   platform = "magpix"
+#' )
+#'
+#' # Process counts
+#' processed_master <- processCounts(sero_data = sero_data)
+#'
+#' }
+#'
+processCounts <- function(sero_data){
 
   # 1. Store Counts Data
-  counts_data <- serodata_output$counts
+  counts_data <- sero_data$counts
 
   # 2. Data Wrangling
   counts_data <- counts_data %>%

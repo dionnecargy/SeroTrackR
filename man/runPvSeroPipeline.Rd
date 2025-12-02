@@ -47,6 +47,45 @@ classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blank
 \description{
 A master function combining the entire PvSeroApp pipeline into one command to run in R.
 }
+\examples{
+
+\donttest{
+# Example data supplied with the package
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+
+plate_layout <- system.file(
+  "extdata", "example_platelayout_1.xlsx", package = "SeroTrackR"
+)
+
+# Run full pipeline including classification
+runPvSeroPipeline(
+  raw_data = your_raw_data,
+  plate_layout = plate_layout,
+  platform = "magpix",
+  location = "PNG",
+  experiment_name = "experiment1",
+  algorithm_type = "antibody_model",
+  sens_spec = "maximised",
+  classify = "Yes"
+)
+
+# Run processing pipeline only (no classification)
+runPvSeroPipeline(
+  raw_data = your_raw_data,
+  plate_layout = plate_layout,
+  platform = "magpix",
+  location = "PNG",
+  experiment_name = "experiment1",
+  algorithm_type = "antibody_model",
+  sens_spec = "maximised",
+  classify = "No"
+)
+}
+}
 \author{
 Dionne Argyropoulos
 }

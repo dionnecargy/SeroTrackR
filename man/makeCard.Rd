@@ -23,3 +23,25 @@ A "card" in the Fluent UI format with content.
 \description{
 This function imports the makes a card following the Fluent UI format.
 }
+\examples{
+# Minimal example creating a simple Fluent UI card.
+# Safe for CRAN: runs only if shiny.fluent, htmltools, and glue are installed.
+
+if (requireNamespace("shiny.fluent", quietly = TRUE) &&
+    requireNamespace("htmltools", quietly = TRUE) &&
+    requireNamespace("glue", quietly = TRUE)) {
+
+  # Simple card content
+  card_content <- list(
+    htmltools::div("This is some example text inside the card.")
+  )
+
+  # Create a Fluent UI card
+  makeCard(
+    title   = "Example Card",
+    id      = "example-card",
+    content = card_content,
+    size    = 6
+  )
+}
+}

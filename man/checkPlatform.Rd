@@ -19,6 +19,11 @@ not equal file format.
 This function checks the platform the user has input and whether it aligns
 with the correct format as expected. Will report error if NOT aligned.
 }
+\examples{
+your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
+checkPlatform(raw_data = your_raw_data, platform = "magpix")
+
+}
 \author{
 Dionne Argyropoulos
 }

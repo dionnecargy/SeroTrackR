@@ -5,17 +5,29 @@
 #'
 #' @param raw_data String with the raw data path (reactive).
 #' @param platform "magpix" or "bioplex" (reactive).
+#'
 #' @return TRUE: if platform == file format, ERROR message when platform does
 #' not equal file format.
 #' @export
-#' @importFrom meltr melt_csv melt_csv2
+#'
 #' @importFrom readxl read_excel
 #' @importFrom janitor row_to_names
+#'
 #' @author Dionne Argyropoulos
+#'
+#' @examples
+#' your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
+#' checkPlatform(raw_data = your_raw_data, platform = "magpix")
+#'
 checkPlatform <- function(raw_data, platform) {
 
   if (length(raw_data) == 0) {
     stop("No raw data files were provided.")
+  }
+
+  if (!requireNamespace("meltr", quietly = TRUE)) {
+    stop("Package 'meltr' is required to read MagPix/Bioplex CSV files.
+       Please install it using install.packages('meltr').")
   }
 
   file_extension <- tools::file_ext(raw_data)  # Identify the file extension and read the file accordingly

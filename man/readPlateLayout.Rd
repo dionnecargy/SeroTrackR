@@ -4,13 +4,13 @@
 \alias{readPlateLayout}
 \title{Read Plate Layout/s}
 \usage{
-readPlateLayout(plate_layout, serodata_output)
+readPlateLayout(plate_layout, sero_data)
 }
 \arguments{
 \item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2...
 etc. (reactive).}
 
-\item{serodata_output}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` (reactive).}
 }
 \value{
 A list of data frames, with each one representing an individual plate.
@@ -23,6 +23,32 @@ Plate, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) (columns A-M) and 9 rows
 i.e., the A1 cell in excel is called "Plate". This function also checks that
 the plate sheet labels are consistent with the MAGPIX file input names, as a
 check prior to merging downstream.
+}
+\examples{
+
+# Example input files
+your_raw_data <- c(
+  system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate2.csv", package = "SeroTrackR"),
+  system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+)
+
+your_plate_layout <- system.file(
+  "extdata",
+  "example_platelayout_1.xlsx",
+  package = "SeroTrackR"
+)
+
+# Step 1: Read and combine serological data
+sero_data <- readSeroData(
+  raw_data = your_raw_data,
+  platform = "magpix"
+)
+# Step 2: Read plate layout
+plate_list <- readPlateLayout(
+  plate_layout = your_plate_layout,
+  sero_data = sero_data
+)
 }
 \author{
 Shazia Ruybal-Pesántez, Dionne Argyropoulos
