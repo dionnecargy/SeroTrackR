@@ -6,12 +6,15 @@
 \alias{SeroTrackR-package}
 \title{SeroTrackR: Serology-Based Data Analysis and Visualization}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Data wrangling and cleaning, quality control checks and implementation of machine learning classification algorithm.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/dionnecargy/SeroTrackR}
+  \item \url{https://dionnecargy.github.io/SeroTrackR/}
   \item Report bugs at \url{https://github.com/dionnecargy/SeroTrackR/issues}
 }
 

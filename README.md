@@ -1,4 +1,4 @@
-# <img src="inst/hex/SeroTrackR_sticker.png" width="25%" height="25%" align="left"/> SeroTrackR
+# <img src="man/figures/SeroTrackR_sticker.png" width="25%" height="25%" align="left"/> SeroTrackR
 
 The `{SeroTrackR}` R package compliments the PvSeroApp [see Github here](https://github.com/dionnecargy/PvSeroApp) for experienced users who are comfortable with implementing the code in their own R sessions. 
 
@@ -22,5 +22,5 @@ browseVignettes("SeroTrackR")
 
 # To run a specific vignette: 
 vignette("PvSeroApp_R_Tutorial")
-vignette("Pk_Pv_Pf_Serology_R_Tutorial")
+vignette("Pk_Pv_Pf_Serology_Tutorial")
 ```

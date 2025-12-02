@@ -39,7 +39,7 @@ Imports:
     tidyselect,
     utils,
     workflows
-URL: https://github.com/dionnecargy/SeroTrackR
+URL: https://github.com/dionnecargy/SeroTrackR, https://dionnecargy.github.io/SeroTrackR/
 BugReports: https://github.com/dionnecargy/SeroTrackR/issues
 Suggests: 
     glue,
