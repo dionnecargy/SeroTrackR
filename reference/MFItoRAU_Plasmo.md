@@ -154,7 +154,7 @@ mfi_outputs
 #>  4 ABC-0001 plate1 PkSSP2     Pk        320 0.00196   loglog        
 #>  5 ABC-0001 plate1 LF005      Pv        389 0.0000834 loglog        
 #>  6 ABC-0001 plate1 LF005      Pv        389 0.0000923 ETHtoPNGloglog
-#>  7 ABC-0001 plate1 LF010      Pv        392 0.0000853 loglog        
+#>  7 ABC-0001 plate1 LF010      Pv        392 0.0000852 loglog        
 #>  8 ABC-0001 plate1 LF010      Pv        392 0.0000800 ETHtoPNGloglog
 #>  9 ABC-0001 plate1 LF016      Pv        502 0.0000195 loglog        
 #> 10 ABC-0001 plate1 LF016      Pv        502 0.0000762 ETHtoPNGloglog

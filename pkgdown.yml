@@ -1,4 +1,4 @@
-pandoc: '3.2'
+pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -7,7 +7,7 @@ articles:
   03_Pk_Pv_Pf_Serology_Tutorial: 03_Pk_Pv_Pf_Serology_Tutorial.html
   04_PvLDH_Tutorial: 04_PvLDH_Tutorial.html
   05_FAQs: 05_FAQs.html
-last_built: 2025-12-02T07:55Z
+last_built: 2025-12-16T06:51Z
 urls:
   reference: https://dionnecargy.github.io/SeroTrackR/reference
   article: https://dionnecargy.github.io/SeroTrackR/articles

@@ -7,7 +7,7 @@ plate/well location.
 ## Usage
 
 ``` r
-readSeroData(raw_data, platform, raw_data_filenames = NULL)
+readSeroData(raw_data, platform, version = "4.2", raw_data_filenames = NULL)
 ```
 
 ## Arguments
@@ -19,6 +19,11 @@ readSeroData(raw_data, platform, raw_data_filenames = NULL)
 - platform:
 
   "magpix", "bioplex" or "intelliflex" (reactive).
+
+- version:
+
+  xPONENT software version. For "magpix" can be 4.2 or 4.3 (reactive).
+  Default: 4.2.
 
 - raw_data_filenames:
 

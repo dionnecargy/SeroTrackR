@@ -70,6 +70,18 @@ mfi_to_rau <- MFItoRAU(
   plate_list = plate_list,
   counts_QC_output = counts_qc
 )
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
+#> Warning: NaNs produced
 
 
 

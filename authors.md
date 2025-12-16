@@ -12,13 +12,12 @@ Source:
 
 Argyropoulos D (2025). *SeroTrackR: Serology-Based Data Analysis and
 Visualization*. R package version 0.5.0,
-https://dionnecargy.github.io/SeroTrackR/,
 <https://github.com/dionnecargy/SeroTrackR>.
 
     @Manual{,
       title = {SeroTrackR: Serology-Based Data Analysis and Visualization},
       author = {Dionne Argyropoulos},
       year = {2025},
-      note = {R package version 0.5.0, https://dionnecargy.github.io/SeroTrackR/},
+      note = {R package version 0.5.0},
       url = {https://github.com/dionnecargy/SeroTrackR},
     }

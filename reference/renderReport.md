@@ -72,12 +72,12 @@ if (requireNamespace("rmarkdown", quietly = TRUE)) {
 }
 #> 
 #> 
-#> processing file: file17bd03ab42e47.Rmd
+#> processing file: file21797834cfe7.Rmd
 #> 1/1
-#> output file: file17bd03ab42e47.knit.md
-#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/x86_64/pandoc +RTS -K512m -RTS file17bd03ab42e47.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/file17bd0b4a556d.html --lua-filter /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /Users/Dionne/Library/R/x86_64/4.4/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/rmarkdown-str17bd03d2e6ce5.html 
+#> output file: file21797834cfe7.knit.md
+#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS file21797834cfe7.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/file2179533d8458.html --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/table-classes.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/rmarkdown-str21796bbbd819.html 
 #> 
-#> Output created: /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/file17bd0b4a556d.html
-#> [1] "/var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpKIjHBU/file17bd0b4a556d.html"
+#> Output created: /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/file2179533d8458.html
+#> [1] "/var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/file2179533d8458.html"
 # }
 ```
