@@ -38,7 +38,7 @@ count data, (iv) blanks only, (v) standards only, (vi) run information.
 
 ## Author
 
-Shazia Ruybal-Pesántez, Dionne Argyropoulos
+Dionne Argyropoulos, Shazia Ruybal-Pesántez
 
 ## Examples
 

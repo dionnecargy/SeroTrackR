@@ -110,7 +110,7 @@ if (interactive()) {
 #> 14/15 [plate layouts]       
 #> 15/15                       
 #> output file: template.knit.md
-#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS template.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/Dionne/Documents/GitHub/SeroTrackR/experiment1_20251216_ETH_v1.4.0_QCreport.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/rmarkdown-str2179ec0957a.html --variable 'geometry:margin=1in' 
+#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS template.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/Dionne/Documents/GitHub/SeroTrackR/experiment1_20251216_ETH_v1.4.0_QCreport.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/rmarkdown-str2179de9d916.html --variable 'geometry:margin=1in' 
 #> 
 #> Output created: /Users/Dionne/Documents/GitHub/SeroTrackR/experiment1_20251216_ETH_v1.4.0_QCreport.pdf
 ```

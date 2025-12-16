@@ -106,8 +106,9 @@ results_5std <- run_example_std(5)
 #> Plate layouts correctly identified!
 #> QC Processes completed.
 #> QC Plotting completed.
-#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate, QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI,
-#> RBP2b.P87_MFI, PvCSS_MFI, PTEX150_MFI, MSP8_MFI)`
+#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,
+#> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,
+#> PTEX150_MFI, MSP8_MFI)`
 #> MFI to RAU conversion completed.
 #> Pv classification completed.
 
@@ -118,8 +119,9 @@ results_10std <- run_example_std(10)
 #> Plate layouts correctly identified!
 #> QC Processes completed.
 #> QC Plotting completed.
-#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate, QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI,
-#> RBP2b.P87_MFI, PvCSS_MFI, PTEX150_MFI, MSP8_MFI)`
+#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,
+#> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,
+#> PTEX150_MFI, MSP8_MFI)`
 #> MFI to RAU conversion completed.
 #> Pv classification completed.
 
