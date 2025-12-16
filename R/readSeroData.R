@@ -18,7 +18,7 @@
 #' @importFrom dplyr select filter across any_of bind_rows left_join arrange mutate
 #' @importFrom tidyr pivot_wider
 #' @importFrom janitor row_to_names
-#' @author Shazia Ruybal-Pesántez, Dionne Argyropoulos
+#' @author Dionne Argyropoulos, Shazia Ruybal-Pesántez
 #' @examples
 #'
 #' # Example raw data files (MAGPIX platform)

@@ -42,5 +42,5 @@ sero_data <- readSeroData(
 )
 }
 \author{
-Shazia Ruybal-Pesántez, Dionne Argyropoulos
+Dionne Argyropoulos, Shazia Ruybal-Pesántez
 }
