@@ -1,7 +1,7 @@
 Package: SeroTrackR
 Type: Package
 Title: Serology-Based Data Analysis and Visualization
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(
     person(
       "Dionne", "Argyropoulos",
