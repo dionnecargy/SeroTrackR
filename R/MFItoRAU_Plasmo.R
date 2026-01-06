@@ -88,7 +88,7 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
   # Join Dataframes Together
   #############################################################################
   pk_final_results            <- Pk_Final
-  pfpv_final_results      <- PfPv_Final[[1]]
+  pfpv_final_results          <- PfPv_Final[[1]]
   pfpv_ETH_final_results      <- PfPv_ETH_Final[[1]]
 
   PkPfPv_Final <- suppressWarnings(
@@ -538,17 +538,9 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       # Plot models with plate in the title
       model_results <- list()
       for (i in names(model_list)) {
-        title <- paste("Plate:", plate_level, "- antigens:", i)
-
-        # Open a null device to prevent plotting on screen
-        png(filename = tempfile())   # or pdf(tempfile())
-        plot(model_list[[i]], main = title)
-        model_results[[i]] <- recordPlot()  # save the plot object
-        dev.off()
+        title <- paste("Plate:", plate_level, "- Protein:", i)  # Combine plate and protein name
+        model_results[[i]] <- plot(model_list[[i]], main = title)
       }
-
-      # Replay a saved plot later:
-      model_results[[1]]  # will display the plot when called
 
       ##########################################################################################################
       #### MERGE DATA
