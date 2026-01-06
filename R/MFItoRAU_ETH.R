@@ -151,8 +151,10 @@ MFItoRAU_ETH <- function(sero_data, plate_list, counts_QC_output){
     # Take MEAN of these 10 repeats
     estimate_eth <- eth_converted %>%
       dplyr::group_by(antigen, Sample) %>%
-      dplyr::summarise(dilution = mean(dilution) * s1_concentration,
-                       mfi = mean(mfi))
+      dplyr::summarise(
+        dilution = mean(dilution) * s1_concentration,
+        mfi = mean(mfi)
+      )
 
     ##########################################################################################################
     #### MODEL RESULTS AND PLOTS
@@ -271,6 +273,8 @@ MFItoRAU_ETH <- function(sero_data, plate_list, counts_QC_output){
   final_results <- dplyr::bind_rows(results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
 
+  final_model_results_all <- dplyr::bind_rows(model_results_all)
+
   final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
 
@@ -300,5 +304,5 @@ MFItoRAU_ETH <- function(sero_data, plate_list, counts_QC_output){
   final_MFI_RAU_results <- final_MFI_RAU_results %>%
     dplyr::select(all_of(final_MFI_RAU_order))
 
-  return(list(final_results, final_MFI_RAU_results, model_results_all))
+  return(list(final_results, final_MFI_RAU_results, final_model_results_all))
 }

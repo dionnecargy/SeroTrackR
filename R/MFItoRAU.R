@@ -16,6 +16,7 @@
 #' @import drc
 #' @importFrom dplyr distinct select inner_join bind_rows
 #' @importFrom tidyselect matches
+#' @importFrom purrr imap_dfr
 #' @author Connie Li Wai Suen, Dionne Argyropoulos
 #'
 #' @examples
@@ -239,10 +240,16 @@ MFItoRAU <- function(sero_data, plate_list, counts_QC_output){
   final_results <- dplyr::bind_rows(results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Plate", "Location.2"))
 
+  final_model_results_all <- purrr::imap_dfr(
+    model_results_all,
+    ~ purrr::imap_dfr(.x, ~ dplyr::mutate(.x, Antigen = .y), .id = "Antigen"),
+    .id = "Plate"
+  )
+
   final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Plate"))
 
   # Output
-  return(list(final_results, final_MFI_RAU_results, model_results_all))
+  return(list(final_results, final_MFI_RAU_results, final_model_results_all))
 
 }

@@ -81,7 +81,7 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
   #############################################################################
   # Pf/Pv MFI to RAU processing pipeline
   #############################################################################
-  PfPv_Final      <- suppressWarnings(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "PNG", counts_QC_output))
+  PfPv_Final          <- suppressWarnings(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "PNG", counts_QC_output))
   PfPv_ETH_Final      <- suppressMessages(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "ETH", counts_QC_output))
 
   #############################################################################
@@ -91,9 +91,10 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
   pfpv_final_results      <- PfPv_Final[[1]]
   pfpv_ETH_final_results      <- PfPv_ETH_Final[[1]]
 
-  PkPfPv_Final <- suppressWarnings(pk_final_results %>%
-                                     left_join(pfpv_final_results, by = c("SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total")) %>%
-                                     left_join(pfpv_ETH_final_results))
+  PkPfPv_Final <- suppressWarnings(
+    pk_final_results %>%
+      left_join(pfpv_final_results, by = c("SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total")) %>%
+      left_join(pfpv_ETH_final_results))
   PkPfPv_Final_MFI_RAU <- PkPfPv_Final %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI", ignore.case = FALSE), ends_with("_Dilution", ignore.case = FALSE))
 
@@ -148,7 +149,7 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
 #'
 #' @importFrom dplyr group_by mutate across inner_join rowwise summarise right_join select left_join rename_with all_of distinct bind_rows ungroup
 #' @importFrom tidyr nest unnest pivot_wider
-#' @importFrom purrr map
+#' @importFrom purrr map imap_dfr
 #' @importFrom grDevices dev.off png recordPlot
 #' @import drc
 #'
@@ -174,7 +175,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
     dilution_factor = 5
     current_min_relative_dilution = 5.0^-5
     s1_concentration = 1/50
-    s_final_concentration = 1/51200 # is what is written in the original function ...but do we want it to be S6 = 1/(50*5^5) ?
+    s_final_concentration = 1/51200
 
   } else if(std_point == 10){
 
@@ -278,8 +279,10 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       # Take MEAN of these 10 repeats
       estimate_eth <- eth_converted %>%
         dplyr::group_by(antigen, Sample) %>%
-        dplyr::summarise(dilution = mean(dilution) * s1_concentration,
-                         mfi = mean(mfi))
+        dplyr::summarise(
+          dilution = mean(dilution) * s1_concentration,
+          mfi = mean(mfi)
+        )
 
       ##########################################################################################################
       #### MODEL RESULTS AND PLOTS
@@ -322,6 +325,12 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       eth_converted_wide.2 <- eth_converted_locations %>%
         # Pivot wider: All Dilution values
         dplyr::select(-mfi) %>%
+        dplyr::mutate(
+          # Setting observations with very high MFI to 1/50.
+          dilution = ifelse(dilution > 0.02, 0.02, dilution),
+          # Setting observations with very low MFI to 1/51200.
+          dilution = ifelse(dilution < 1/51200, 1/51200, dilution)
+        ) %>%
         tidyr::pivot_wider(names_from = "antigen", values_from = "dilution") %>%
         dplyr::rename_with(~paste0(.x, "_ETHtoPNGloglog_Dilution"), -c(Location, Sample, Plate))
 
@@ -395,6 +404,8 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
 
     final_results <- dplyr::bind_rows(results_all) %>%
       dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
+
+    final_model_results_all <- dplyr::bind_rows(model_results_all)
 
     final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
       dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
@@ -610,11 +621,17 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
     final_results <- dplyr::bind_rows(results_all) %>%
       dplyr::inner_join(counts_data, by = c("SampleID", "Plate", "Location.2"))
 
+    final_model_results_all <- purrr::imap_dfr(
+      model_results_all,
+      ~ purrr::imap_dfr(.x, ~ dplyr::mutate(.x, Antigen = .y), .id = "Antigen"),
+      .id = "Plate"
+    )
+
     final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
       dplyr::inner_join(counts_data, by = c("SampleID", "Plate"))
 
     # Output
-    return(list(final_results, final_MFI_RAU_results, model_results_all))
+    return(list(final_results, final_MFI_RAU_results, final_model_results_all))
   }
 
 }
@@ -658,7 +675,7 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
     dilution_factor = 5
     current_min_relative_dilution = 5.0^-5
     s1_concentration = 1/50
-    s_final_concentration = 1/51200 # is what is written in the original function ...but do we want it to be S6 = 1/(50*5^5) ?
+    s_final_concentration = 1/51200
 
   } else if(std_point == 10){
 
