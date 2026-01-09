@@ -27,7 +27,6 @@ and matches the sample names from the plate layout based on their plate/well
 location.
 }
 \examples{
-
 # Example raw data files (MAGPIX platform)
 your_raw_data <- c(
   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),

@@ -46,7 +46,6 @@ Suggests:
     htmltools,
     httr,
     jsonlite,
-    meltr,
     shiny.fluent,
     tidyverse,
     zoo
