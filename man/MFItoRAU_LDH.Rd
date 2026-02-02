@@ -14,9 +14,9 @@ MFItoRAU_LDH(
 )
 }
 \arguments{
-\item{sero_data}{Output from `readSeroData()` or `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()` or `readSeroData()`.}
 
-\item{plate_list}{Output from `readPlateLayout()` (reactive).}
+\item{plate_list}{Output from `readPlateLayout()`.}
 
 \item{dilution}{A list of numbers ranging from S1 to S10. Default: 1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81.}
 

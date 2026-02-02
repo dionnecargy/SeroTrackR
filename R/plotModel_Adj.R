@@ -3,10 +3,10 @@
 #'
 #' This function gets the Median Fluorescent Intensity (MFI) to Relative
 #' Antibody Units (RAU) model results data and plots the model fits based on
-#' `MFItoRAU_ETH.`
+#' `MFItoRAU_Adj.`
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU_ETH()` (reactive).
-#' @param sero_data Output from `readSeroData()` (reactive).
+#' @param mfi_to_rau_output Output from `MFItoRAU_Adj()`.
+#' @param sero_data Output from `readSeroData()`.
 #' @return List of dot and line plots of MFI to RAU model standard curve,
 #' with each one representing an individual plate (ggplot).
 #' @export
@@ -40,16 +40,16 @@
 #' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
-#' mfi_to_rau <- MFItoRAU_ETH(
+#' mfi_to_rau <- MFItoRAU_Adj(
 #'   sero_data = sero_data,
 #'   plate_list         = plate_list,
 #'   counts_QC_output   = counts_qc
 #' )
 #'
 #' # Step 4: Plot Model Results
-#' plotModel_ETH(mfi_to_rau, sero_data)
+#' plotModel_Adj(mfi_to_rau, sero_data)
 #' }
-plotModel_ETH <- function(mfi_to_rau_output, sero_data){
+plotModel_Adj <- function(mfi_to_rau_output, sero_data){
 
   # Load model results
   model_results <- mfi_to_rau_output[[3]]
@@ -60,18 +60,22 @@ plotModel_ETH <- function(mfi_to_rau_output, sero_data){
 
   # Generate plots for each plate, grouping antigens together
   plots_model <- lapply(unique(combined_data$Plate), function(plate_name) {
-    ggplot2::ggplot(data = subset(combined_data, Plate == plate_name),
-                    aes(x = dilution, y = mfi_pred, color = antigen)) +  # Use 'Antigen' to differentiate lines
-      ggplot2::geom_line() +
-      ggplot2::scale_x_log10() +
-      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-      ggplot2::geom_point(data = subset(combined_data, Plate == plate_name), aes(x = dilution, y = mfi, color = antigen)) +
-      ggplot2::labs(x = "Antibody Dilution",
-                    y = "Standard Curve (log(MFI))",
-                    fill = "Antigen",
-                    title = paste("Standard Curves for Plate:", plate_name)) +
-      ggplot2::theme_bw() +
-      ggplot2::facet_wrap(~ antigen, scales = "free_y")  # Create a separate plot for each Antigen
+    ggplot2::ggplot(
+      data = subset(combined_data, Plate == plate_name),
+      aes(x = dilution, y = mfi_pred, color = antigen)
+      ) +  # Use 'Antigen' to differentiate lines
+    ggplot2::geom_line() +
+    ggplot2::scale_x_log10() +
+    ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+    ggplot2::geom_point(data = subset(combined_data, Plate == plate_name), aes(x = dilution, y = mfi, color = antigen)) +
+    ggplot2::labs(
+      x = "Antibody Dilution",
+      y = "Standard Curve (MFI)",
+      fill = "Antigen",
+      title = paste("Standard Curves for Plate:", plate_name)
+    ) +
+    ggplot2::theme_bw() +
+    ggplot2::facet_wrap(~ antigen, scales = "free_y")  # Create a separate plot for each Antigen
   })
 
   # Assign names to the list of plots for clarity

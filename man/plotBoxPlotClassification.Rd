@@ -10,7 +10,7 @@ plotBoxPlotClassification(all_classifications, selected_threshold)
 \item{all_classifications}{Data frame of `classifyResults()` for all
 sens_spec thresholds.}
 
-\item{selected_threshold}{String with the threshold (reactive).}
+\item{selected_threshold}{String with the threshold.}
 }
 \value{
 Box plots with RAU values for each protein stratified by
@@ -48,7 +48,7 @@ antigen_cts <- getAntigenCounts(counts, plate_list)
 counts_qc   <- getCountsQC(antigen_cts, counts_raw)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
+mfi_to_rau <- MFItoRAU_Adj(
   sero_data = sero_data,
   plate_list         = plate_list,
   counts_QC_output   = counts_qc
@@ -56,7 +56,7 @@ mfi_to_rau <- MFItoRAU_ETH(
 
 # Step 4: Define sens/spec thresholds
 sens_spec_all <- c(
-  "maximised", "85\% sensitivity", "90\% sensitivity", "95\% sensitivity",
+  "balanced", "85\% sensitivity", "90\% sensitivity", "95\% sensitivity",
   "85\% specificity", "90\% specificity", "95\% specificity"
 )
 
@@ -73,7 +73,7 @@ all_classifications <- purrr::map_dfr(sens_spec_all, ~{
 })
 
 # Plot classification for a single threshold
-plotBoxPlotClassification(all_classifications, "maximised")
+plotBoxPlotClassification(all_classifications, "balanced")
 }
 }
 \author{

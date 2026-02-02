@@ -7,7 +7,7 @@
 .post_process_luminex(sections, file_name, master_list)
 }
 \arguments{
-\item{file}{String with the raw data path (reactive).}
+\item{file}{String with the raw data path.}
 }
 \value{
 List of data_raw, results, counts, blanks, stds, run

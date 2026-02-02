@@ -12,7 +12,7 @@ runPlasmoPipeline(
   std_point,
   experiment_name = "experiment1",
   algorithm_type = "antibody_model",
-  sens_spec = "maximised"
+  sens_spec = "balanced"
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ runPlasmoPipeline(
 - "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "maximised" (default),
+- "balanced" (default),
 - "85\% sensitivity",
 - "90\% sensitivity",
 - "95\% sensitivity",

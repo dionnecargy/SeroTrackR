@@ -5,9 +5,9 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU) written by Connie Li Wai Suen.
 #'
-#' @param sero_data Output from `readSeroData()` (reactive).
-#' @param plate_list Output from `readPlateLayout()` (reactive).
-#' @param counts_QC_output Output from `getCountsQC()` (reactive).
+#' @param sero_data Output from `readSeroData()`.
+#' @param plate_list Output from `readPlateLayout()`.
+#' @param qc_results Output from `runQC()`.
 #' @return  A list of three data frames:
 #' 1. Data frame with  MFI data, converted RAU data and matched SampleID's.
 #' 2. Plot information for `plotModel` function
@@ -38,25 +38,25 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
-#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#' qc_results  <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using PNG beads
 #' mfi_to_rau <- MFItoRAU(
 #'   sero_data = sero_data,
 #'   plate_list = plate_list,
-#'   counts_QC_output = counts_qc
+#'   qc_results = qc_results
 #' )
 #'
 #' }
-MFItoRAU <- function(sero_data, plate_list, counts_QC_output){
+MFItoRAU <- function(sero_data, plate_list, qc_results){
+
+  # Idea: parameter for pf/pv ifelse
+  # Idea: add 5-point standard curve reference as per MFItoRAU_plasmo
 
   master_file <- sero_data
   L <- master_file$results
   layout <- plate_list
+  counts_QC_output <- qc_results$counts_QC_output
 
   excluded_cols <- c("Location", "Sample", "Plate")
   remaining_cols <- setdiff(colnames(L), excluded_cols)
@@ -133,18 +133,20 @@ MFItoRAU <- function(sero_data, plate_list, counts_QC_output){
           dil.X <- ifelse(dil.X < 1/51200, 1/51200, dil.X)
           dil.X <- ifelse((is.na(dil.X) & y<max(log.std)), 1/51200, dil.X)  ## Setting observations with very low MFI to 1/51200.
 
-          location.X <- subset_data[r, "Location"]
-          sample.X <- subset_data[r, "Sample"]
-          Plate.X <- subset_data[r, "Plate"]
-          results <- cbind(Location = location.X, Sample = sample.X, Plate = Plate.X,
-                           MFI = mfi.X, Dilution = dil.X, DilutionReciprocal = 1 / dil.X,
-                           MinStd = min(std), MaxDilution = min(dilution),
-                           MaxStd = max(std), MinDilution = max(dilution))
+          location.X  <- subset_data[r, "Location"]
+          sample.X    <- subset_data[r, "Sample"]
+          Plate.X     <- subset_data[r, "Plate"]
+          results     <- cbind(
+            Location = location.X, Sample = sample.X, Plate = Plate.X,
+            MFI = mfi.X, Dilution = dil.X, DilutionReciprocal = 1 / dil.X,
+            MinStd = min(std), MaxDilution = min(dilution),
+            MaxStd = max(std), MinDilution = max(dilution)
+          )
 
-          results.colnames <- c("Location", "Sample", "Plate",
-                                paste0(i, "_", c("MFI", "Dilution", "DilutionReciprocal",
-                                                 "MinStd", "MaxDilution", "MaxStd",
-                                                 "MinDilution")))
+          results.colnames <- c(
+            "Location", "Sample", "Plate",
+            paste0(i, "_", c("MFI", "Dilution", "DilutionReciprocal", "MinStd", "MaxDilution", "MaxStd", "MinDilution"))
+          )
           colnames(results) <- results.colnames
         }
         results.df <- rbind(results.df, results)

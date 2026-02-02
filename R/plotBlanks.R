@@ -3,8 +3,8 @@
 #' This function gets the blank sample data and plots the blank sample Median
 #' Fluorescent Intensity (MFI) values.
 #'
-#' @param sero_data Output from `readSeroData()` (reactive).
-#' @param experiment_name User-input experiment name (reactive).
+#' @param sero_data Output from `readSeroData()`.
+#' @param experiment_name User-input experiment name.
 #' @return Bar plot showing whether MFI values for the blanks for each antigen
 #' per plate is above or below the threshold MFI = 50 (ggplot).
 #' @export
@@ -48,9 +48,11 @@ plotBlanks <- function(sero_data, experiment_name){
     ggplot2::ggplot(aes(x = factor(Antigen), y = as.numeric(MFI), fill = Sample)) +
     ggplot2::geom_bar(stat = "identity", position = "dodge") +
     ggplot2::geom_hline(yintercept = 50, linetype = "dashed", color = "grey") +
-    ggplot2::labs(x = "Antigen",
-                  y = "MFI",
-                  title = experiment_name) +
+    ggplot2::labs(
+      x = "Antigen",
+      y = "MFI",
+      title = experiment_name
+    ) +
     ggplot2::theme_bw() +
     ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ggplot2::facet_wrap(~ Plate)  # Create separate facets for each 'plate'

@@ -5,8 +5,8 @@
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU).
 #'
-#' @param sero_data Output from `readSeroData()` or `readSeroData()` (reactive).
-#' @param plate_list Output from `readPlateLayout()` (reactive).
+#' @param sero_data Output from `readSeroData()` or `readSeroData()`.
+#' @param plate_list Output from `readPlateLayout()`.
 #' @param file_path A file path to write the .csv final file. Default: Current working directory.
 #' @param dilution  A list of numbers ranging from S1 to S10. Default: 1000000, 333333.33, 111111.11, 37037.04, 12345.68, 4115.23, 1371.74, 457.25, 152.42, 50.81.
 #'

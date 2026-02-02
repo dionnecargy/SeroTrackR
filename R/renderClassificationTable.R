@@ -3,12 +3,12 @@
 #' This function runs the classification algorithm for all possible sensitivity
 #' and specificity options.
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-#' (reactive).
+#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_Adj()`
+#'.
 #' @param algorithm_type User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
-#' @param counts_QC_output Output from `getCountsQC()` (reactive).
+#' @param counts_QC_output Output from `getCountsQC()`.
 #' @return A table of all classification outputs.
 #' @export
 #' @importFrom dplyr group_by summarise select mutate
@@ -40,7 +40,7 @@
 #' getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
 #'
 #' # Step 4: Run MFI to RAU (e.g., using ETH beads)
-#' mfi_to_rau_output  <- MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output)
+#' mfi_to_rau_output  <- MFItoRAU_Adj(sero_data, plate_list, getCountsQC_output)
 #'
 #' # Step 5: Render classification table
 #' renderClassificationTable(
@@ -53,7 +53,7 @@
 #'
 renderClassificationTable <- function(mfi_to_rau_output, algorithm_type, counts_QC_output){
   # Load All sens_spec possibilities to cycle through
-  sens_spec_all <- c("maximised", "85% sensitivity", "90% sensitivity", "95% sensitivity",
+  sens_spec_all <- c("balanced", "85% sensitivity", "90% sensitivity", "95% sensitivity",
                      "85% specificity", "90% specificity", "95% specificity")
   # Run classify_final_results
   all_classifications <- purrr::map_dfr(sens_spec_all, ~{

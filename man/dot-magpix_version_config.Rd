@@ -7,7 +7,7 @@
 .magpix_version_config(version)
 }
 \arguments{
-\item{file}{String with the raw data path (reactive).}
+\item{file}{String with the raw data path.}
 }
 \value{
 specific column names for filtering for xPONENT software v4.2 and v4.3

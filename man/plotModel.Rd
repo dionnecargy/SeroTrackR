@@ -8,9 +8,9 @@ Results Data}
 plotModel(mfi_to_rau_output, sero_data)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU()` (reactive).}
+\item{mfi_to_rau_output}{Output from `MFItoRAU()`.}
 
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 }
 \value{
 List of dot and line plots of MFI to RAU model standard curve,
@@ -47,7 +47,7 @@ antigen_cts <- getAntigenCounts(counts, plate_list)
 counts_qc   <- getCountsQC(antigen_cts, counts_raw)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
+mfi_to_rau <- MFItoRAU_Adj(
   sero_data = sero_data,
   plate_list = plate_list,
   counts_QC_output = counts_qc

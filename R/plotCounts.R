@@ -4,8 +4,8 @@
 #' facet (i.e., panel) for each antigen and each line represents the
 #' different plates so that they can be visualised.
 #'
-#' @param counts_output Output from `getCounts()` (reactive).
-#' @param experiment_name User-input experiment name (reactive).
+#' @param qc_results Output from `runQC()`.
+#' @param experiment_name User-input experiment name.
 #' @return Tile Plot showing binary result of "sufficient beads" with cut-off
 #' >15 beads and "repeat" less than or equal to 15 beads (ggplot).
 #' @export
@@ -32,14 +32,13 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts <- processCounts(sero_data)
-#' getCounts_output <- getCounts(counts)
+#' qc_results  <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Plot Counts
-#' plotCounts(getCounts_output, "experiment1")
+#' plotCounts(qc_results, "experiment1")
 #' }
-plotCounts <- function(counts_output, experiment_name){
-  bead_counts <- counts_output
+plotCounts <- function(qc_results, experiment_name){
+  bead_counts <- qc_results$getCounts_output
   bead_counts$Plate <- factor(
     bead_counts$Plate,
     levels = unique(bead_counts$Plate[order(as.numeric(str_extract(bead_counts$Plate, "\\d+")))])

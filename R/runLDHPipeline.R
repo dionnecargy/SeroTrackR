@@ -54,18 +54,14 @@ runLDHPipeline <- function(
   #############################################################
   # Step 2: Quality Control
   #############################################################
-  processCounts_output      <- processCounts(sero_data)
-  getCounts_output          <- getCounts(processCounts_output)
-  sampleid_output           <- getSampleID(processCounts_output, plate_list)
-  getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-  getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+  qc_results                <- runQC(sero_data, plate_list)
 
   #############################################################
   # Step 3: Plotting
   #############################################################
   stdcurve_plot             <- suppressWarnings(plotStds_all(sero_data, experiment_name))
-  plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
-  check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
+  plateqc_plot              <- plotCounts(qc_results, experiment_name)
+  check_repeats_output      <- getRepeats(qc_results, plate_list)
   blanks_plot               <- plotBlanks(sero_data, experiment_name)
 
   #############################################################

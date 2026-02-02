@@ -2,8 +2,8 @@
 #'
 #' This function gets the standards data and plots the standard curves for antigens in the Pk/Pf/Pv panel.
 #'
-#' @param sero_data Output from `readSeroData()` (reactive).
-#' @param experiment_name User-input experiment name (reactive).
+#' @param sero_data Output from `readSeroData()`.
+#' @param experiment_name User-input experiment name.
 #'
 #' @return
 #' - Dot and line plot of standard curves (S1-S10)

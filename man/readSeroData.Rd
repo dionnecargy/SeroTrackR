@@ -7,13 +7,13 @@
 readSeroData(raw_data, platform, version = "4.2", raw_data_filenames = NULL)
 }
 \arguments{
-\item{raw_data}{String with the raw data path (reactive).}
+\item{raw_data}{String with the raw data path.}
 
-\item{platform}{"magpix", "bioplex" or "intelliflex" (reactive).}
+\item{platform}{"magpix", "bioplex" or "intelliflex".}
 
-\item{version}{xPONENT software version. For "magpix" can be 4.2 or 4.3 (reactive). Default: 4.2.}
+\item{version}{xPONENT software version. For "magpix" can be 4.2 or 4.3. Default: 4.2.}
 
-\item{raw_data_filenames}{String with the raw data filename path (reactive).
+\item{raw_data_filenames}{String with the raw data filename path.
 Default is NA as it can be deduced from raw_data. Needs to be a parameter for the PvSeroApp.}
 }
 \value{

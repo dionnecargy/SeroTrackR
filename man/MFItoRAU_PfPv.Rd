@@ -5,13 +5,7 @@
 \title{Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 conversion for either PNG or ETH standard}
 \usage{
-MFItoRAU_PfPv(
-  processed_PfPv,
-  plate_list,
-  std_point,
-  location,
-  counts_QC_output
-)
+MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, location, qc_results)
 }
 \arguments{
 \item{processed_PfPv}{df$PfPv of output `processPkPfPv()`}
@@ -20,9 +14,9 @@ MFItoRAU_PfPv(
 
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 
-\item{location}{"PNG" or "ETH" to filter WEHI standard curve data (reactive).}
+\item{location}{"PNG" or "ETH" to filter WEHI standard curve data.}
 
-\item{counts_QC_output}{Output from `getCountsQC()`}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 A list of three data frames:

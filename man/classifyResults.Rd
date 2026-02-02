@@ -4,18 +4,17 @@
 \alias{classifyResults}
 \title{Random Forest Classification}
 \usage{
-classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
+classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, qc_results)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-(reactive).}
+\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`.}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
 - "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "maximised" (default),
+- "balanced" (default),
 - "85\% sensitivity",
 - "90\% sensitivity",
 - "95\% sensitivity",
@@ -23,7 +22,7 @@ classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
 - "90\% specificity".
 - "95\% specificity".}
 
-\item{counts_QC_output}{Output from `getCountsQC()` (reactive).}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 - Data frame with exposure status for every sample.
@@ -31,7 +30,7 @@ classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
 }
 \description{
 This function classifies unknown samples as recently exposed or not
-(Note: MFItoRAU() or MFItoRAU_ETH() needs to be run first to convert to
+(Note: MFItoRAU() or MFItoRAU_Adj() needs to be run first to convert to
 RAU).
 }
 \examples{
@@ -53,25 +52,21 @@ sero_data  <- readSeroData(your_raw_data,"magpix")
 plate_list <- readPlateLayout(your_plate_layout, sero_data)
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
-  sero_data = sero_data,
-  plate_list         = plate_list,
-  counts_QC_output   = counts_qc
+mfi_to_rau <- MFItoRAU_Adj(
+  sero_data   = sero_data,
+  plate_list  = plate_list,
+  qc_results  = qc_results
 )
 
 # Step 4: Perform Pv classification
 pv_classified <- classifyResults(
   mfi_to_rau_output = mfi_to_rau,
   algorithm_type    = "antibody_model",
-  sens_spec         = "maximised",
-  counts_QC_output  = counts_qc
+  sens_spec         = "balanced",
+  qc_results        = qc_results
 )
 }
 }

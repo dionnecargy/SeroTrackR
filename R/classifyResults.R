@@ -1,23 +1,22 @@
 #' Random Forest Classification
 #'
 #' This function classifies unknown samples as recently exposed or not
-#' (Note: MFItoRAU() or MFItoRAU_ETH() needs to be run first to convert to
+#' (Note: MFItoRAU() or MFItoRAU_Adj() needs to be run first to convert to
 #' RAU).
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-#' (reactive).
+#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_Adj()`.
 #' @param algorithm_type User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTaT excluding LF016).
 #' @param sens_spec User-selected Sensitivity/Specificity threshold:
-#' - "maximised" (default),
+#' - "balanced" (default),
 #' - "85\% sensitivity",
 #' - "90\% sensitivity",
 #' - "95\% sensitivity",
 #' - "85\% specificity",
 #' - "90\% specificity".
 #' - "95\% specificity".
-#' @param counts_QC_output Output from `getCountsQC()` (reactive).
+#' @param qc_results Output from `runQC()`.
 #' @return
 #' - Data frame with exposure status for every sample.
 #' - Summary table with positive/negative results for each threshold.
@@ -45,28 +44,24 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
-#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#' qc_results  <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
-#' mfi_to_rau <- MFItoRAU_ETH(
-#'   sero_data = sero_data,
-#'   plate_list         = plate_list,
-#'   counts_QC_output   = counts_qc
+#' mfi_to_rau <- MFItoRAU_Adj(
+#'   sero_data   = sero_data,
+#'   plate_list  = plate_list,
+#'   qc_results  = qc_results
 #' )
 #'
 #' # Step 4: Perform Pv classification
 #' pv_classified <- classifyResults(
 #'   mfi_to_rau_output = mfi_to_rau,
 #'   algorithm_type    = "antibody_model",
-#'   sens_spec         = "maximised",
-#'   counts_QC_output  = counts_qc
+#'   sens_spec         = "balanced",
+#'   qc_results        = qc_results
 #' )
 #' }
-classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output) {
+classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, qc_results) {
 
   #############################################################################
   # Data wrangling
@@ -78,6 +73,7 @@ classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts
     dplyr::mutate(across(ends_with("_Dilution"), as.numeric)) %>%    # Convert only "_Dilution" columns to numeric
     dplyr::rename_with(~ str_replace(., "_Dilution$", ""), ends_with("_Dilution")) # Remove the "_Dilution" suffix
 
+  counts_QC_output <- qc_results$counts_QC_output
   #############################################################################
   # Load files from package
   #############################################################################
@@ -105,7 +101,7 @@ classifyResults <- function(mfi_to_rau_output, algorithm_type, sens_spec, counts
   }
 
   # Step 3: Determine random forest votes threshold based on the algorithm_type string
-  threshold <- if (sens_spec == "maximised") {
+  threshold <- if (sens_spec == "balanced") {
     threshold_table %>% filter(sens_spec == "max_sens_spec") %>% pull(threshold)
   } else if (sens_spec == "85% sensitivity") {
     threshold_table %>% filter(sens_spec == "85_sens") %>% pull(threshold)

@@ -5,8 +5,8 @@
 #' Antibody Units (RAU) model results data and plots the model fits based on
 #' `MFItoRAU`.
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU()` (reactive).
-#' @param sero_data Output from `readSeroData()` (reactive).
+#' @param mfi_to_rau_output Output from `MFItoRAU()`.
+#' @param sero_data Output from `readSeroData()`.
 #' @return List of dot and line plots of MFI to RAU model standard curve,
 #' with each one representing an individual plate (ggplot).
 #' @export
@@ -41,7 +41,7 @@
 #' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
-#' mfi_to_rau <- MFItoRAU_ETH(
+#' mfi_to_rau <- MFItoRAU_Adj(
 #'   sero_data = sero_data,
 #'   plate_list = plate_list,
 #'   counts_QC_output = counts_qc
@@ -97,7 +97,7 @@ plotModel <- function(mfi_to_rau_output, sero_data){
                              labels = c("0.00001", "0.0001", "0.001", "0.01", "0.03")) +
       ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
       ggplot2::labs(x = "Antibody Dilution",
-                    y = "Standard Curve (log(MFI))",
+                    y = "Standard Curve (MFI)",
                     title = paste("Standard Curves for Plate:", plate_name)) +
       ggplot2::theme_bw() +
       ggplot2::facet_wrap(~ Antigen, scales = "free")  # Create a separate plot for each antigen

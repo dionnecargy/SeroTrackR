@@ -33,7 +33,7 @@ runPvSeroPipeline(
 - "antibody_model_excLF016" (PvSeroTat excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "maximised" (default),
+- "balanced" (default),
 - "85\% sensitivity",
 - "90\% sensitivity",
 - "95\% sensitivity",
@@ -69,7 +69,7 @@ runPvSeroPipeline(
   location = "PNG",
   experiment_name = "experiment1",
   algorithm_type = "antibody_model",
-  sens_spec = "maximised",
+  sens_spec = "balanced",
   classify = "Yes"
 )
 
@@ -81,7 +81,7 @@ runPvSeroPipeline(
   location = "PNG",
   experiment_name = "experiment1",
   algorithm_type = "antibody_model",
-  sens_spec = "maximised",
+  sens_spec = "balanced",
   classify = "No"
 )
 }

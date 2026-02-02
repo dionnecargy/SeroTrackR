@@ -7,7 +7,7 @@
 .read_luminex_file(file)
 }
 \arguments{
-\item{file}{String with the raw data path (reactive).}
+\item{file}{String with the raw data path.}
 }
 \value{
 raw data frame

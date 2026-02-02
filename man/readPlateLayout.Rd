@@ -8,9 +8,9 @@ readPlateLayout(plate_layout, sero_data)
 }
 \arguments{
 \item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2...
-etc. (reactive).}
+etc..}
 
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 }
 \value{
 A list of data frames, with each one representing an individual plate.

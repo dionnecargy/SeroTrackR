@@ -7,11 +7,11 @@
 plotStds(sero_data, location, experiment_name)
 }
 \arguments{
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 
-\item{location}{"PNG" or "ETH" to filter WEHI standard curve data (reactive).}
+\item{location}{"PNG" or "ETH" to filter WEHI standard curve data.}
 
-\item{experiment_name}{User-input experiment name (reactive).}
+\item{experiment_name}{User-input experiment name.}
 }
 \value{
 - Dot and line plot of standard curves (S1-S10) with PNG or Ethiopia stds

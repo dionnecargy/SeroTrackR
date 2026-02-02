@@ -2,9 +2,9 @@
 #'
 #' Boxplot of the MFI values.
 #'
-#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-#' (reactive).
-#' @param location "PNG" or "ETH" (reactive).
+#' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_Adj()`
+#'.
+#' @param location "PNG" or "ETH".
 #' @return Box plots with MFI values for each protein (ggplot).
 #' @export
 #' @importFrom dplyr select rename_with ends_with mutate
@@ -38,7 +38,7 @@
 #' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
-#' mfi_to_rau <- MFItoRAU_ETH(
+#' mfi_to_rau <- MFItoRAU_Adj(
 #'   sero_data = sero_data,
 #'   plate_list         = plate_list,
 #'   counts_QC_output   = counts_qc

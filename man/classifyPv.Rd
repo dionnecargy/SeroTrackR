@@ -4,18 +4,17 @@
 \alias{classifyPv}
 \title{Random Forest Classification for Pv only in Pk/Pf/Pv analysis}
 \usage{
-classifyPv(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
+classifyPv(mfi_to_rau_output, algorithm_type, sens_spec, qc_results)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-(reactive).}
+\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`.}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
 - "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "maximised" (default),
+- "balanced" (default),
 - "85\% sensitivity",
 - "90\% sensitivity",
 - "95\% sensitivity",
@@ -23,7 +22,7 @@ classifyPv(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
 - "90\% specificity".
 - "95\% specificity".}
 
-\item{counts_QC_output}{Output from `getCountsQC()` (reactive).}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 - Data frame with exposure status for every sample.
@@ -31,7 +30,7 @@ classifyPv(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
 }
 \description{
 This function classifies unknown samples as recently exposed or not
-(Note: MFItoRAU() or MFItoRAU_ETH() needs to be run first to convert to
+(Note: MFItoRAU() or MFItoRAU_Adj() needs to be run first to convert to
 RAU). This is a slightly modified function for ONLY use in Pk/Pf/Pv analysis.
 The only difference is that ETHtoPNGloglog_Dilution is used to identify the
 correct columns to then classify.
@@ -55,27 +54,23 @@ sero_data  <- readSeroData(raw_files_5std, "magpix")
 plate_list <- readPlateLayout(plate_layout_5std, sero_data)
 
 # Step 2: Process counts and QC
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using 5-point standard curve
 mfi_results <- MFItoRAU_Plasmo(
-  sero_data = sero_data,
-  plate_list         = plate_list,
-  panel              = "panel1",
-  std_point          = 5,
-  counts_QC_output   = counts_qc
+  sero_data    = sero_data,
+  plate_list   = plate_list,
+  panel        = "panel1",
+  std_point    = 5,
+  qc_results   = qc_results
 )
 
 # Step 4: Classify Pv samples
 pv_classified <- classifyPv(
-  mfi_to_rau_output= mfi_results,
-  algorithm_type   = "antibody_model",
-  sens_spec        = "maximised",
-  counts_QC_output = counts_qc
+  mfi_to_rau_output = mfi_results,
+  algorithm_type    = "antibody_model",
+  sens_spec         = "balanced",
+  qc_results        = qc_results
 )
 }
 }

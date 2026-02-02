@@ -4,11 +4,11 @@
 #' and matches the sample names from the plate layout based on their plate/well
 #' location.
 #'
-#' @param raw_data String with the raw data path (reactive).
-#' @param raw_data_filenames String with the raw data filename path (reactive).
+#' @param raw_data String with the raw data path.
+#' @param raw_data_filenames String with the raw data filename path.
 #' Default is NA as it can be deduced from raw_data. Needs to be a parameter for the PvSeroApp.
-#' @param version xPONENT software version. For "magpix" can be 4.2 or 4.3 (reactive). Default: 4.2.
-#' @param platform "magpix", "bioplex" or "intelliflex" (reactive).
+#' @param version xPONENT software version. For "magpix" can be 4.2 or 4.3. Default: 4.2.
+#' @param platform "magpix", "bioplex" or "intelliflex".
 #'
 #' @return List of data frames: (i) raw data output, (ii) cleaned all results
 #' (iii) count data, (iv) blanks only, (v) standards only, (vi) run
@@ -91,8 +91,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' This function checks the platform the user has input and whether it aligns
 #' with the correct format as expected. Will report error if NOT aligned.
 #'
-#' @param raw_data String with the raw data path (reactive).
-#' @param platform "magpix" or "bioplex" (reactive).
+#' @param raw_data String with the raw data path.
+#' @param platform "magpix" or "bioplex".
 #'
 #' @return TRUE: if platform == file format, ERROR message when platform does
 #' not equal file format.
@@ -141,7 +141,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to read raw luminex files
 #'
-#' @param file String with the raw data path (reactive).
+#' @param file String with the raw data path.
 #'
 #' @returns raw data frame
 #' @export
@@ -238,7 +238,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to identify Magpix version
 #'
-#' @param file String with the raw data path (reactive).
+#' @param file String with the raw data path.
 #'
 #' @returns specific column names for filtering for xPONENT software v4.2 and v4.3
 #' @export
@@ -259,7 +259,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process luminex sections
 #'
-#' @param df  String with the raw data path (reactive).
+#' @param df  String with the raw data path.
 #' @param cfg Magpix version output of .magpix_version_config().
 #' @param plt Platform (magpix, intelliflex)
 #'
@@ -320,7 +320,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process luminex (Magpix/Intelliflex) data
 #'
-#' @param file String with the raw data path (reactive).
+#' @param file String with the raw data path.
 #'
 #' @returns Cleaned data fame
 #' @export
@@ -381,7 +381,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process bioplex data
 #'
-#' @param file String with the raw data path (reactive).
+#' @param file String with the raw data path.
 #'
 #' @returns Cleaned data fame
 #' @export
@@ -443,7 +443,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process bioplex sections
 #'
-#' @param file String with the raw data path (reactive).
+#' @param file String with the raw data path.
 #'
 #' @returns List of data_raw, results, counts, blanks, stds, run
 #' @export
@@ -500,7 +500,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process luminex into master_list
 #'
-#' @param file String with the raw data path (reactive).
+#' @param file String with the raw data path.
 #'
 #' @returns List of data_raw, results, counts, blanks, stds, run
 #' @export

@@ -1,13 +1,14 @@
 #' Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
-#' conversion based on ETH standard
+#' conversion based on other standard
 #'
 #' This function fits a 5-parameter logistic standard curve to the dilutions
 #' of the positive controls for each protein and converts the MFI values
 #' into relative antibody units (RAU) written by Eamon Conway.
 #'
-#' @param sero_data Output from `readSeroData()` (reactive).
-#' @param plate_list Output from `readPlateLayout()` (reactive).
-#' @param counts_QC_output Output from `getCountsQC()` (reactive).
+#' @param sero_data Output from `readSeroData()`.
+#' @param plate_list Output from `readPlateLayout()`.
+#' @param qc_results Output from `runQC()`.
+#' @param location "PNG" or "ETH" to filter WEHI standard curve data.
 #' @return  A list of three data frames:
 #' 1. Data frame with  MFI data, converted RAU data and matched SampleID's.
 #' 2. Plot information for `plotModel` function.
@@ -38,41 +39,42 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
-#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#' qc_results  <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
-#' mfi_to_rau <- MFItoRAU_ETH(
-#'   sero_data = sero_data,
-#'   plate_list         = plate_list,
-#'   counts_QC_output   = counts_qc
+#' mfi_to_rau <- MFItoRAU_Adj(
+#'   sero_data    = sero_data,
+#'   plate_list   = plate_list,
+#'   qc_results   = qc_results
 #' )
 #'
 #' }
-MFItoRAU_ETH <- function(sero_data, plate_list, counts_QC_output){
+MFItoRAU_Adj <- function(sero_data, plate_list, qc_results){
+
+  # Idea: parameter for pf/pv ifelse
+  # Idea: add 5-point standard curve reference as per MFItoRAU_plasmo
 
   master_file <- sero_data$results
   L <- master_file %>% dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
   layout <- plate_list
+  counts_QC_output <- qc_results$counts_QC_output
 
   ##########################################################################################################
   #### Reference Fit
   ##########################################################################################################
 
+  # Contains reference QA/QC plate with both PNG and ETH standards.
+  # When adding new standards please refer to this document.
+  # Updates for code when new standards are added will include a "location" parameter to select from this doc.
   refs <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/png_eth_stds.csv"))
+
   # MAGIC PARAMETERS FOR THIS SECTION
-  s1_concentration <- 1/50
-  current_min_relative_dilution <- 2.0^-10
+  s1_concentration                <- 1/50
+  current_min_relative_dilution   <- 2.0^-10
   # END MAGIC PARAMETER DEFINITIONS
 
-  control = list(maxit = 10000,
-                 abstol = 1e-8,
-                 reltol = 1e-6)
-
-  initial_solution = c(-1.0, 0.0, 10, 0.0, 0.0)
+  control           = list(maxit = 10000, abstol = 1e-8, reltol = 1e-6)
+  initial_solution  = c(-1.0, 0.0, 10, 0.0, 0.0)
 
   ref_fit <- refs %>%
     dplyr::group_by(.data$std_plate, .data$antigen) %>%
@@ -305,4 +307,267 @@ MFItoRAU_ETH <- function(sero_data, plate_list, counts_QC_output){
     dplyr::select(all_of(final_MFI_RAU_order))
 
   return(list(final_results, final_MFI_RAU_results, final_model_results_all))
+}
+#' Convert known dilution to mfi from fitted standard curve
+#' @description
+#' Convert dilution to predicted mfi using known standard curve fit.
+#'
+#' @param dilution Known dilution of samples
+#' @param params Known parameters for five parameter logistic fit.
+#' @return Returns the predicted mfi of a sample with known dilution.
+#' @export
+#' @author Eamon Conway
+#'
+#' @examples
+#' # This function is typically called internally by higher-level workflows.
+#' # Below is a minimal runnable example using dummy parameters.
+#'
+#' # Five-parameter logistic model typically expects parameters in the order:
+#' # a, b, c, d, e  (e often log-transformed)
+#' dummy_params <- c(a = 10000, b = 1.2, c = 0.05, d = 50, e = log(0.01))
+#'
+#' # Example dilution value
+#' dilution_example <- 0.1
+#'
+#' # Predict MFI from the dummy standard curve
+#' convert_dilution_to_mfi(dilution_example, dummy_params)
+#'
+convert_dilution_to_mfi <- function(dilution, params) {
+  if (is.null(dilution) || is.null(params)) {
+    error("Require both mfi and params to run.")
+  }
+  exp(log_logistic_5p(dilution, params[1], params[2], params[3], params[4], exp(params[5])))
+}
+#' Convert mfi to dilution using known standard curve fit and no bounds
+#' @description
+#' Convert mfi to dilution using known standard curve fit and no bounds unless you are below the asymptote of the standard curve.
+#' In this situation we set your value to min_relative_dilution. I dunno argue?
+#' @param mfi Known mfi of samples
+#' @param params Known parameters for five parameter logistic fit.
+#' @param min_relative_dilution Known minimum value of dilution in the standard curve. Relative means setting S1 to a dilution/RAU/concentration of 1.
+#' @return Returns the dilution of each sample in mfi.
+#' @export
+#' @author Eamon Conway
+#' @examples
+#' # This function is generally called inside higher-level analysis workflows.
+#' # Below is a minimal self-contained example using dummy values.
+#'
+#' # Dummy five-parameter logistic fit parameters:
+#' # a, b, c, d, e  (with e typically supplied on the log scale)
+#' dummy_params <- c(a = 10000, b = 1.2, c = 0.05, d = 50, e = log(0.01))
+#'
+#' # Example MFI value
+#' mfi_example <- 1500
+#'
+#' # Minimum relative dilution from the standard curve
+#' min_rel_dil <- 1
+#'
+#' # Convert MFI to dilution without bounds
+#' convert_mfi_to_dilution_no_bounds(mfi_example, dummy_params, min_rel_dil)
+convert_mfi_to_dilution_no_bounds <- function(mfi, params, min_relative_dilution) {
+  if (is.null(mfi) | is.null(params)) {
+    error("Require both mfi and params to run.")
+  }
+  y <- log(mfi)
+  y[y >= (params[2] + params[3])] <- 0.999*(params[2] + params[3])
+  result <- inverse_log_logistic_5p(
+    y,
+    params[1],
+    params[2],
+    params[3],
+    params[4],
+    exp(params[5])
+  )
+  result[y < params[2]] <- min_relative_dilution
+  return(result)
+}
+#' Convert mfi to dilution using known standard curve fit and no lower bound
+#' @description
+#' Convert mfi to dilution using known standard curve fit and no lower bound unless you are below the asymptote of the standard curve.
+#' In this situation we set your value to min_relative_dilution. I dunno argue?
+#' @param mfi Known mfi of samples
+#' @param params Known parameters for five parameter logistic fit.
+#' @param min_relative_dilution Known minimum value of dilution in the standard curve. Relative means setting S1 to a dilution/RAU/concentration of 1.
+#' @return Returns the dilution of each sample in mfi.
+#' @export
+#' @author Eamon Conway
+#' @examples
+#' # This function is usually called inside higher-level analysis steps.
+#' # Below is a minimal runnable example using dummy values.
+#'
+#' # Dummy five-parameter logistic fit parameters:
+#' # a, b, c, d, e  (with e typically on the log scale)
+#' dummy_params <- c(a = 10000, b = 1.2, c = 0.05, d = 50, e = log(0.01), f = 0, g = 5)
+#'
+#' # Example MFI value
+#' mfi_example <- 1500
+#'
+#' # Minimum relative dilution from the standard curve
+#' min_rel_dil <- 1
+#'
+#' # Convert MFI to dilution without applying a lower bound
+#' convert_mfi_to_dilution_no_lower_bound(mfi_example, dummy_params, min_rel_dil)
+convert_mfi_to_dilution_no_lower_bound <- function(mfi, params, min_relative_dilution) {
+  if (is.null(mfi) | is.null(params)) {
+    error("Require both mfi and params to run.")
+  }
+  y <- log(mfi)
+  result <- inverse_log_logistic_5p(
+    y,
+    params[1],
+    params[2],
+    params[3],
+    params[4],
+    exp(params[5])
+  )
+  result[y > (params[2] + params[3])] <- 1.0
+  result[y < params[2]] <- min_relative_dilution
+  result[y > params[7]] <- 1.0
+  # I dont think this will happen - Eamon (ask if needed)
+  result[result > 1.0] <- 1.0
+  return(result)
+}
+#' Convert mfi to dilution using known standard curve fit.
+#' @description
+#' Convert mfi to dilution using known standard curve fit.
+#'
+#' @param mfi Known mfi of samples
+#' @param params Known parameters for five parameter logistic fit.
+#' @param min_relative_dilution Known minimum value of dilution in the standard curve. Relative means setting S1 to a dilution/RAU/concentration of 1.
+#' @return Returns the dilution of each sample in mfi.
+#' @export
+#' @author Eamon Conway
+#' @examples
+#' # This function is typically used within larger analysis pipelines.
+#' # Below is a minimal runnable example using dummy values.
+#'
+#' # Dummy five-parameter logistic fit parameters:
+#' # a, b, c, d, e  (with e on the log scale)
+#' # Additional placeholders (f, g) included so params[6] and params[7] exist.
+#' dummy_params <- c(a = 10000, b = 1.2, c = 0.05, d = 50, e = log(0.01),
+#'                   f = -5, g = 5)
+#'
+#' # Example MFI value
+#' mfi_example <- 1500
+#'
+#' # Minimum relative dilution allowed
+#' min_rel_dil <- 1
+#'
+#' # Convert MFI to dilution
+#' convert_mfi_to_dilution(mfi_example, dummy_params, min_rel_dil)
+convert_mfi_to_dilution <- function(mfi, params, min_relative_dilution) {
+  if (is.null(mfi) | is.null(params)) {
+    error("Require both mfi and params to run.")
+  }
+  y <- log(mfi)
+  result <- inverse_log_logistic_5p(
+    y,
+    params[1],
+    params[2],
+    params[3],
+    params[4],
+    exp(params[5])
+  )
+  result[y > (params[2] + params[3])] <- 1.0
+  result[y < params[2]] <- min_relative_dilution
+  result[y < params[6]] <- min_relative_dilution
+  result[y > params[7]] <- 1.0
+  # I dont think this will happen - Eamon (ask if needed)
+  result[result > 1.0] <- 1.0
+  return(result)
+}
+#' Fit a standard curve to known mfi and dilution values.
+#' @description
+#' We wish to convert the standard curve samples to a five parameter logistic curve.
+#' This function takes those values and calls optim to determine the fit.
+#'
+#' @param mfi Known mfi of samples
+#' @param dilution Known dilution of samples
+#' @param control Optional list of control parameters for the underlying call to optim.
+#'
+#' @return standard curve log logistic
+#' @export
+#' @author Eamon Conway
+#' @examples
+#' # This function is typically called within data-processing workflows.
+#' # Workflow-style example (not run on CRAN)
+#'
+#' \donttest{
+#'
+#' # This block demonstrates how fit_standard_curve() is typically used
+#' # inside the MFItoRAU_Adj-conversion pipeline.
+#'
+#' # Step 1 — Prepare master file (normally from readSeroData)
+#' master_file <- data.frame(
+#'   Location = c("A1","A2","A3"),
+#'   Sample   = c("S1","S2","S3"),
+#'   Plate    = c("Plate1","Plate1","Plate1"),
+#'   Ag1 = c(12000, 8000, 4000),
+#'   Ag2 = c(9000,  5000, 2500)
+#' )
+#'
+#' # Convert antigen columns to numeric
+#' L <- master_file |>
+#'   dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
+#'
+#' # Fake plate layout (normally from readPlateLayout)
+#' layout <- list(Plate1 = data.frame(Location = c("A1","A2","A3"), WellType = "STD"))
+#'
+#'
+#' # Step 2 — Load reference standard curve MFI values (dummy data)
+#' refs <- data.frame(
+#'   std_plate = rep("StdPlate1", 5),
+#'   antigen   = rep("Ag1", 5),
+#'   dilution  = c(1, 1/2, 1/4, 1/8, 1/16),
+#'   eth_mfi   = c(14000, 7000, 3500, 1800, 900),
+#'   png_mfi   = c(15000, 7600, 3800, 1900, 950)
+#' )
+#'
+#'
+#' # Step 3 — Define optimisation settings
+#' control <- list(
+#'   maxit  = 10000,
+#'   abstol = 1e-8,
+#'   reltol = 1e-6
+#' )
+#'
+#'
+#' # Step 4 — Fit ETH and PNG curves per standard-plate × antigen
+#' ref_fit <- refs |>
+#'   dplyr::group_by(.data$std_plate, .data$antigen) |>
+#'   tidyr::nest() |>
+#'   dplyr::mutate(
+#'     eth_fit = purrr::map(data, ~ fit_standard_curve(.x$eth_mfi, .x$dilution, control)),
+#'     png_fit = purrr::map(data, ~ fit_standard_curve(.x$png_mfi, .x$dilution, control))
+#'   )
+#'
+#' ref_fit
+#' }
+fit_standard_curve <- function(mfi, dilution, control = NULL) {
+  if (is.null(mfi) | is.null(dilution)) {
+    error("Require both mfi and dilution to run.")
+  }
+
+  y1 <- log(mfi)
+  initial_solution <- c(-1.0, 0.0, max(y1), 0.0, 0.0)
+
+  error_func <- function(x) {
+    f1 <- log_logistic_5p(dilution, x[1], x[2], x[3], x[4], exp(x[5]))
+    sum((y1 - f1)^2.0)
+  }
+
+  solution <- optim(par = initial_solution, fn = error_func, control = control)
+  if (solution$convergence != 0) {
+    stop("Standard curve failed to converge. Look at data and possibly change control parameters from default.")
+  }
+  c(solution$par, min(y1), max(y1))
+}
+
+inverse_log_logistic_5p <- function(y,b,c,d,e,f){
+  A <- (d/(y-c))^(1/f)-1
+  return(exp(-e) *A^(1/b))
+}
+
+log_logistic_5p <- function(x, b, c, d, e, f) {
+  return(c + d / (1.0 + exp(b * (log(x) + e)))^f)
 }

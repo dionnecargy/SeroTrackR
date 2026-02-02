@@ -8,7 +8,7 @@
 #' @param plate_list  Output of `readPlateLayout()`
 #' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
-#' @param counts_QC_output Output from `getCountsQC()`.
+#' @param qc_results Output from `runQC()`.
 #'
 #' @return A list of three data frames:
 #' 1. Data frame with MFI data, converted RAU data, matched SampleID's, all intermediate dilution conversion factors
@@ -49,11 +49,7 @@
 #'   sero_data = sero_data
 #' )
 #' # Quality control
-#' processCounts_output      <- processCounts(sero_data)
-#' getCounts_output          <- getCounts(processCounts_output)
-#' sampleid_output           <- getSampleID(processCounts_output, plate_list)
-#' getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-#' getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+#' qc_results  <- runQC(sero_data, plate_list)
 #'
 #' # Run MFI to RAU conversion
 #' mfi_outputs               <- MFItoRAU_Plasmo(
@@ -61,13 +57,13 @@
 #'   plate_list = plate_list,
 #'   panel = "panel1",
 #'   std_point = 5,
-#'   counts_QC_output = getCountsQC_output
+#'   qc_results = qc_results
 #' )
 #'
 #' # View All Outputs
 #' mfi_outputs
 #' }
-MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, counts_QC_output){
+MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, qc_results){
 
   processed_master    <- processPkPfPv(sero_data, plate_list, panel = "panel1")
   processed_PfPv      <- processed_master$PfPv
@@ -76,25 +72,25 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
   #############################################################################
   # Pfk MFI to RAU processing pipeline
   #############################################################################
-  Pk_Final            <- MFItoRAU_Pk(processed_Pk, plate_list, std_point, counts_QC_output)
+  Pk_Final            <- MFItoRAU_Pk(processed_Pk, plate_list, std_point, qc_results)
 
   #############################################################################
   # Pf/Pv MFI to RAU processing pipeline
   #############################################################################
-  PfPv_Final          <- suppressWarnings(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "PNG", counts_QC_output))
-  PfPv_ETH_Final      <- suppressMessages(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "ETH", counts_QC_output))
+  PfPv_Final          <- suppressWarnings(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "PNG", qc_results))
+  PfPv_Adj_Final      <- suppressMessages(MFItoRAU_PfPv(processed_PfPv, plate_list, std_point, "ETH", qc_results))
 
   #############################################################################
   # Join Dataframes Together
   #############################################################################
   pk_final_results            <- Pk_Final
   pfpv_final_results          <- PfPv_Final[[1]]
-  pfpv_ETH_final_results      <- PfPv_ETH_Final[[1]]
+  pfpv_Adj_final_results      <- PfPv_Adj_Final[[1]]
 
   PkPfPv_Final <- suppressWarnings(
     pk_final_results %>%
       left_join(pfpv_final_results, by = c("SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total")) %>%
-      left_join(pfpv_ETH_final_results))
+      left_join(pfpv_Adj_final_results))
   PkPfPv_Final_MFI_RAU <- PkPfPv_Final %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI", ignore.case = FALSE), ends_with("_Dilution", ignore.case = FALSE))
 
@@ -120,8 +116,10 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
       Beads == "ETHtoPNGloglog" ~ "ETHtoPNGloglog",
       .default = "loglog")
     ) %>% dplyr::select(-Beads)
-  PkPfPv_long_mfi_rau <- suppressWarnings(PkPfPv_long_mfi %>%
-                                            right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")))%>%
+  PkPfPv_long_mfi_rau <- suppressWarnings(
+    PkPfPv_long_mfi %>%
+      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species"))
+    ) %>%
     dplyr::select(SampleID, Plate, Antigens, Species, MFI, RAU, RAU_Method)
 
   return(list(All_Results = PkPfPv_Final, MFI_RAU = PkPfPv_Final_MFI_RAU, MFI_RAU_long = PkPfPv_long_mfi_rau))
@@ -138,8 +136,8 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
 #' @param processed_PfPv  df$PfPv of output `processPkPfPv()`
 #' @param plate_list  Output of `readPlateLayout()`
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
-#' @param location "PNG" or "ETH" to filter WEHI standard curve data (reactive).
-#' @param counts_QC_output  Output from `getCountsQC()`
+#' @param location "PNG" or "ETH" to filter WEHI standard curve data.
+#' @param qc_results Output from `runQC()`.
 #'
 #' @return A list of three data frames:
 #' 1. Data frame with  MFI data, converted RAU data and matched SampleID's.
@@ -154,7 +152,7 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
 #' @import drc
 #'
 #' @author Dionne Argyropoulos, Connie Li Wai Suen, Eamon Conway
-MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, counts_QC_output){
+MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, qc_results){
 
   L <- processed_PfPv %>% dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
   layout <- plate_list
@@ -163,6 +161,8 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
   remaining_cols <- setdiff(colnames(L), excluded_cols)
   antigens <- remaining_cols[remaining_cols != ""]
   L$type.letter <- substr(L$Sample, start=1, stop=1) # Categorises into "B" = "Blank", "S" = "Standards", "U" or "X" = "Samples"
+
+  counts_QC_output    <- qc_results$counts_QC_output
 
   ##########################################################################################################
   #### Magic Parameters for 5-point and 10-point standard curve
@@ -332,7 +332,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
           dilution = ifelse(dilution < 1/51200, 1/51200, dilution)
         ) %>%
         tidyr::pivot_wider(names_from = "antigen", values_from = "dilution") %>%
-        dplyr::rename_with(~paste0(.x, "_ETHtoPNGloglog_Dilution"), -c(Location, Sample, Plate))
+        dplyr::rename_with(~paste0(.x, "_AdjtoPNGloglog_Dilution"), -c(Location, Sample, Plate))
 
       eth_converted_wide <- dplyr::left_join(
         eth_converted_wide.1,
@@ -385,7 +385,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
       #### Create output dataframes
       ##########################################################################################################
       # Save just MFI and RAU for downstream analyses
-      col_selection <- grepl("SampleID|Location.2|Plate|_MFI|\\_ETHtoPNGloglog_Dilution$", colnames(eth_converted_wide))
+      col_selection <- grepl("SampleID|Location.2|Plate|_MFI|\\_AdjtoPNGloglog_Dilution$", colnames(eth_converted_wide))
       MFI_RAU_results <- eth_converted_wide[, col_selection]
 
       # Store results and models for current plate: `results_all` and `model_results_all` store all results and model plots for each plate.
@@ -422,11 +422,11 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
     # Create the desired column order
     final_results_order <- c(
       "SampleID", "Location.2", "Location", "Sample", "Plate", "QC_total",
-      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNGloglog_Dilution"))))
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_AdjtoPNGloglog_Dilution"))))
     )
     final_MFI_RAU_order <- c(
       "SampleID", "Plate", "QC_total",
-      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_ETHtoPNGloglog_Dilution"))))
+      unlist(lapply(marker_bases, function(x) c(paste0(x, "_MFI"), paste0(x, "_AdjtoPNGloglog_Dilution"))))
     )
 
     # Reordered data frame
@@ -635,7 +635,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
 #' @param processed_Pk  df$Pk of output `processPkPfPv()`
 #' @param plate_list  Output of `readPlateLayout()`
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
-#' @param counts_QC_output  Output from `getCountsQC()`
+#' @param qc_results Output from `runQC()`.
 #'
 #' @return Data frame with MFI data, converted RAU data and matched SampleID's.
 #' @export
@@ -646,7 +646,7 @@ MFItoRAU_PfPv <- function(processed_PfPv, plate_list, std_point, location, count
 #' @importFrom purrr  reduce  map
 #'
 #' @author Dionne Argyropoulos, Caitlin Bourke
-MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
+MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, qc_results){
 
   L <- processed_Pk %>% dplyr::mutate(dplyr::across(-c(Location, Sample, Plate), as.numeric))
   layout <- plate_list
@@ -656,6 +656,7 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, counts_QC_output){
   antigens <- remaining_cols[remaining_cols != ""]
   L$type.letter <- substr(L$Sample, start=1, stop=1) # Categorises into "B" = "Blank", "S" = "Standards", "U" or "X" = "Samples"
 
+  counts_QC_output <- qc_results$counts_QC_output
   ##########################################################################################################
   #### Magic Parameters for 5-point and 10-point standard curve
   ##########################################################################################################

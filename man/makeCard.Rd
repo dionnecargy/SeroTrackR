@@ -15,7 +15,7 @@ makeCard(title, id, content, size = 12, style = "")
 
 \item{size}{A value from 1 to 12 of the width of the screen (default = 12).}
 
-\item{style}{Value for any css styling (reactive).}
+\item{style}{Value for any css styling.}
 }
 \value{
 A "card" in the Fluent UI format with content.

@@ -6,7 +6,7 @@
 #' @param id Identifying tag for use to link.
 #' @param content A list of content to be rendered.
 #' @param size A value from 1 to 12 of the width of the screen (default = 12).
-#' @param style Value for any css styling (reactive).
+#' @param style Value for any css styling.
 #' @return A "card" in the Fluent UI format with content.
 #' @export
 #' @examples

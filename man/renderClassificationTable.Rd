@@ -7,14 +7,14 @@
 renderClassificationTable(mfi_to_rau_output, algorithm_type, counts_QC_output)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-(reactive).}
+\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`
+.}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
 - "antibody_model_excLF016" (PvSeroTat excluding LF016).}
 
-\item{counts_QC_output}{Output from `getCountsQC()` (reactive).}
+\item{counts_QC_output}{Output from `getCountsQC()`.}
 }
 \value{
 A table of all classification outputs.
@@ -48,7 +48,7 @@ getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
 getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
 
 # Step 4: Run MFI to RAU (e.g., using ETH beads)
-mfi_to_rau_output  <- MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output)
+mfi_to_rau_output  <- MFItoRAU_Adj(sero_data, plate_list, getCountsQC_output)
 
 # Step 5: Render classification table
 renderClassificationTable(

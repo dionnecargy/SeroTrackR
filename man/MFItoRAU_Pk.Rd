@@ -5,7 +5,7 @@
 \title{Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 conversion for Pk proteins}
 \usage{
-MFItoRAU_Pk(processed_Pk, plate_list, std_point, counts_QC_output)
+MFItoRAU_Pk(processed_Pk, plate_list, std_point, qc_results)
 }
 \arguments{
 \item{processed_Pk}{df$Pk of output `processPkPfPv()`}
@@ -14,7 +14,7 @@ MFItoRAU_Pk(processed_Pk, plate_list, std_point, counts_QC_output)
 
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 
-\item{counts_QC_output}{Output from `getCountsQC()`}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 Data frame with MFI data, converted RAU data and matched SampleID's.

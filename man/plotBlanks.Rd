@@ -7,9 +7,9 @@
 plotBlanks(sero_data, experiment_name)
 }
 \arguments{
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 
-\item{experiment_name}{User-input experiment name (reactive).}
+\item{experiment_name}{User-input experiment name.}
 }
 \value{
 Bar plot showing whether MFI values for the blanks for each antigen

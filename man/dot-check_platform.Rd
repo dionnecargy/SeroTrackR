@@ -7,9 +7,9 @@
 .check_platform(raw_data, platform)
 }
 \arguments{
-\item{raw_data}{String with the raw data path (reactive).}
+\item{raw_data}{String with the raw data path.}
 
-\item{platform}{"magpix" or "bioplex" (reactive).}
+\item{platform}{"magpix" or "bioplex".}
 }
 \value{
 TRUE: if platform == file format, ERROR message when platform does

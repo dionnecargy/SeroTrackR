@@ -73,13 +73,13 @@ renderQCReport <- function(
   sampleid_output           <- getSampleID(processCounts_output, plate_list)
   getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
   getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  mfi_to_rau_output         <- suppressMessages(MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output))
+  mfi_to_rau_output         <- suppressMessages(MFItoRAU_Adj(sero_data, plate_list, getCountsQC_output))
 
   stdcurve_plot             <- suppressWarnings(plotStds(sero_data, location, experiment_name))
   plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
   check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
   blanks_plot               <- plotBlanks(sero_data, experiment_name)
-  model_plot                <- plotModel_ETH(mfi_to_rau_output, sero_data)
+  model_plot                <- plotModel_Adj(mfi_to_rau_output, sero_data)
 
   ###############################################################################
   # ----- Create helper functions -----

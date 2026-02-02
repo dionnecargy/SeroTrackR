@@ -7,7 +7,7 @@
 .extract_luminex_sections(df, cfg, plt)
 }
 \arguments{
-\item{df}{String with the raw data path (reactive).}
+\item{df}{String with the raw data path.}
 
 \item{cfg}{Magpix version output of .magpix_version_config().}
 

@@ -5,13 +5,7 @@
 \title{Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 conversion for Pk/Pf/Pv Master Function}
 \usage{
-MFItoRAU_Plasmo(
-  sero_data,
-  plate_list,
-  panel = "panel1",
-  std_point,
-  counts_QC_output
-)
+MFItoRAU_Plasmo(sero_data, plate_list, panel = "panel1", std_point, qc_results)
 }
 \arguments{
 \item{sero_data}{Output of `readserodata_output()`}
@@ -22,7 +16,7 @@ MFItoRAU_Plasmo(
 
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 
-\item{counts_QC_output}{Output from `getCountsQC()`.}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 A list of three data frames:
@@ -60,11 +54,7 @@ plate_list <- readPlateLayout(
   sero_data = sero_data
 )
 # Quality control
-processCounts_output      <- processCounts(sero_data)
-getCounts_output          <- getCounts(processCounts_output)
-sampleid_output           <- getSampleID(processCounts_output, plate_list)
-getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Run MFI to RAU conversion
 mfi_outputs               <- MFItoRAU_Plasmo(
@@ -72,7 +62,7 @@ mfi_outputs               <- MFItoRAU_Plasmo(
   plate_list = plate_list,
   panel = "panel1",
   std_point = 5,
-  counts_QC_output = getCountsQC_output
+  qc_results = qc_results
 )
 
 # View All Outputs

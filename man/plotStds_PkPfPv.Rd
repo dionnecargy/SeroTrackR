@@ -7,9 +7,9 @@
 plotStds_PkPfPv(sero_data, experiment_name)
 }
 \arguments{
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 
-\item{experiment_name}{User-input experiment name (reactive).}
+\item{experiment_name}{User-input experiment name.}
 }
 \value{
 - Dot and line plot of standard curves (S1-S10)

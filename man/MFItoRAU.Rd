@@ -5,14 +5,14 @@
 \title{Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 conversion}
 \usage{
-MFItoRAU(sero_data, plate_list, counts_QC_output)
+MFItoRAU(sero_data, plate_list, qc_results)
 }
 \arguments{
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 
-\item{plate_list}{Output from `readPlateLayout()` (reactive).}
+\item{plate_list}{Output from `readPlateLayout()`.}
 
-\item{counts_QC_output}{Output from `getCountsQC()` (reactive).}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 A list of three data frames:
@@ -44,17 +44,13 @@ sero_data  <- readSeroData(your_raw_data,"magpix")
 plate_list <- readPlateLayout(your_plate_layout, sero_data)
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using PNG beads
 mfi_to_rau <- MFItoRAU(
   sero_data = sero_data,
   plate_list = plate_list,
-  counts_QC_output = counts_qc
+  qc_results = qc_results
 )
 
 }
