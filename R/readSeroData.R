@@ -215,21 +215,21 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 .relabel_columns <- function(df) {
   colnames(df) <- dplyr::case_when(
     stringr::str_detect(colnames(df), regex("EBP", ignore_case = TRUE)) ~ "EBP",
-    stringr::str_detect(colnames(df), regex("LF005", ignore_case = TRUE)) ~ "LF005", # Happy to relabel to PvLF005 or Pv-fam-a
-    stringr::str_detect(colnames(df), regex("LF010", ignore_case = TRUE)) ~ "LF010", # Happy to relabel to PvLF010 or PvMSP5
-    stringr::str_detect(colnames(df), regex("LF016", ignore_case = TRUE)) ~ "LF016", # Happy to relabel to PvLF016 or PvMSP1-19
+    stringr::str_detect(colnames(df), regex("(LF005|Pv-fam-a)", ignore_case = TRUE)) ~ "LF005",
+    stringr::str_detect(colnames(df), regex("(LF010|MSP5)", ignore_case = TRUE)) ~ "LF010",
+    stringr::str_detect(colnames(df), regex("(LF016|PvMSP1-19|PvMSP1.19|PvMSP1)", ignore_case = TRUE)) ~ "LF016",
     stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
     stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87)", ignore_case = TRUE)) ~ "RBP2b.P87",
-    stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150", # Happy to relabel to PvPTEX150
+    stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150",
     stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
     stringr::str_detect(colnames(df), regex("(PfMSP1-19|PfMSP1|PfMSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
     stringr::str_detect(colnames(df), regex("AMA1", ignore_case = TRUE)) ~ "PfAMA1",
     stringr::str_detect(colnames(df), regex("etramp5Ag1", ignore_case = TRUE)) ~ "Pfetramp5Ag1",
+    stringr::str_detect(colnames(df), regex("PfTramp", ignore_case = TRUE)) ~ "PfTramp",
     stringr::str_detect(colnames(df), regex("HSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
     stringr::str_detect(colnames(df), regex("Gexp18", ignore_case = TRUE)) ~ "PfGexp18",
     stringr::str_detect(colnames(df), regex("SSP2", ignore_case = TRUE)) ~ "PkSSP2",
     stringr::str_detect(colnames(df), regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10",
-    stringr::str_detect(colnames(df), regex("PfTramp", ignore_case = TRUE)) ~ "PfTramp",
     stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~ "Pk8",
     stringr::str_detect(colnames(df), regex("SERA3Ag2", ignore_case = TRUE)) ~ "PkSERA3Ag2",
     TRUE ~ colnames(df) # Keep unmatched names as-is

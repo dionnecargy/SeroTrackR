@@ -50,14 +50,25 @@
 plotMFI <- function(mfi_to_rau_output, location){
 
   df_results <- mfi_to_rau_output[[2]]
+
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+
+  name_lookup <- setNames(new_names, old_names)
+
   df_results <- df_results %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI")) %>%
     dplyr::rename_with(~str_replace(., "_MFI", ""), ends_with("_MFI")) %>%
     tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigen", values_to = "MFI") %>%
-    dplyr::mutate(Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # Reorder by plate number
-                  MFI = as.numeric(MFI))
+    dplyr::mutate(
+      Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # Reorder by plate number
+      MFI = as.numeric(MFI),
+      Antigen = dplyr::recode(Antigen, !!!name_lookup)
+    )
 
-  df_wehi <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/longitudinal_MFI.csv"))
+  df_wehi <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/longitudinal_MFI.csv")) %>%
+    dplyr::mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
 
   plot <- df_results %>%
     ggplot2::ggplot(aes(x= Antigen, y = MFI)) +

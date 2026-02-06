@@ -42,9 +42,16 @@ plotBeadCounts <- function(qc_results){
 
   antigen_counts_output <- qc_results$getAntigenCounts_output
 
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+
+  name_lookup <- setNames(new_names, old_names)
+
   antigen_counts_output$Plate <- factor(
     antigen_counts_output$Plate,
-    levels = unique(antigen_counts_output$Plate[order(as.numeric(str_extract(antigen_counts_output$Plate, "\\d+")))])
+    levels = unique(antigen_counts_output$Plate[order(as.numeric(str_extract(antigen_counts_output$Plate, "\\d+")))]),
+    Antigen = dplyr::recode(Antigen, !!!name_lookup)
   ) # reorder by plate number
   antigen_counts_output %>%
     ggplot2::ggplot(

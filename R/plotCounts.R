@@ -38,6 +38,7 @@
 #' plotCounts(qc_results, "experiment1")
 #' }
 plotCounts <- function(qc_results, experiment_name){
+
   bead_counts <- qc_results$getCounts_output
   bead_counts$Plate <- factor(
     bead_counts$Plate,

@@ -49,5 +49,5 @@ plotStds(
 
 }
 \author{
-Shazia Ruybal-Pesantez, Dionne Argyropoulos
+Dionne Argyropoulos, Shazia Ruybal-Pesantez
 }

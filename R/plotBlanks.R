@@ -41,10 +41,20 @@
 plotBlanks <- function(sero_data, experiment_name){
   master_file <- sero_data
   blanks <- master_file$blanks
+
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+
+  name_lookup <- setNames(new_names, old_names)
+
   blanks %>%
     dplyr::select(-Location) %>%
     tidyr::pivot_longer(-c(Sample, Plate), names_to = "Antigen", values_to = "MFI") %>%
-    dplyr::mutate(Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))]))) %>% # Reorder by plate number
+    dplyr::mutate(
+      Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])),  # Reorder by plate number
+      Antigen = dplyr::recode(Antigen, !!!name_lookup)
+    ) %>%
     ggplot2::ggplot(aes(x = factor(Antigen), y = as.numeric(MFI), fill = Sample)) +
     ggplot2::geom_bar(stat = "identity", position = "dodge") +
     ggplot2::geom_hline(yintercept = 50, linetype = "dashed", color = "grey") +
