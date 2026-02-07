@@ -7,12 +7,13 @@
 runPvSeroPipeline(
   raw_data,
   plate_layout,
-  platform,
+  platform = "magpix",
   location,
-  experiment_name,
-  classify,
-  algorithm_type,
-  sens_spec
+  experiment_name = "experiment1",
+  std_point = 10,
+  classify = "Yes",
+  algorithm_type = "antibody_model",
+  sens_spec = "balanced"
 )
 }
 \arguments{
@@ -20,17 +21,20 @@ runPvSeroPipeline(
 
 \item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2... etc.}
 
-\item{platform}{"magpix" or "bioplex".}
+\item{platform}{"magpix" or "bioplex". Default = "magpix".}
 
 \item{location}{"PNG" or "ETH" to filter WEHI standard curve data.}
 
 \item{experiment_name}{User-input experiment name.}
 
-\item{classify}{"Yes" or "No" depending on whether you would like classification or not.}
+\item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.}
+
+\item{classify}{"Yes" or "No" depending on whether you would like classification or not. Default = "Yes".}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
-- "antibody_model_excLF016" (PvSeroTat excluding LF016).}
+- "antibody_model_excLF016" (PvSeroTat excluding LF016).
+Default = "antibody_model".}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
 - "balanced" (default),
@@ -68,6 +72,7 @@ runPvSeroPipeline(
   platform = "magpix",
   location = "PNG",
   experiment_name = "experiment1",
+  std_point = 10,
   algorithm_type = "antibody_model",
   sens_spec = "balanced",
   classify = "Yes"
@@ -80,6 +85,7 @@ runPvSeroPipeline(
   platform = "magpix",
   location = "PNG",
   experiment_name = "experiment1",
+  std_point = 10,
   algorithm_type = "antibody_model",
   sens_spec = "balanced",
   classify = "No"

@@ -5,7 +5,7 @@
 \title{Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
 conversion}
 \usage{
-MFItoRAU(sero_data, plate_list, qc_results)
+MFItoRAU(sero_data, plate_list, qc_results, std_point = 10, project = NULL)
 }
 \arguments{
 \item{sero_data}{Output from `readSeroData()`.}
@@ -13,6 +13,10 @@ MFItoRAU(sero_data, plate_list, qc_results)
 \item{plate_list}{Output from `readPlateLayout()`.}
 
 \item{qc_results}{Output from `runQC()`.}
+
+\item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.}
+
+\item{project}{Default = NULL. Only write "pkpfpv" if using Pk/Pf/Pv pipeline.}
 }
 \value{
 A list of three data frames:
@@ -46,7 +50,7 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 # Step 2: Process counts and perform quality control
 qc_results  <- runQC(sero_data, plate_list)
 
-# Step 3: Convert MFI to RAU using PNG beads
+# Step 3: Convert MFI to RAU
 mfi_to_rau <- MFItoRAU(
   sero_data = sero_data,
   plate_list = plate_list,
@@ -56,5 +60,5 @@ mfi_to_rau <- MFItoRAU(
 }
 }
 \author{
-Connie Li Wai Suen, Dionne Argyropoulos
+Dionne Argyropoulos, Connie Li Wai Suen
 }

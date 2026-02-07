@@ -109,7 +109,7 @@ runPlasmoPipeline <- function(
   #############################################################
   # Step 5: Perform Pv classification
   #############################################################
-  Pv_classified <- classifyPv(mfi_outputs, algorithm_type, sens_spec, qc_results)
+  Pv_classified             <- classifyPv(mfi_outputs, algorithm_type, sens_spec, qc_results)
   message("Pv classification completed.")
 
   #############################################################

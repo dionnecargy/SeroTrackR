@@ -75,8 +75,6 @@ final_analysis <- runPvSeroPipeline(
   algorithm_type = "antibody_model", 
   sens_spec = "balanced"
 )
-
-final_analysis
 ```
 
 #### Classification 
