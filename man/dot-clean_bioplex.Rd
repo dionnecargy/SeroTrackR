@@ -7,7 +7,7 @@
 .clean_bioplex(df)
 }
 \arguments{
-\item{file}{String with the raw data path.}
+\item{df}{Output from `.read_luminex.file()`}
 }
 \value{
 Cleaned data fame

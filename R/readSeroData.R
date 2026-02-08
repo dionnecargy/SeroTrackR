@@ -192,8 +192,10 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' \donttest{
 #' your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
 #'
-#'#' if (requireNamespace("dplyr", quietly = TRUE) &&
-#'     requireNamespace("janitor", quietly = TRUE)) {
+#' if (
+#'  requireNamespace("dplyr", quietly = TRUE) &&
+#'  requireNamespace("janitor", quietly = TRUE)
+#' ) {
 #'
 #'   # Read in raw luminex file
 #'   df <- .read_luminex_file(your_raw_data)
@@ -238,7 +240,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to identify Magpix version
 #'
-#' @param file String with the raw data path.
+#' @param version String with the raw data path.
 #'
 #' @returns specific column names for filtering for xPONENT software v4.2 and v4.3
 #' @export
@@ -312,7 +314,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   list(
     data_raw = df,
     results  = results,
-    counts   = tibble::as_tibble(counts),
+    counts   = dplyr::as_tibble(counts),
     blanks   = blanks,
     stds     = stds,
     run      = run
@@ -320,7 +322,9 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process luminex (Magpix/Intelliflex) data
 #'
-#' @param file String with the raw data path.
+#' @param df Raw luminex file
+#' @param row1 Leading row to subset
+#' @param row2 Final row to subset
 #'
 #' @returns Cleaned data fame
 #' @export
@@ -381,7 +385,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process bioplex data
 #'
-#' @param file String with the raw data path.
+#' @param df Output from `.read_luminex.file()`
 #'
 #' @returns Cleaned data fame
 #' @export
@@ -397,6 +401,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' df            <- .read_luminex_file(your_raw_data)
 #' results       <- .clean_bioplex(df)
 .clean_bioplex <- function(df){
+
+  platemap      <- read.csv(system.file("extdata", "platemap.csv", package = "SeroTrackR"))
   col_name <- colnames(df)[2]  # second column
   df2 <- df %>%
     # Rename first column
@@ -443,7 +449,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process bioplex sections
 #'
-#' @param file String with the raw data path.
+#' @param df Output from `.read_luminex_file()`
 #'
 #' @returns List of data_raw, results, counts, blanks, stds, run
 #' @export
@@ -491,7 +497,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   list(
     data_raw = df,
     results  = results,
-    counts   = tibble::as_tibble(counts),
+    counts   = dplyr::as_tibble(counts),
     blanks   = blanks,
     stds     = stds,
     run      = run
@@ -500,7 +506,9 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 }
 #' Helper function to process luminex into master_list
 #'
-#' @param file String with the raw data path.
+#' @param sections Output from `.post_process_bioplex()`.
+#' @param file_name User input file name.
+#' @param master_list Intermediary df from `readSeroData()`.
 #'
 #' @returns List of data_raw, results, counts, blanks, stds, run
 #' @export
@@ -509,26 +517,6 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' @importFrom dplyr bind_rows mutate
 #'
 #' @author Dionne Argyropoulos
-#'
-#' @examples
-#' \donttest{
-#'  raw_data_filenames = NULL
-#'
-#'  # For MAGPIX data
-#'  file          <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
-#'  file_name     <- tolower(if (is.null(raw_data_filenames)) basename(file) else raw_data_filenames)
-#'  cfg           <- .magpix_version_config(version)
-#'  df            <- .read_luminex_file(file)
-#'  sections      <- .extract_luminex_sections(df, cfg, "magpix")
-#'  master_list   <- .post_process_luminex(sections, file_name, master_list)
-#'
-#'  # For BIOPLEX data
-#'  file          <- system.file("extdata", "example_BioPlex_plate1.xlsx", package = "SeroTrackR")
-#'  file_name     <- tolower(if (is.null(raw_data_filenames)) basename(file) else raw_data_filenames)
-#'  df            <- .read_luminex_file(file_name)
-#'  sections      <- .post_process_bioplex(df)
-#'  master_list    <- .post_process_luminex(sections, file_name, master_list)
-#' }
 .post_process_luminex <- function(sections, file_name, master_list) {
 
   plate <- stringr::str_extract(file_name, "(?i)(repeat)?plate\\d+(?=[._-]|$)")

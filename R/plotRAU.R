@@ -32,17 +32,13 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
-#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#' qc_results <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
 #' mfi_to_rau <- MFItoRAU_Adj(
-#'   sero_data = sero_data,
-#'   plate_list         = plate_list,
-#'   counts_QC_output   = counts_qc
+#'   sero_data   = sero_data,
+#'   plate_list  = plate_list,
+#'   qc_results  = qc_results
 #' )
 #'
 #' # Step 4: Plot RAU values
@@ -64,8 +60,7 @@ plotRAU <- function(mfi_to_rau_output, location){
     tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigen", values_to = "RAU") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # Reorder by plate number
-      RAU = as.numeric(RAU),
-      Antigen = dplyr::recode(Antigen, !!!name_lookup)
+      RAU = as.numeric(RAU)
     )
 
   df_wehi <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/longitudinal_RAU.csv")) %>%

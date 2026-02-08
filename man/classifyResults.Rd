@@ -4,7 +4,13 @@
 \alias{classifyResults}
 \title{Random Forest Classification}
 \usage{
-classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, qc_results)
+classifyResults(
+  mfi_to_rau_output,
+  algorithm_type = "antibody_model",
+  sens_spec = "balanced",
+  qc_results,
+  project = NULL
+)
 }
 \arguments{
 \item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`.}
@@ -23,6 +29,8 @@ classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, qc_results)
 - "95\% specificity".}
 
 \item{qc_results}{Output from `runQC()`.}
+
+\item{project}{Default = NULL. Only write "pkpfpv" if using Pk/Pf/Pv pipeline.}
 }
 \value{
 - Data frame with exposure status for every sample.

@@ -7,7 +7,7 @@
 .post_process_bioplex(df)
 }
 \arguments{
-\item{file}{String with the raw data path.}
+\item{df}{Output from `.read_luminex_file()`}
 }
 \value{
 List of data_raw, results, counts, blanks, stds, run

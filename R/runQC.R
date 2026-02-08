@@ -4,7 +4,6 @@
 #'
 #' @param sero_data Output from `readSeroData()`.
 #' @param plate_list Output from `readPlateLayout()`.
-#' @param experiment_name User-input experiment name.
 #'
 #' @returns processCounts_output, getCounts_output, sampleid_output, getAntigenCounts_output, getCountsQC_output
 #' @export

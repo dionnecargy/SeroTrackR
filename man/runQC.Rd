@@ -10,8 +10,6 @@ runQC(sero_data, plate_list)
 \item{sero_data}{Output from `readSeroData()`.}
 
 \item{plate_list}{Output from `readPlateLayout()`.}
-
-\item{experiment_name}{User-input experiment name.}
 }
 \value{
 processCounts_output, getCounts_output, sampleid_output, getAntigenCounts_output, getCountsQC_output

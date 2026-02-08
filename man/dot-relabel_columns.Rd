@@ -20,8 +20,10 @@ columns for each plate.
 \donttest{
 your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
 
-#' if (requireNamespace("dplyr", quietly = TRUE) &&
-    requireNamespace("janitor", quietly = TRUE)) {
+if (
+ requireNamespace("dplyr", quietly = TRUE) &&
+ requireNamespace("janitor", quietly = TRUE)
+) {
 
   # Read in raw luminex file
   df <- .read_luminex_file(your_raw_data)

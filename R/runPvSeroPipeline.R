@@ -12,7 +12,6 @@
 #' @param algorithm_type  User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
-#' Default = "antibody_model".
 #' @param sens_spec User-selected Sensitivity/Specificity threshold:
 #' - "balanced" (default),
 #' - "85\% sensitivity",
@@ -107,7 +106,7 @@ runPvSeroPipeline <- function(
   if(location == "ETH"){
     mfi_to_rau_output       <- suppressMessages(MFItoRAU_Adj(sero_data, plate_list, qc_results, std_point, project = NULL))
   } else if(location == "PNG"){
-    mfi_to_rau_output       <- suppressMessages(MFItoRAU(sero_data, plate_list, qc_results, std_point, project = NULL))
+    mfi_to_rau_output       <- suppressWarnings(MFItoRAU(sero_data, plate_list, qc_results, std_point, project = NULL))
   }
   message("MFI to RAU conversion completed.")
 
@@ -129,7 +128,7 @@ runPvSeroPipeline <- function(
   # Step 5: Classification
   #############################################################
   if(classify == "Yes"){
-    classifyResults_output    <- classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, qc_results)
+    classifyResults_output    <- classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, qc_results, project = NULL)
     message("Pv classification completed.")
     return(list(classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
   } else {

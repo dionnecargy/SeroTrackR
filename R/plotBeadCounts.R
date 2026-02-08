@@ -48,11 +48,12 @@ plotBeadCounts <- function(qc_results){
 
   name_lookup <- setNames(new_names, old_names)
 
-  antigen_counts_output$Plate <- factor(
-    antigen_counts_output$Plate,
-    levels = unique(antigen_counts_output$Plate[order(as.numeric(str_extract(antigen_counts_output$Plate, "\\d+")))]),
-    Antigen = dplyr::recode(Antigen, !!!name_lookup)
-  ) # reorder by plate number
+  antigen_counts_output <- antigen_counts_output %>%
+    dplyr::mutate(
+      Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number,
+      Antigen = dplyr::recode(Antigen, !!!name_lookup)
+    )
+
   antigen_counts_output %>%
     ggplot2::ggplot(
       aes(Plate, Count, colour = Repeat, alpha = Repeat, size = Repeat,

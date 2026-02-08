@@ -7,6 +7,7 @@
 #' @param date A string or Date. Defaults to today's date.
 #' @param experiment_notes A string of notes. Default is "no notes".
 #' @param location A string for experiment location: "ETH" or "PNG" accepted.
+#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.
 #' @param path Output path for the PDF file. Defaults to current working directory.
 #'
 #' @return Rendered PDF report.
@@ -55,6 +56,7 @@ renderQCReport <- function(
     date = format(Sys.Date(), "%Y%m%d"), # default to today's date
     experiment_notes = "no notes",
     location,
+    std_point = 10,
     path = "." # Default to current working directory
   ) {
 
@@ -62,24 +64,28 @@ renderQCReport <- function(
   # ----- Load Data functions -----
   ###############################################################################
 
-  sero_data           <- readSeroData(raw_data, platform)
+  sero_data                 <- readSeroData(raw_data, platform)
   raw_data_info             <- sero_data$data_raw
   raw_data_filename         <- tolower(basename(raw_data))
   plate_list                <- readPlateLayout(plate_layout, sero_data)
   version                   <- getGithubRelease("dionnecargy", "PvSeroApp")
 
-  processCounts_output      <- processCounts(sero_data)
-  getCounts_output          <- getCounts(processCounts_output)
-  sampleid_output           <- getSampleID(processCounts_output, plate_list)
-  getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-  getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  mfi_to_rau_output         <- suppressMessages(MFItoRAU_Adj(sero_data, plate_list, getCountsQC_output))
+  qc_results                <- runQC(sero_data, plate_list)
+  if(location == "ETH"){
+    mfi_to_rau_output       <- suppressMessages(MFItoRAU_Adj(sero_data, plate_list, qc_results, std_point, project = NULL))
+  } else if(location == "PNG"){
+    mfi_to_rau_output       <- suppressWarnings(MFItoRAU(sero_data, plate_list, qc_results, std_point, project = NULL))
+  }
 
   stdcurve_plot             <- suppressWarnings(plotStds(sero_data, location, experiment_name))
-  plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
-  check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
+  plateqc_plot              <- plotCounts(qc_results, experiment_name)
+  check_repeats_output      <- getRepeats(qc_results, plate_list)
   blanks_plot               <- plotBlanks(sero_data, experiment_name)
-  model_plot                <- plotModel_Adj(mfi_to_rau_output, sero_data)
+  if(location == "ETH"){
+    model_plot              <- plotModel_Adj(mfi_to_rau_output, sero_data)
+  } else if(location == "PNG"){
+    model_plot              <- plotModel(mfi_to_rau_output, sero_data)
+  }
 
   ###############################################################################
   # ----- Create helper functions -----
@@ -192,22 +198,22 @@ renderQCReport <- function(
       output_file = paste0(experiment_name, "_", date, "_", location, "_", version, "_QCreport.pdf"),
       output_dir = here::here(path),
       params = list(
-        raw_data_filename = raw_data_filename,
-        experiment_name = experiment_name,
-        date = date,
-        experiment_notes = experiment_notes,
-        platform = platform,
-        stdcurve_plot = stdcurve_plot,
-        plateqc_plot = plateqc_plot,
-        blanks_plot = blanks_plot,
-        check_repeats_output = check_repeats_output,
-        check_repats_table_pdf = check_repats_table_pdf(check_repeats_output),
-        model_plot = model_plot,
-        operator_output = operator_output(),
-        volume_output = volume_output(),
-        calibration_output = calibration_output(),
-        machine_output = machine_output(),
-        plate_list_output = plate_list_output()
+        raw_data_filename        = raw_data_filename,
+        experiment_name          = experiment_name,
+        date                     = date,
+        experiment_notes         = experiment_notes,
+        platform                 = platform,
+        stdcurve_plot            = stdcurve_plot,
+        plateqc_plot             = plateqc_plot,
+        blanks_plot              = blanks_plot,
+        check_repeats_output     = check_repeats_output,
+        check_repats_table_pdf   = check_repats_table_pdf(check_repeats_output),
+        model_plot               = model_plot,
+        operator_output          = operator_output(),
+        volume_output            = volume_output(),
+        calibration_output       = calibration_output(),
+        machine_output           = machine_output(),
+        plate_list_output        = plate_list_output()
       )
     )
   )

@@ -41,17 +41,13 @@ sero_data  <- readSeroData(your_raw_data,"magpix")
 plate_list <- readPlateLayout(your_plate_layout, sero_data)
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
 mfi_to_rau <- MFItoRAU_Adj(
-  sero_data = sero_data,
-  plate_list         = plate_list,
-  counts_QC_output   = counts_qc
+  sero_data    = sero_data,
+  plate_list   = plate_list,
+  qc_results   = qc_results
 )
 
 # Step 4: Define sens/spec thresholds
@@ -66,7 +62,7 @@ all_classifications <- purrr::map_dfr(sens_spec_all, ~{
     mfi_to_rau_output = mfi_to_rau,
     algorithm_type = "antibody_model",
     sens_spec = .x,
-    counts_QC_output = counts_qc
+    qc_results = qc_results
   ) |>
   as.data.frame() |>
   dplyr::mutate(sens_spec = .x)

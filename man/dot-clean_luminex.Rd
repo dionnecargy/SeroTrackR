@@ -7,7 +7,11 @@
 .clean_luminex(df, row1, row2)
 }
 \arguments{
-\item{file}{String with the raw data path.}
+\item{df}{Raw luminex file}
+
+\item{row1}{Leading row to subset}
+
+\item{row2}{Final row to subset}
 }
 \value{
 Cleaned data fame

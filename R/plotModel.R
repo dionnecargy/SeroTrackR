@@ -34,17 +34,13 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
-#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#' qc_results <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
 #' mfi_to_rau <- MFItoRAU_Adj(
 #'   sero_data = sero_data,
 #'   plate_list = plate_list,
-#'   counts_QC_output = counts_qc
+#'   qc_results = qc_results
 #' )
 #'
 #' # Step 4: Plot Model Results
@@ -54,17 +50,16 @@ plotModel <- function(mfi_to_rau_output, sero_data){
 
   model_results <- mfi_to_rau_output[[3]]
 
+  combined_data <- model_results %>%
+    dplyr::mutate(
+      Plate = gsub("^plate", "", Plate)
+    )
+
   # relabel antigen names from lab codes to proper antigen names
   old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
   new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
 
   name_lookup <- setNames(new_names, old_names)
-
-  combined_data <- model_results %>%
-    dplyr::mutate(
-      Plate = gsub("^plate", "", Plate),
-      Antigen = dplyr::recode(Antigen, !!!name_lookup)
-    )
 
   ### Get Standards for points
   stds_file <- sero_data$stds
@@ -147,17 +142,13 @@ plotModel <- function(mfi_to_rau_output, sero_data){
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
-#' counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+#' qc_results <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
 #' mfi_to_rau <- MFItoRAU_Adj(
 #'   sero_data = sero_data,
-#'   plate_list         = plate_list,
-#'   counts_QC_output   = counts_qc
+#'   plate_list = plate_list,
+#'   qc_results = qc_results
 #' )
 #'
 #' # Step 4: Plot Model Results
@@ -168,16 +159,9 @@ plotModel_Adj <- function(mfi_to_rau_output, sero_data){
   # Load model results
   model_results <- mfi_to_rau_output[[3]]
 
-  # relabel antigen names from lab codes to proper antigen names
-  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
-  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
-
-  name_lookup <- setNames(new_names, old_names)
-
   # Convert the list of data frames into a single data frame
   combined_data <- model_results %>%
-    dplyr::bind_rows(.id = "Plate") %>%
-    dplyr::mutate(antigen = dplyr::recode(antigen, !!!name_lookup))
+    dplyr::bind_rows(.id = "Plate")
 
   # Generate plots for each plate, grouping antigens together
   plots_model <- lapply(unique(combined_data$Plate), function(plate_name) {

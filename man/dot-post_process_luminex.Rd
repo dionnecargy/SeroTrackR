@@ -7,33 +7,17 @@
 .post_process_luminex(sections, file_name, master_list)
 }
 \arguments{
-\item{file}{String with the raw data path.}
+\item{sections}{Output from `.post_process_bioplex()`.}
+
+\item{file_name}{User input file name.}
+
+\item{master_list}{Intermediary df from `readSeroData()`.}
 }
 \value{
 List of data_raw, results, counts, blanks, stds, run
 }
 \description{
 Helper function to process luminex into master_list
-}
-\examples{
-\donttest{
- raw_data_filenames = NULL
-
- # For MAGPIX data
- file          <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
- file_name     <- tolower(if (is.null(raw_data_filenames)) basename(file) else raw_data_filenames)
- cfg           <- .magpix_version_config(version)
- df            <- .read_luminex_file(file)
- sections      <- .extract_luminex_sections(df, cfg, "magpix")
- master_list   <- .post_process_luminex(sections, file_name, master_list)
-
- # For BIOPLEX data
- file          <- system.file("extdata", "example_BioPlex_plate1.xlsx", package = "SeroTrackR")
- file_name     <- tolower(if (is.null(raw_data_filenames)) basename(file) else raw_data_filenames)
- df            <- .read_luminex_file(file_name)
- sections      <- .post_process_bioplex(df)
- master_list    <- .post_process_luminex(sections, file_name, master_list)
-}
 }
 \author{
 Dionne Argyropoulos

@@ -176,26 +176,44 @@ MFItoRAU <- function(
     ungroup() %>%
     dplyr::select(SampleID, Location.2 = Location, Plate, QC_total)
 
-  # Join all results together and relabel antigen names for export
   # relabel antigen names from lab codes to proper antigen names
   old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
   new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
   name_lookup <- setNames(new_names, old_names)
 
+  # Join all results together and relabel antigen names for export
   final_results <- dplyr::bind_rows(results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Plate", "Location.2")) %>%
-    dplyr::mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
+    dplyr::rename_with(function(col_names) {
+      for (old in names(name_lookup)) {
+        col_names <- str_replace(
+          col_names,
+          paste0("^", old, "(?=_)"),  # match only prefix before underscore
+          name_lookup[[old]]
+        )
+      }
+      col_names
+    })
 
   final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Plate")) %>%
-    dplyr::mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
+    dplyr::rename_with(function(col_names) {
+      for (old in names(name_lookup)) {
+        col_names <- str_replace(
+          col_names,
+          paste0("^", old, "(?=_)"),  # match only prefix before underscore
+          name_lookup[[old]]
+        )
+      }
+      col_names
+    })
 
   final_model_results_all <- purrr::imap_dfr(
     model_results_all,
     ~ purrr::imap_dfr(.x, ~ dplyr::mutate(.x, Antigen = .y), .id = "Antigen"),
     .id = "Plate"
   ) %>%
-    dplyr::mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
+  dplyr::mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
 
   # Output
   return(
@@ -443,10 +461,16 @@ MFItoRAU_Adj <- function(
     dplyr::ungroup() %>%
     dplyr::select(SampleID, Location.2 = Location, Plate, QC_total)
 
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+  name_lookup <- setNames(new_names, old_names)
+
   final_results <- dplyr::bind_rows(results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
 
-  final_model_results_all <- dplyr::bind_rows(model_results_all)
+  final_model_results_all <- dplyr::bind_rows(model_results_all) %>%
+    dplyr::mutate(antigen = dplyr::recode(antigen, !!!name_lookup))
 
   final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
@@ -469,10 +493,30 @@ MFItoRAU_Adj <- function(
 
   # Reordered data frame
   final_results <- final_results %>%
-    dplyr::select(all_of(final_results_order))
+    dplyr::select(all_of(final_results_order)) %>%
+    dplyr::rename_with(function(col_names) {
+      for (old in names(name_lookup)) {
+        col_names <- str_replace(
+          col_names,
+          paste0("^", old, "(?=_)"),  # match only prefix before underscore
+          name_lookup[[old]]
+        )
+      }
+      col_names
+    })
 
   final_MFI_RAU_results <- final_MFI_RAU_results %>%
-    dplyr::select(all_of(final_MFI_RAU_order))
+    dplyr::select(all_of(final_MFI_RAU_order)) %>%
+    dplyr::rename_with(function(col_names) {
+      for (old in names(name_lookup)) {
+        col_names <- str_replace(
+          col_names,
+          paste0("^", old, "(?=_)"),  # match only prefix before underscore
+          name_lookup[[old]]
+        )
+      }
+      col_names
+    })
 
   return(
     list(
@@ -549,7 +593,7 @@ MFItoRAU_LDH <- function(
 
   # Step 1: Read raw serology data and plate layout
   setup <- .setup_mfitorau_inputs(
-    df = df,
+    df = sero_data$results,
     plate_list = plate_list,
     std_point = "PvLDH"
   )
@@ -618,7 +662,7 @@ MFItoRAU_LDH <- function(
 
     # Create plate layout to bind to "results.df.wide"
     # 1. Parse L$Location into well IDs
-    location.2 <- tibble(Location = subset_data$Location) %>%
+    location.2 <- dplyr::tibble(Location = subset_data$Location) %>%
       dplyr::mutate(
         Location.2 = str_split(Location, ",", simplify = TRUE)[,2] %>%
           str_sub(1, -2),
@@ -1133,12 +1177,12 @@ MFItoRAU_Pk <- function(processed_Pk, plate_list, std_point, qc_results){
   log.std <- log(std)
 
   ## Fit 5PL model
-  model <- drc::drm(
+  model <- suppressWarnings(drc::drm(
     log.std ~ dilution,
     fct = drc::LL.5(names = c("b", "c", "d", "e", "f"))
-  )
+  ))
 
-  coefs <- coef(summary(model))
+  coefs <- coef(model)
   b <- coefs[1]
   c <- coefs[2]
   d <- coefs[3]

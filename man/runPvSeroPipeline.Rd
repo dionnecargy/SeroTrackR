@@ -33,8 +33,7 @@ runPvSeroPipeline(
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
-- "antibody_model_excLF016" (PvSeroTat excluding LF016).
-Default = "antibody_model".}
+- "antibody_model_excLF016" (PvSeroTat excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
 - "balanced" (default),

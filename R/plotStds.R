@@ -3,6 +3,7 @@
 #' This function gets the standards data and plots the standard curves.
 #'
 #' @param sero_data Output from `readSeroData()`.
+#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default = 10. Value is an integer.
 #' @param location "PNG" or "ETH" to filter WEHI standard curve data.
 #' @param experiment_name User-input experiment name.
 #' @return
@@ -41,7 +42,7 @@
 #'
 #' }
 #'
-plotStds <- function(sero_data, location, experiment_name){
+plotStds <- function(sero_data, std_point = 10, location, experiment_name){
 
   # stratify data
   master_file <- sero_data
@@ -49,7 +50,7 @@ plotStds <- function(sero_data, location, experiment_name){
 
   # relabel antigen names from lab codes to proper antigen names
   old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
-  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19", "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
 
   name_lookup <- setNames(new_names, old_names)
 
@@ -92,6 +93,7 @@ plotStds <- function(sero_data, location, experiment_name){
 #' This function gets the standards data and plots the standard curves for any antigens (i.e., non-PvSeroTaT specific).
 #'
 #' @param sero_data Output from `readSeroData()`.
+#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default = 10. Value is an integer.
 #' @param experiment_name User-input experiment name.
 #' @return
 #' - Dot and line plot of standard curves (S1-S10)
@@ -127,7 +129,7 @@ plotStds <- function(sero_data, location, experiment_name){
 #'
 #' }
 #'
-plotStds_all <- function(sero_data, experiment_name){
+plotStds_all <- function(sero_data, std_point = 10, experiment_name){
   master_file <- sero_data
   stds <- master_file$stds
 
@@ -166,6 +168,7 @@ plotStds_all <- function(sero_data, experiment_name){
 #' This function gets the standards data and plots the standard curves for antigens in the Pk/Pf/Pv panel.
 #'
 #' @param sero_data Output from `readSeroData()`.
+#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default = 10. Value is an integer.
 #' @param experiment_name User-input experiment name.
 #'
 #' @return
@@ -205,7 +208,7 @@ plotStds_all <- function(sero_data, experiment_name){
 #'
 #' }
 #'
-plotStds_PkPfPv <- function(sero_data, experiment_name){
+plotStds_PkPfPv <- function(sero_data, std_point = 10, experiment_name){
 
   # Check if shiny.fluent is installed
   if (!requireNamespace("zoo", quietly = TRUE)) {
