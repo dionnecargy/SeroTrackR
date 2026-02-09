@@ -75,18 +75,6 @@ final_analysis <- runPvSeroPipeline(
   algorithm_type = "antibody_model", 
   sens_spec = "balanced"
 )
-
-sero_data               <- readSeroData(your_raw_data, "magpix")
-plate_list              <- readPlateLayout(your_plate_layout, sero_data)
-qc_results              <- runQC(sero_data, plate_list)
-mfi_to_rau_output1      <- suppressMessages(MFItoRAU_Adj(sero_data, plate_list, qc_results, 10, project = NULL))
-mfi_to_rau_output       <- suppressWarnings(MFItoRAU(sero_data, plate_list, qc_results, 10, project = NULL))
-stdcurve_plot           <- suppressWarnings(plotStds(sero_data, "PNG", "experiment1", std_point = 10))
-plateqc_plot            <- plotCounts(qc_results, "experiment1")
-check_repeats_output    <- getRepeats(qc_results, plate_list)
-blanks_plot             <- plotBlanks(sero_data, "experiment1")
-model_plot              <- plotModel_Adj(mfi_to_rau_output1, sero_data)
-model_plot              <- plotModel(mfi_to_rau_output, sero_data)
 ```
 
 #### Classification 

@@ -76,8 +76,8 @@ runPlasmoPipeline <- function(
   #############################################################
   # Step 1: Reading in Raw Data
   #############################################################
-  sero_data       <- readSeroData(raw_data = raw_data, platform)
-  plate_list    <- readPlateLayout(plate_layout = plate_layout, sero_data = sero_data)
+  sero_data                 <- readSeroData(raw_data = raw_data, platform)
+  plate_list                <- readPlateLayout(plate_layout = plate_layout, sero_data = sero_data)
 
   #############################################################
   # Step 2: Quality Control

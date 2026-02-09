@@ -59,33 +59,57 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
     tidyr::pivot_longer(-c(Sample, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
-      Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10")),
       Antigen = dplyr::recode(Antigen, !!!name_lookup),
       MFI = as.numeric(MFI)
     )
 
-  location_1 <- ifelse(location == "ETH", "ETH", "PNG")
+  if(std_point == 10){
 
-  wehi_stds <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/all_stds_MFI.csv"))
-  wehi_stds <- wehi_stds %>%
-    dplyr::filter(Location==location_1) %>%
-    mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
+    stds_1 <- stds_1 %>% dplyr::mutate(Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10")))
 
-  gg <-
-    ggplot2::ggplot() +
-    ggplot2::geom_point(data = wehi_stds, aes(x = Sample, y = MFI), colour = "grey", alpha = 0.25) +
-    ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
-                                           text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
-    ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-    ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-    ggplot2::labs(
-      x = "Standard Curve",
-      y = "MFI",
-      title = experiment_name
-    ) +
-    ggplot2::facet_wrap(~Antigen) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    location_1 <- ifelse(location == "ETH", "ETH", "PNG")
+    wehi_stds <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/all_stds_MFI.csv"))
+    wehi_stds <- wehi_stds %>%
+      dplyr::filter(Location==location_1) %>%
+      mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
+
+    gg <- ggplot2::ggplot() +
+      ggplot2::geom_point(data = wehi_stds, aes(x = Sample, y = MFI), colour = "grey", alpha = 0.25) +
+      ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
+                                             text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
+      ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+      ggplot2::labs(
+        x = "Standard Curve",
+        y = "MFI",
+        title = experiment_name
+      ) +
+      ggplot2::facet_wrap(~Antigen) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  } else if (std_point == 5){
+
+    stds_1 <- stds_1 %>% dplyr::mutate(Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5")))
+    gg <- ggplot2::ggplot() +
+      ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
+                                             text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
+      ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+      ggplot2::labs(
+        x = "Standard Curve",
+        y = "MFI",
+        title = experiment_name
+      ) +
+      ggplot2::facet_wrap(~Antigen) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  } else {
+    message("Please write a standard point curve.")
+  }
+
+  return(gg)
 
 }
 #' Plot Raw Median Fluorescent Intensity of Standard Curve Data
@@ -93,7 +117,6 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
 #' This function gets the standards data and plots the standard curves for any antigens (i.e., non-PvSeroTaT specific).
 #'
 #' @param sero_data Output from `readSeroData()`.
-#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default = 10. Value is an integer.
 #' @param experiment_name User-input experiment name.
 #' @return
 #' - Dot and line plot of standard curves (S1-S10)
@@ -129,7 +152,7 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
 #'
 #' }
 #'
-plotStds_all <- function(sero_data, std_point = 10, experiment_name){
+plotStds_all <- function(sero_data, experiment_name){
   master_file <- sero_data
   stds <- master_file$stds
 
@@ -144,8 +167,8 @@ plotStds_all <- function(sero_data, std_point = 10, experiment_name){
     tidyr::pivot_longer(-c(Sample, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
-      Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10")),
       Antigen = dplyr::recode(Antigen, !!!name_lookup),
+      Sample = factor(Sample, levels = unique(Sample[order(as.numeric(str_extract(Sample, "\\d+")))])), # reorder by standard curve number
       MFI = as.numeric(MFI)
     )
 
@@ -168,7 +191,6 @@ plotStds_all <- function(sero_data, std_point = 10, experiment_name){
 #' This function gets the standards data and plots the standard curves for antigens in the Pk/Pf/Pv panel.
 #'
 #' @param sero_data Output from `readSeroData()`.
-#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default = 10. Value is an integer.
 #' @param experiment_name User-input experiment name.
 #'
 #' @return
@@ -208,7 +230,7 @@ plotStds_all <- function(sero_data, std_point = 10, experiment_name){
 #'
 #' }
 #'
-plotStds_PkPfPv <- function(sero_data, std_point = 10, experiment_name){
+plotStds_PkPfPv <- function(sero_data, experiment_name){
 
   # Check if shiny.fluent is installed
   if (!requireNamespace("zoo", quietly = TRUE)) {
