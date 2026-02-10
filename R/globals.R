@@ -6,7 +6,7 @@ utils::globalVariables(c(
   "SampleID", "Sens_Spec", "Species", "Sum", "Text", "Type", "Warning",
   "antigen", "asym_par", "content", "data_type", "delete", "dilution",
   "div", "ed50", "error", "eth_fit", "fct_rev", "file_name", "fromJSON",
-  "glue", "log_mfi", "low_asym", "max_dil", "max_s1", "mfi", "mfi_pred",
+  "glue", "log_mfi", "log.std", "low_asym", "max_dil", "max_s1", "mfi", "mfi_pred",
   "name", "name_lookup", "new_fit", "plate",  "platemap", "plate_list", "png_fit", "pred_class_max",
   "prefix", "protein", "rau", "rau_restricted", "raw_data_filenames",
   "ref_mfi", "RunColumn", "sample_id", "sens_spec", "seronegative", "seropositive",

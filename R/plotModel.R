@@ -37,7 +37,7 @@
 #' qc_results <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Convert MFI to RAU using ETH beads
-#' mfi_to_rau <- MFItoRAU_Adj(
+#' mfi_to_rau <- MFItoRAU(
 #'   sero_data = sero_data,
 #'   plate_list = plate_list,
 #'   qc_results = qc_results
@@ -87,7 +87,7 @@ plotModel <- function(mfi_to_rau_output, sero_data){
   # Generate plots for each plate, grouping proteins together
   plots_model <- lapply(unique(combined_data$Plate), function(plate_name) {
     ggplot2::ggplot() +  # Use 'protein' to differentiate lines
-      ggplot2::geom_line(data = subset(combined_data, Plate == plate_name), aes(x = dilution, y = exp(`1`), color = Antigen)) +
+      ggplot2::geom_line(data = subset(combined_data, Plate == plate_name), aes(x = dilution, y = exp(log.std), color = Antigen)) +
       ggplot2::geom_point(data = subset(stds_log, Plate == plate_name), aes(x = dilution, y = stdcurve, color = Antigen)) +
       ggplot2::scale_x_log10(breaks = c(1e-5, 1e-4, 1e-3, 1e-2, 0.03),
                              labels = c("0.00001", "0.0001", "0.001", "0.01", "0.03")) +

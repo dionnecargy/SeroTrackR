@@ -73,7 +73,7 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
       dplyr::filter(Location==location_1) %>%
       mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
 
-    gg <- ggplot2::ggplot() +
+    ggplot2::ggplot() +
       ggplot2::geom_point(data = wehi_stds, aes(x = Sample, y = MFI), colour = "grey", alpha = 0.25) +
       ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
                                              text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
@@ -91,7 +91,7 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
   } else if (std_point == 5){
 
     stds_1 <- stds_1 %>% dplyr::mutate(Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5")))
-    gg <- ggplot2::ggplot() +
+    ggplot2::ggplot() +
       ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
                                              text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
       ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
@@ -108,8 +108,6 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
   } else {
     message("Please write a standard point curve.")
   }
-
-  return(gg)
 
 }
 #' Plot Raw Median Fluorescent Intensity of Standard Curve Data

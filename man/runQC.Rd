@@ -27,7 +27,7 @@ your_raw_data <- c(
   system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
 )
 
-plate_layout <- system.file(
+your_plate_layout <- system.file(
   "extdata", "example_platelayout_1.xlsx", package = "SeroTrackR"
 )
 

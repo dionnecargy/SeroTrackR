@@ -43,7 +43,7 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 qc_results <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_Adj(
+mfi_to_rau <- MFItoRAU(
   sero_data = sero_data,
   plate_list = plate_list,
   qc_results = qc_results
