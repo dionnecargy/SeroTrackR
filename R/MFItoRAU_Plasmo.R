@@ -69,7 +69,7 @@
 #' }
 MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, counts_QC_output){
 
-  processed_master    <- processPkPfPv(sero_data, plate_list, panel = "panel1")
+  processed_master    <- processPkPfPv(sero_data, plate_list, panel = panel)
   processed_PfPv      <- processed_master$PfPv
   processed_Pk        <- processed_master$Pk
 
