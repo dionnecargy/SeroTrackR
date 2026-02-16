@@ -109,7 +109,7 @@ plotStds_PkPfPv <- function(sero_data, experiment_name){
       Sample = factor(Sample, levels = unique(Sample[order(as.numeric(str_extract(Sample, "\\d+")))])), # reorder by standard curve number
       MFI = as.numeric(MFI)
     ) %>%
-    dplyr::left_join(PkPfPv_Panel_1, by = c("Antigen" = "Antigens")) %>%
+    dplyr::left_join(panel, by = c("Antigen" = "Antigens")) %>%
     dplyr::mutate(stds_to_keep = case_when(
       Species=="Pk" & Beads == "PK" ~ "keep",
       Species=="Pf" & Beads == "ETH" ~ "keep",
