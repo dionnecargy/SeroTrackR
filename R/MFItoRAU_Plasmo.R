@@ -6,7 +6,7 @@
 #'
 #' @param sero_data   Output of `readserodata_output()`
 #' @param plate_list  Output of `readPlateLayout()`
-#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
+#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
 #' @param counts_QC_output Output from `getCountsQC()`.
 #'
@@ -101,20 +101,28 @@ MFItoRAU_Plasmo <- function(sero_data, plate_list, panel = "panel1", std_point, 
   #############################################################################
   # Create long df for downstream analyses (clean)
   #############################################################################
-  PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+
+  if(panel == "panel1"){
+    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+
+  } else {
+    panel <- read.csv(panel)
+  }
+
 
   PkPfPv_long_mfi <- PkPfPv_Final_MFI_RAU %>%
     dplyr::select(-ends_with("_Dilution")) %>%
     dplyr::rename_with(~str_replace(., "_MFI", ""), ends_with("_MFI")) %>%
     tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "MFI") %>%
-    dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")
+    dplyr::left_join(panel, by = "Antigens")
+
   PkPfPv_long_rau <- suppressWarnings(
     PkPfPv_Final_MFI_RAU %>%
       dplyr::select(-ends_with("_MFI")) %>%
       dplyr::rename_with(~str_replace(., "_Dilution", ""), ends_with("_Dilution")) %>%
       tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "RAU") %>%
       tidyr::separate(Antigens, c("Antigens", "Beads"), "_") %>%
-      dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")) %>%
+      dplyr::left_join(panel, by = "Antigens")) %>%
     dplyr::mutate(RAU_Method = case_when(
       Beads == "loglog" ~ "loglog",
       Beads == "ETHtoPNGloglog" ~ "ETHtoPNGloglog",
