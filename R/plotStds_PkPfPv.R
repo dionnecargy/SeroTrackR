@@ -105,7 +105,7 @@ plotStds_PkPfPv <- function(sero_data, experiment_name){
     tidyr::pivot_longer(-c(Sample, Beads, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
-      Beads = stringr::str_extract(Beads, "(?<=\\().+?(?=\\))"),
+      # Beads = stringr::str_extract(Beads, "(?<=\\().+?(?=\\))"),
       Sample = factor(Sample, levels = unique(Sample[order(as.numeric(str_extract(Sample, "\\d+")))])), # reorder by standard curve number
       MFI = as.numeric(MFI)
     ) %>%
