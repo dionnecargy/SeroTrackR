@@ -66,7 +66,7 @@ runPlasmoPipeline <- function(
     raw_data,
     platform = "magpix",
     plate_layout,
-    panel = panel,
+    panel = "panel1",
     std_point,
     experiment_name = "experiment1",
     algorithm_type = "antibody_model",
