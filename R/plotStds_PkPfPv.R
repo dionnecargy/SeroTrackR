@@ -49,7 +49,13 @@ plotStds_PkPfPv <- function(sero_data, experiment_name){
     stop("Package 'zoo' is required for plotStds_PkPfPv(). Please install it.", call. = FALSE)
   }
 
-  PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+  #panel 1 is default - (future change to extdata?) else provides option for user specified option
+  if(panel == "panel1"){
+    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+
+  } else {
+    panel <- read.csv(panel)
+  }
 
   master_file <- sero_data
   stds <- master_file$stds
@@ -61,15 +67,15 @@ plotStds_PkPfPv <- function(sero_data, experiment_name){
       stringr::str_detect(colnames(df), regex("LF010", ignore_case = TRUE)) ~ "LF010", # Happy to relabel to PvLF010 or PvMSP5
       stringr::str_detect(colnames(df), regex("LF016", ignore_case = TRUE)) ~ "LF016", # Happy to relabel to PvLF016 or PvMSP1-19
       stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
-      stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87)", ignore_case = TRUE)) ~ "RBP2b.P87",
+      stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87|RBP2b)", ignore_case = TRUE)) ~ "RBP2b.P87",
       stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150", # Happy to relabel to PvPTEX150
       stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
-      stringr::str_detect(colnames(df), regex("(MSP1-19|PfMSP1|MSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
-      stringr::str_detect(colnames(df), regex("AMA1", ignore_case = TRUE)) ~ "PfAMA1",
-      stringr::str_detect(colnames(df), regex("etramp5Ag1|tramp", ignore_case = TRUE)) ~ "Pfetramp5Ag1",
-      stringr::str_detect(colnames(df), regex("HSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
-      stringr::str_detect(colnames(df), regex("Gexp18", ignore_case = TRUE)) ~ "PfGexp18",
-      stringr::str_detect(colnames(df), regex("SSP2", ignore_case = TRUE)) ~ "PkSSP2",
+      stringr::str_detect(colnames(df), regex("(PfMSP1-19|PfMSP1|PfMSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
+      stringr::str_detect(colnames(df), regex("PfAMA1", ignore_case = TRUE)) ~ "PfAMA1",
+      stringr::str_detect(colnames(df), regex("Pfetramp5Ag1|Pfetramp", ignore_case = TRUE)) ~ "Pfetramp5Ag1",
+      stringr::str_detect(colnames(df), regex("PfHSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
+      stringr::str_detect(colnames(df), regex("PfGexp18", ignore_case = TRUE)) ~ "PfGexp18",
+      stringr::str_detect(colnames(df), regex("PkSSP2", ignore_case = TRUE)) ~ "PkSSP2",
       stringr::str_detect(colnames(df), regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10",
       stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~ "Pk8",
       stringr::str_detect(colnames(df), regex("SERA3Ag2", ignore_case = TRUE)) ~ "PkSERA3Ag2",
@@ -99,11 +105,11 @@ plotStds_PkPfPv <- function(sero_data, experiment_name){
     tidyr::pivot_longer(-c(Sample, Beads, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
-      Beads = stringr::str_extract(Beads, "(?<=\\().+?(?=\\))"),
+      Beads = stringr::str_extract(Beads, "[A-Z]+"), # ETH (ETH) may sometimes be entered differently (in brackets or not) - this should just keep the letters PK or ETH that we want
       Sample = factor(Sample, levels = unique(Sample[order(as.numeric(str_extract(Sample, "\\d+")))])), # reorder by standard curve number
       MFI = as.numeric(MFI)
     ) %>%
-    dplyr::left_join(PkPfPv_Panel_1, by = c("Antigen" = "Antigens")) %>%
+    dplyr::left_join(panel, by = c("Antigen" = "Antigens")) %>%
     dplyr::mutate(stds_to_keep = case_when(
       Species=="Pk" & Beads == "PK" ~ "keep",
       Species=="Pf" & Beads == "ETH" ~ "keep",

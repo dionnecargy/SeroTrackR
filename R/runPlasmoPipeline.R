@@ -3,7 +3,7 @@
 #' @param raw_data  String with the raw data path.
 #' @param platform  "magpix" or "bioplex". Default: "Bioplex"
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2... etc.
-#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
+#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
 #' @param experiment_name User-input experiment name. Default: "experiment1".
 #' @param algorithm_type User-selected algorithm choice:
