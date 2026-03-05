@@ -469,7 +469,7 @@ MFItoRAU_Adj <- function(
   final_results <- dplyr::bind_rows(results_all) %>%
     dplyr::inner_join(counts_data, by = c("SampleID", "Location.2", "Plate"))
 
-  final_model_results_all <- dplyr::bind_rows(model_results_all) %>%
+  final_model_results_all <- dplyr::bind_rows(model_results_all, .id = "Plate") %>%
     dplyr::mutate(antigen = dplyr::recode(antigen, !!!name_lookup))
 
   final_MFI_RAU_results <- dplyr::bind_rows(MFI_RAU_results_all) %>%
