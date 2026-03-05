@@ -4,12 +4,14 @@
 \alias{plotStds_PkPfPv}
 \title{Plot Raw Median Fluorescent Intensity of Pk/Pf/Pv Standard Curve Data}
 \usage{
-plotStds_PkPfPv(sero_data, experiment_name)
+plotStds_PkPfPv(sero_data, experiment_name, panel)
 }
 \arguments{
 \item{sero_data}{Output from `readSeroData()`.}
 
 \item{experiment_name}{User-input experiment name.}
+
+\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.}
 }
 \value{
 - Dot and line plot of standard curves (S1-S10)

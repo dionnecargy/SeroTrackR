@@ -12,7 +12,7 @@ MFItoRAU_Plasmo(sero_data, plate_list, panel = "panel1", std_point, qc_results)
 
 \item{plate_list}{Output of `readPlateLayout()`}
 
-\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1".}
+\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.}
 
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.}
 
@@ -70,5 +70,5 @@ mfi_outputs
 }
 }
 \author{
-Dionne Argyropoulos
+Dionne Argyropoulos, Caitlin Bourke
 }

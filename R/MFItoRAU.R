@@ -713,7 +713,7 @@ MFItoRAU_LDH <- function(
 #'
 #' @param sero_data   Output of `readserodata_output()`
 #' @param plate_list  Output of `readPlateLayout()`
-#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
+#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.
 #' @param qc_results Output from `runQC()`.
 #'
@@ -728,7 +728,7 @@ MFItoRAU_LDH <- function(
 #' @importFrom utils read.csv
 #'
 #' @export
-#' @author Dionne Argyropoulos
+#' @author Dionne Argyropoulos, Caitlin Bourke
 #'
 #' @examples
 #' \donttest{
@@ -778,7 +778,7 @@ MFItoRAU_Plasmo <- function(
     qc_results
   ){
 
-  processed_master    <- processPkPfPv(sero_data, plate_list, panel = "panel1")
+  processed_master    <- processPkPfPv(sero_data, plate_list, panel = panel)
   processed_PfPv      <- processed_master$PfPv
   processed_Pk        <- processed_master$Pk
 
@@ -831,21 +831,27 @@ MFItoRAU_Plasmo <- function(
   PkPfPv_Final_MFI_RAU <- PkPfPv_Final %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI", ignore.case = FALSE), ends_with("_Dilution", ignore.case = FALSE))
 
-  # Create long df for downstream analyses (clean)
-  PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+  # Add panel
+  if(panel == "panel1"){
+    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
 
+  } else {
+    panel <- read.csv(panel)
+  }
+
+  # Create long df for downstream analyses (clean)
   PkPfPv_long_mfi <- PkPfPv_Final_MFI_RAU %>%
     dplyr::select(-ends_with("_Dilution")) %>%
     dplyr::rename_with(~str_replace(., "_MFI", ""), ends_with("_MFI")) %>%
     tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "MFI") %>%
-    dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")
+    dplyr::left_join(panel, by = "Antigens")
   PkPfPv_long_rau <- suppressWarnings(
     PkPfPv_Final_MFI_RAU %>%
       dplyr::select(-ends_with("_MFI")) %>%
       dplyr::rename_with(~str_replace(., "_Dilution", ""), ends_with("_Dilution")) %>%
       tidyr::pivot_longer(-c(SampleID, Plate), names_to = "Antigens", values_to = "RAU") %>%
       tidyr::separate(Antigens, c("Antigens", "Beads"), "_") %>%
-      dplyr::left_join(PkPfPv_Panel_1, by = "Antigens")) %>%
+      dplyr::left_join(panel, by = "Antigens")) %>%
     dplyr::mutate(RAU_Method = case_when(
       Beads == "loglog" ~ "loglog",
       Beads == "Adjloglog" ~ "Adj_loglog",

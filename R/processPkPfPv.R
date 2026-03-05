@@ -5,7 +5,7 @@
 #'
 #' @param sero_data   Output of `readSeroData()`
 #' @param plate_list  Output of `readPlateLayout()`
-#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
+#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #'
 #' @return A list of two data frames:
 #' 1. Data frame with Pk antigens
@@ -92,6 +92,7 @@ processPkPfPv <- function(sero_data, plate_list, panel = "panel1"){
     pf_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
     pk_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
   } else {
+    panel <- read.csv(panel)
     pv_antigens <- panel %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)
     pf_antigens <- panel %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
     pk_antigens <- panel %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
