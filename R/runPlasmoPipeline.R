@@ -3,7 +3,7 @@
 #' @param raw_data  String with the raw data path.
 #' @param platform  "magpix" or "bioplex". Default: "Bioplex"
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2... etc.
-#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1".
+#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
 #' @param experiment_name User-input experiment name. Default: "experiment1".
 #' @param algorithm_type User-selected algorithm choice:
@@ -88,7 +88,7 @@ runPlasmoPipeline <- function(
   #############################################################
   # Step 3: Plotting
   #############################################################
-  stdcurve_plot             <- suppressWarnings(plotStds_PkPfPv(sero_data, experiment_name))
+  stdcurve_plot             <- suppressWarnings(plotStds_PkPfPv(sero_data, experiment_name, panel))
   plateqc_plot              <- plotCounts(qc_results, experiment_name)
   check_repeats_output      <- getRepeats(qc_results, plate_list)
   blanks_plot               <- plotBlanks(sero_data, experiment_name)

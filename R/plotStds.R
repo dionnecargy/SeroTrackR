@@ -190,6 +190,7 @@ plotStds_all <- function(sero_data, experiment_name){
 #'
 #' @param sero_data Output from `readSeroData()`.
 #' @param experiment_name User-input experiment name.
+#' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #'
 #' @return
 #' - Dot and line plot of standard curves (S1-S10)
@@ -228,14 +229,20 @@ plotStds_all <- function(sero_data, experiment_name){
 #'
 #' }
 #'
-plotStds_PkPfPv <- function(sero_data, experiment_name){
+plotStds_PkPfPv <- function(sero_data, experiment_name, panel){
 
   # Check if shiny.fluent is installed
   if (!requireNamespace("zoo", quietly = TRUE)) {
     stop("Package 'zoo' is required for plotStds_PkPfPv(). Please install it.", call. = FALSE)
   }
 
-  PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+  #panel 1 is default - (future change to extdata?) else provides option for user specified option
+  if(panel == "panel1"){
+    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+
+  } else {
+    panel <- read.csv(panel)
+  }
 
   master_file <- sero_data
   stds <- master_file$stds
@@ -268,12 +275,12 @@ plotStds_PkPfPv <- function(sero_data, experiment_name){
     tidyr::pivot_longer(-c(Sample, Beads, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
-      Beads = stringr::str_extract(Beads, "(?<=\\().+?(?=\\))"),
+      Beads = stringr::str_extract(Beads, "[A-Z]+"), # ETH (ETH) may sometimes be entered differently (in brackets or not) - this should just keep the letters PK or ETH that we want
       Sample = factor(Sample, levels = unique(Sample[order(as.numeric(str_extract(Sample, "\\d+")))])), # reorder by standard curve number
       Antigen = dplyr::recode(Antigen, !!!name_lookup),
       MFI = as.numeric(MFI)
     ) %>%
-    dplyr::left_join(PkPfPv_Panel_1, by = c("Antigen" = "Antigens")) %>%
+    dplyr::left_join(panel, by = c("Antigen" = "Antigens")) %>%
     dplyr::mutate(stds_to_keep = case_when(
       Species=="Pk" & Beads == "PK" ~ "keep",
       Species=="Pf" & Beads == "ETH" ~ "keep",

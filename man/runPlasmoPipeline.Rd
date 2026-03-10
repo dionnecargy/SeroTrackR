@@ -22,7 +22,7 @@ runPlasmoPipeline(
 
 \item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2... etc.}
 
-\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1".}
+\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.}
 
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 

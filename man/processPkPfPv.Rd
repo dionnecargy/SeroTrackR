@@ -11,7 +11,7 @@ processPkPfPv(sero_data, plate_list, panel = "panel1")
 
 \item{plate_list}{Output of `readPlateLayout()`}
 
-\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1".}
+\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.}
 }
 \value{
 A list of two data frames:
