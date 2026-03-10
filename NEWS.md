@@ -1,3 +1,5 @@
+# SeroTrackR 1.0.0
+
 # SeroTrackR 0.5.1
 
 * Updated `readSeroData` to include `version` parameter accounting for version 4.2 and 4.3 of the xPONENT software in MAGPIX Luminex machines. 
