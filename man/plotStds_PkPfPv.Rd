@@ -4,7 +4,7 @@
 \alias{plotStds_PkPfPv}
 \title{Plot Raw Median Fluorescent Intensity of Pk/Pf/Pv Standard Curve Data}
 \usage{
-plotStds_PkPfPv(sero_data, experiment_name, panel)
+plotStds_PkPfPv(sero_data, experiment_name, panel = "panel1")
 }
 \arguments{
 \item{sero_data}{Output from `readSeroData()`.}
@@ -39,7 +39,8 @@ sero_data <- readSeroData(
 # Plot Standards
 plotStds_PkPfPv(
   sero_data = sero_data,
-  experiment_name = "experiment1"
+  experiment_name = "experiment1",
+  panel = "panel1"
 )
 
 }

@@ -52,7 +52,7 @@ plate_list <- readPlateLayout(
 # Process multi-species panel
 processed_master <- processPkPfPv(
   sero_data = sero_data,
-  plate_list,
+  plate_list = plate_list,
   panel = "panel1"
 )
 }

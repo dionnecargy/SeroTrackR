@@ -224,12 +224,17 @@ plotStds_all <- function(sero_data, experiment_name){
 #' # Plot Standards
 #' plotStds_PkPfPv(
 #'   sero_data = sero_data,
-#'   experiment_name = "experiment1"
+#'   experiment_name = "experiment1",
+#'   panel = "panel1"
 #' )
 #'
 #' }
 #'
-plotStds_PkPfPv <- function(sero_data, experiment_name, panel){
+plotStds_PkPfPv <- function(
+    sero_data,
+    experiment_name,
+    panel = "panel1"
+   ){
 
   # Check if shiny.fluent is installed
   if (!requireNamespace("zoo", quietly = TRUE)) {
