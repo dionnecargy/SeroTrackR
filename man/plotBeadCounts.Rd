@@ -4,10 +4,10 @@
 \alias{plotBeadCounts}
 \title{Plot Bead Counts per Plate per Antigen}
 \usage{
-plotBeadCounts(antigen_counts_output)
+plotBeadCounts(qc_results)
 }
 \arguments{
-\item{antigen_counts_output}{Output from `getAntigenCounts()` (reactive).}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 Dot plot with values > 15 threshold coloured in blue (sufficient
@@ -39,13 +39,10 @@ sero_data  <- readSeroData(your_raw_data,"magpix")
 plate_list <- readPlateLayout(your_plate_layout, sero_data)
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Plot Bead Counts
-plotBeadCounts(antigen_cts)
+plotBeadCounts(qc_results)
 }
 }
 \author{

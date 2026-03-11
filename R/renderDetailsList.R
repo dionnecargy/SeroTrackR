@@ -5,6 +5,8 @@
 #' @param df Any processed data frame
 #' @return A table in the Fluent UI format
 #' @export
+#'
+#' @importFrom dplyr as_tibble
 #' @author Dionne Argyropoulos
 #'
 #' @examples
@@ -49,7 +51,7 @@ renderDetailsList <- function(df) {
           style = "max-height: 600px; overflow: auto; width: 100%;",
           shiny.fluent::DetailsList(
             items = df,
-            columns = tibble(fieldName = names(df), name = names(df)),
+            columns = dplyr::tibble(fieldName = names(df), name = names(df)),
             constrainMode = 0,
             checkboxVisibility = 2,
             styles = list(

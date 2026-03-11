@@ -9,8 +9,8 @@
 #' check prior to merging downstream.
 #'
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2...
-#' etc. (reactive).
-#' @param sero_data Output from `readSeroData()` (reactive).
+#' etc..
+#' @param sero_data Output from `readSeroData()`.
 #' @return A list of data frames, with each one representing an individual plate.
 #' @export
 #' @importFrom openxlsx getSheetNames read.xlsx

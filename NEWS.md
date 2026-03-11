@@ -1,3 +1,10 @@
+# SeroTrackR 1.0.0
+
+* runQC() aims to streamline all the quality control steps into one function
+* "maximised"" threshold in the Pv classification algorithm has been relabeled as “balanced"
+* Incorporation of standard curve type: 5-point or 10-point for any MFI to RAU conversion
+* Capability to input your own Pk/Pf protein panel (relating to Pk/Pf/Pv work)
+
 # SeroTrackR 0.5.1
 
 * Updated `readSeroData` to include `version` parameter accounting for version 4.2 and 4.3 of the xPONENT software in MAGPIX Luminex machines. 

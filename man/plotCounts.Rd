@@ -4,12 +4,12 @@
 \alias{plotCounts}
 \title{Plot Bead Count Data}
 \usage{
-plotCounts(counts_output, experiment_name)
+plotCounts(qc_results, experiment_name)
 }
 \arguments{
-\item{counts_output}{Output from `getCounts()` (reactive).}
+\item{qc_results}{Output from `runQC()`.}
 
-\item{experiment_name}{User-input experiment name (reactive).}
+\item{experiment_name}{User-input experiment name.}
 }
 \value{
 Tile Plot showing binary result of "sufficient beads" with cut-off
@@ -39,11 +39,10 @@ sero_data  <- readSeroData(your_raw_data,"magpix")
 plate_list <- readPlateLayout(your_plate_layout, sero_data)
 
 # Step 2: Process counts and perform quality control
-counts <- processCounts(sero_data)
-getCounts_output <- getCounts(counts)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Plot Counts
-plotCounts(getCounts_output, "experiment1")
+plotCounts(qc_results, "experiment1")
 }
 }
 \author{

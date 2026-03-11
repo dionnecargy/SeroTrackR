@@ -3,16 +3,17 @@
 #' A master function combining the entire PvSeroApp pipeline into one command to run in R.
 #'
 #' @param raw_data  String with the raw data path.
-#' @param platform  "magpix" or "bioplex".
+#' @param platform  "magpix" or "bioplex". Default = "magpix".
 #' @param plate_layout An ".xlsx" file with sheets labelled plate1, plate2... etc.
 #' @param location  "PNG" or "ETH" to filter WEHI standard curve data.
 #' @param experiment_name User-input experiment name.
-#' @param classify "Yes" or "No" depending on whether you would like classification or not.
+#' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.
+#' @param classify "Yes" or "No" depending on whether you would like classification or not. Default = "Yes".
 #' @param algorithm_type  User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
 #' @param sens_spec User-selected Sensitivity/Specificity threshold:
-#' - "maximised" (default),
+#' - "balanced" (default),
 #' - "85\% sensitivity",
 #' - "90\% sensitivity",
 #' - "95\% sensitivity",
@@ -56,8 +57,9 @@
 #'   platform = "magpix",
 #'   location = "PNG",
 #'   experiment_name = "experiment1",
+#'   std_point = 10,
 #'   algorithm_type = "antibody_model",
-#'   sens_spec = "maximised",
+#'   sens_spec = "balanced",
 #'   classify = "Yes"
 #' )
 #'
@@ -68,55 +70,69 @@
 #'   platform = "magpix",
 #'   location = "PNG",
 #'   experiment_name = "experiment1",
+#'   std_point = 10,
 #'   algorithm_type = "antibody_model",
-#'   sens_spec = "maximised",
+#'   sens_spec = "balanced",
 #'   classify = "No"
 #' )
 #' }
-runPvSeroPipeline <- function(raw_data, plate_layout, platform, location, experiment_name, classify, algorithm_type, sens_spec){
+runPvSeroPipeline <- function(
+    raw_data,
+    plate_layout,
+    platform = "magpix",
+    location,
+    experiment_name = "experiment1",
+    std_point = 10,
+    classify = "Yes",
+    algorithm_type = "antibody_model",
+    sens_spec = "balanced"
+  ){
 
   #############################################################
   # Step 1: Reading in Raw Data
   #############################################################
-  sero_data           <- readSeroData(raw_data, platform)
+  sero_data                 <- readSeroData(raw_data, platform)
   plate_list                <- readPlateLayout(plate_layout, sero_data)
 
   #############################################################
-  # Step 2: Quality Control and MFI to RAU
+  # Step 2: Quality Control and
   #############################################################
-  processCounts_output      <- processCounts(sero_data)
-  getCounts_output          <- getCounts(processCounts_output)
-  sampleid_output           <- getSampleID(processCounts_output, plate_list)
-  getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-  getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
-  if(location == "ETH"){
-    mfi_to_rau_output                <- suppressMessages(MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output))
-  } else if(location == "PNG"){
-    mfi_to_rau_output                <- suppressMessages(MFItoRAU(sero_data, plate_list, getCountsQC_output))
-  }
+  qc_results                <- runQC(sero_data, plate_list)
+  message("QC Processes completed.")
 
   #############################################################
-  # Step 3: Plotting
+  # Step 3: MFI to RAU Conversion
+  #############################################################
+  if(location == "ETH"){
+    mfi_to_rau_output       <- suppressMessages(MFItoRAU_Adj(sero_data, plate_list, qc_results, std_point, project = NULL))
+  } else if(location == "PNG"){
+    mfi_to_rau_output       <- suppressWarnings(MFItoRAU(sero_data, plate_list, qc_results, std_point, project = NULL))
+  }
+  message("MFI to RAU conversion completed.")
+
+  #############################################################
+  # Step 4: Plotting
   #############################################################
   stdcurve_plot             <- suppressWarnings(plotStds(sero_data, location, experiment_name))
-  plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
-  check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
+  plateqc_plot              <- plotCounts(qc_results, experiment_name)
+  check_repeats_output      <- getRepeats(qc_results, plate_list)
   blanks_plot               <- plotBlanks(sero_data, experiment_name)
-
   if(location == "ETH"){
-    model_plot                <- plotModel_ETH(mfi_to_rau_output, sero_data)
+    model_plot              <- plotModel_Adj(mfi_to_rau_output, sero_data)
   } else if(location == "PNG"){
-    model_plot                <- plotModel(mfi_to_rau_output, sero_data)
+    model_plot              <- plotModel(mfi_to_rau_output, sero_data)
   }
+  message("QC Plotting completed.")
 
   #############################################################
-  # Step 4: Classification
+  # Step 5: Classification
   #############################################################
   if(classify == "Yes"){
-    classifyResults_output    <- classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, getCountsQC_output)
+    classifyResults_output    <- classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, qc_results, project = NULL)
+    message("Pv classification completed.")
     return(list(classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
   } else {
-    message("No Classification Performed")
+    message("No Classification Performed.")
     return(list(mfi_to_rau_output[[2]], stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot))
   }
 

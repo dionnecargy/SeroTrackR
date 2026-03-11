@@ -4,14 +4,16 @@
 \alias{plotStds}
 \title{Plot Raw Median Fluorescent Intensity of Standard Curve Data}
 \usage{
-plotStds(sero_data, location, experiment_name)
+plotStds(sero_data, std_point = 10, location, experiment_name)
 }
 \arguments{
-\item{sero_data}{Output from `readSeroData()` (reactive).}
+\item{sero_data}{Output from `readSeroData()`.}
 
-\item{location}{"PNG" or "ETH" to filter WEHI standard curve data (reactive).}
+\item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default = 10. Value is an integer.}
 
-\item{experiment_name}{User-input experiment name (reactive).}
+\item{location}{"PNG" or "ETH" to filter WEHI standard curve data.}
+
+\item{experiment_name}{User-input experiment name.}
 }
 \value{
 - Dot and line plot of standard curves (S1-S10) with PNG or Ethiopia stds
@@ -49,5 +51,5 @@ plotStds(
 
 }
 \author{
-Shazia Ruybal-Pesantez, Dionne Argyropoulos
+Dionne Argyropoulos, Shazia Ruybal-Pesantez
 }

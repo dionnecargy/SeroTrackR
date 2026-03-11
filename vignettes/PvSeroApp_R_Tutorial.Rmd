@@ -33,7 +33,7 @@ Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}
 
 ### Visualisation of the PvSeroApp Pipeline
 
-![](../man/figures/SeroTrackR_PvSeroApp.jpeg)
+![](../man/figures/SeroTrackR_PvSeroApp.jpg)
 
 ### Using Tutorial Dataset: Load the Data
 
@@ -73,15 +73,13 @@ final_analysis <- runPvSeroPipeline(
   experiment_name = "experiment1", 
   classify = "Yes", 
   algorithm_type = "antibody_model", 
-  sens_spec = "maximised"
+  sens_spec = "balanced"
 )
-
-final_analysis
 ```
 
 #### Classification 
 
-This is a table containing the classification results (seropositive or seronegative) for each `SampleID`. In this case, the classification results are stored in the `pred_class_max` column as we chose the `sens_spec = "maximised"`. If you change it to another type of threshold, then the suffix of that column will change accordingly. 
+This is a table containing the classification results (seropositive or seronegative) for each `SampleID`. In this case, the classification results are stored in the `pred_class_max` column as we chose the `sens_spec = "balanced"`. If you change it to another type of threshold, then the suffix of that column will change accordingly. 
 
 You will also see the relative antibody unit (RAU) values (columns with antigen names), whether the sample passed QC check (`QC_total`) and the `plate` that they were run on. 
 
@@ -139,7 +137,7 @@ no_classification_final_analysis <- runPvSeroPipeline(
   experiment_name = "experiment1", 
   classify = "No", ########################## key if you do NOT want any classification performed i.e., you do not have PvSeroTaT antigens 
   algorithm_type = "antibody_model", 
-  sens_spec = "maximised"
+  sens_spec = "balanced"
 )
 ```
 

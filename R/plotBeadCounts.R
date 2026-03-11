@@ -4,7 +4,7 @@
 #' displaying antigens per plate, and enabling SampleID name visibility via
 #' hover (transformed to Plotly in server.R)
 #'
-#' @param antigen_counts_output Output from `getAntigenCounts()` (reactive).
+#' @param qc_results Output from `runQC()`.
 #' @return Dot plot with values > 15 threshold coloured in blue (sufficient
 #' beads) and less than or equal to 15 beads coloured in red (repeat)
 #' faceted by each antigen
@@ -33,17 +33,27 @@
 #' plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #'
 #' # Step 2: Process counts and perform quality control
-#' counts      <- processCounts(sero_data)
-#' counts_raw  <- getCounts(counts)
-#' sample_ids  <- getSampleID(counts, plate_list)
-#' antigen_cts <- getAntigenCounts(counts, plate_list)
+#' qc_results  <- runQC(sero_data, plate_list)
 #'
 #' # Step 3: Plot Bead Counts
-#' plotBeadCounts(antigen_cts)
+#' plotBeadCounts(qc_results)
 #' }
-plotBeadCounts <- function(antigen_counts_output){
+plotBeadCounts <- function(qc_results){
 
-  antigen_counts_output$Plate <- factor(antigen_counts_output$Plate, levels = unique(antigen_counts_output$Plate[order(as.numeric(str_extract(antigen_counts_output$Plate, "\\d+")))])) # reorder by plate number
+  antigen_counts_output <- qc_results$getAntigenCounts_output
+
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+
+  name_lookup <- setNames(new_names, old_names)
+
+  antigen_counts_output <- antigen_counts_output %>%
+    dplyr::mutate(
+      Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number,
+      Antigen = dplyr::recode(Antigen, !!!name_lookup)
+    )
+
   antigen_counts_output %>%
     ggplot2::ggplot(
       aes(Plate, Count, colour = Repeat, alpha = Repeat, size = Repeat,

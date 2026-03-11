@@ -4,17 +4,16 @@
 \alias{renderClassificationTable}
 \title{All Classification Data}
 \usage{
-renderClassificationTable(mfi_to_rau_output, algorithm_type, counts_QC_output)
+renderClassificationTable(mfi_to_rau_output, algorithm_type, qc_results)
 }
 \arguments{
-\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_ETH()`
-(reactive).}
+\item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`.}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
 - "antibody_model_excLF016" (PvSeroTat excluding LF016).}
 
-\item{counts_QC_output}{Output from `getCountsQC()` (reactive).}
+\item{qc_results}{Output from `runQC()`.}
 }
 \value{
 A table of all classification outputs.
@@ -34,27 +33,23 @@ your_raw_data <- c(
 your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
 
 # Step 1: Reading in Raw Data
-sero_data       <- readSeroData(raw_data = your_raw_data, "magpix")
+sero_data     <- readSeroData(raw_data = your_raw_data, "magpix")
 plate_list    <- readPlateLayout(
   plate_layout = your_plate_layout,
   sero_data = sero_data
 )
 
 # Step 2: Quality Control and MFI to RAU
-processCounts_output      <- processCounts(sero_data)
-getCounts_output          <- getCounts(processCounts_output)
-sampleid_output           <- getSampleID(processCounts_output, plate_list)
-getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+qc_results <- runQC(sero_data, plate_list)
 
 # Step 4: Run MFI to RAU (e.g., using ETH beads)
-mfi_to_rau_output  <- MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output)
+mfi_to_rau_output  <- MFItoRAU_Adj(sero_data, plate_list, qc_results)
 
 # Step 5: Render classification table
 renderClassificationTable(
   mfi_to_rau_output = mfi_to_rau_output,
   algorithm_type = "antibody_model",
-  counts_QC_output = getCountsQC_output
+  qc_results = qc_results
 )
 
 }

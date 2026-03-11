@@ -12,6 +12,7 @@ renderQCReport(
   date = format(Sys.Date(), "\%Y\%m\%d"),
   experiment_notes = "no notes",
   location,
+  std_point = 10,
   path = "."
 )
 }
@@ -29,6 +30,8 @@ renderQCReport(
 \item{experiment_notes}{A string of notes. Default is "no notes".}
 
 \item{location}{A string for experiment location: "ETH" or "PNG" accepted.}
+
+\item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH" for LDH specific curve. Default = 10. Value is an integer.}
 
 \item{path}{Output path for the PDF file. Defaults to current working directory.}
 }

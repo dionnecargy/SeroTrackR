@@ -12,7 +12,7 @@ runPlasmoPipeline(
   std_point,
   experiment_name = "experiment1",
   algorithm_type = "antibody_model",
-  sens_spec = "maximised"
+  sens_spec = "balanced"
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ runPlasmoPipeline(
 
 \item{plate_layout}{An ".xlsx" file with sheets labelled plate1, plate2... etc.}
 
-\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1".}
+\item{panel}{Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.}
 
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 
@@ -33,7 +33,7 @@ runPlasmoPipeline(
 - "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
 
 \item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "maximised" (default),
+- "balanced" (default),
 - "85\% sensitivity",
 - "90\% sensitivity",
 - "95\% sensitivity",

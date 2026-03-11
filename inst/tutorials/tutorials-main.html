@@ -2395,13 +2395,13 @@ vertical-align: -.125em;
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">experiment_name =</span> <span class="st">&quot;experiment1&quot;</span>, </span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">classify =</span> <span class="st">&quot;Yes&quot;</span>, </span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">algorithm_type =</span> <span class="st">&quot;antibody_model&quot;</span>, </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sens_spec =</span> <span class="st">&quot;maximised&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sens_spec =</span> <span class="st">&quot;balanced&quot;</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="tabset">
 <section id="classification" class="level4">
 <h4 class="anchored" data-anchor-id="classification">Classification</h4>
-<p>This is a table containing the classification results (seropositive or seronegative) for each <code>SampleID</code>. In this case, the classification results are stored in the <code>pred_class_max</code> column as we chose the <code>sens_spec = &quot;maximised&quot;</code>. If you change it to another type of threshold, then the suffix of that column will change accordingly.</p>
+<p>This is a table containing the classification results (seropositive or seronegative) for each <code>SampleID</code>. In this case, the classification results are stored in the <code>pred_class_max</code> column as we chose the <code>sens_spec = &quot;balanced&quot;</code>. If you change it to another type of threshold, then the suffix of that column will change accordingly.</p>
 <p>You will also see the relative antibody unit (RAU) values (columns with antigen names), whether the sample passed QC check (<code>QC_total</code>) and the <code>plate</code> that they were run on.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>final_analysis[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span></span>
@@ -2633,7 +2633,7 @@ $plate3</code></pre>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">experiment_name =</span> <span class="st">&quot;experiment1&quot;</span>, </span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">classify =</span> <span class="st">&quot;No&quot;</span>, <span class="do">########################## key if you do NOT want any classification performed i.e., you do not have PvSeroTaT antigens </span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">algorithm_type =</span> <span class="st">&quot;antibody_model&quot;</span>, </span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sens_spec =</span> <span class="st">&quot;maximised&quot;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sens_spec =</span> <span class="st">&quot;balanced&quot;</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="tabset">
@@ -2957,7 +2957,7 @@ $plate3</code></pre>
                                                                                                                  </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>/Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS template.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/argyropoulos.d/Documents/GitHub/SeroTrackR/inst/tutorials/experiment1_20251105_ETH_v1.4.0_QCreport.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/gy/34_9ywy92yq760vvv9kl7c800005yt/T//RtmpASJYF3/rmarkdown-str88b8561c87a2.html --variable &#39;geometry:margin=1in&#39; --include-in-header /var/folders/gy/34_9ywy92yq760vvv9kl7c800005yt/T//RtmpASJYF3/rmarkdown-str88b86b0cc8d8.html </code></pre>
+<pre><code>/Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS template.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/argyropoulos.d/Documents/GitHub/SeroTrackR/inst/tutorials/experiment1_20251105_Adj_v1.4.0_QCreport.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/gy/34_9ywy92yq760vvv9kl7c800005yt/T//RtmpASJYF3/rmarkdown-str88b8561c87a2.html --variable &#39;geometry:margin=1in&#39; --include-in-header /var/folders/gy/34_9ywy92yq760vvv9kl7c800005yt/T//RtmpASJYF3/rmarkdown-str88b86b0cc8d8.html </code></pre>
 </div>
 </div>
 </section>
@@ -3335,14 +3335,14 @@ $plate3</code></pre>
 <th style="text-align: right;">PfGexp18_MaxDilution</th>
 <th style="text-align: right;">PfGexp18_MaxStd</th>
 <th style="text-align: right;">PfGexp18_MinDilution</th>
-<th style="text-align: right;">EBP_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF005_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF010_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF016_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">MSP8_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PTEX150_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PvCSS_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">RBP2b.P87_ETHtoPNGloglog_Dilution</th>
+<th style="text-align: right;">EBP_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF005_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF010_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF016_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">MSP8_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PTEX150_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PvCSS_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">RBP2b.P87_AdjtoPNGloglog_Dilution</th>
 </tr>
 </thead>
 <tbody>
@@ -4323,14 +4323,14 @@ $plate3</code></pre>
 <th style="text-align: right;">Pfetramp5Ag1_loglog_Dilution</th>
 <th style="text-align: right;">PfHSP40Ag1_loglog_Dilution</th>
 <th style="text-align: right;">PfGexp18_loglog_Dilution</th>
-<th style="text-align: right;">EBP_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF005_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF010_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF016_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">MSP8_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PTEX150_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PvCSS_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">RBP2b.P87_ETHtoPNGloglog_Dilution</th>
+<th style="text-align: right;">EBP_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF005_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF010_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF016_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">MSP8_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PTEX150_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PvCSS_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">RBP2b.P87_AdjtoPNGloglog_Dilution</th>
 </tr>
 </thead>
 <tbody>
@@ -5055,14 +5055,14 @@ $plate3</code></pre>
 <th style="text-align: right;">PfGexp18_MaxDilution</th>
 <th style="text-align: right;">PfGexp18_MaxStd</th>
 <th style="text-align: right;">PfGexp18_MinDilution</th>
-<th style="text-align: right;">EBP_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF005_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF010_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF016_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">MSP8_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PTEX150_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PvCSS_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">RBP2b.P87_ETHtoPNGloglog_Dilution</th>
+<th style="text-align: right;">EBP_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF005_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF010_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF016_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">MSP8_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PTEX150_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PvCSS_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">RBP2b.P87_AdjtoPNGloglog_Dilution</th>
 </tr>
 </thead>
 <tbody>
@@ -6043,14 +6043,14 @@ $plate3</code></pre>
 <th style="text-align: right;">Pfetramp5Ag1_loglog_Dilution</th>
 <th style="text-align: right;">PfHSP40Ag1_loglog_Dilution</th>
 <th style="text-align: right;">PfGexp18_loglog_Dilution</th>
-<th style="text-align: right;">EBP_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF005_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF010_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">LF016_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">MSP8_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PTEX150_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">PvCSS_ETHtoPNGloglog_Dilution</th>
-<th style="text-align: right;">RBP2b.P87_ETHtoPNGloglog_Dilution</th>
+<th style="text-align: right;">EBP_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF005_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF010_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">LF016_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">MSP8_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PTEX150_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">PvCSS_AdjtoPNGloglog_Dilution</th>
+<th style="text-align: right;">RBP2b.P87_AdjtoPNGloglog_Dilution</th>
 </tr>
 </thead>
 <tbody>

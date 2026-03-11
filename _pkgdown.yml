@@ -48,7 +48,7 @@ reference:
   - plotCounts
   - plotMFI
   - plotModel
-  - plotModel_ETH
+  - plotModel_Adj
   - plotRAU
   - starts_with("plotStds")
   - processPkPfPv

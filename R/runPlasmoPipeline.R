@@ -10,7 +10,7 @@
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTaT excluding LF016).
 #' @param sens_spec User-selected Sensitivity/Specificity threshold:
-#' - "maximised" (default),
+#' - "balanced" (default),
 #' - "85\% sensitivity",
 #' - "90\% sensitivity",
 #' - "95\% sensitivity",
@@ -70,31 +70,27 @@ runPlasmoPipeline <- function(
     std_point,
     experiment_name = "experiment1",
     algorithm_type = "antibody_model",
-    sens_spec = "maximised"
+    sens_spec = "balanced"
   ){
 
   #############################################################
   # Step 1: Reading in Raw Data
   #############################################################
-  sero_data       <- readSeroData(raw_data = raw_data, platform)
-  plate_list    <- readPlateLayout(plate_layout = plate_layout, sero_data = sero_data)
+  sero_data                 <- readSeroData(raw_data = raw_data, platform)
+  plate_list                <- readPlateLayout(plate_layout = plate_layout, sero_data = sero_data)
 
   #############################################################
-  # Step 2: Quality Control and MFI to RAU
+  # Step 2: Quality Control
   #############################################################
-  processCounts_output      <- processCounts(sero_data)
-  getCounts_output          <- getCounts(processCounts_output)
-  sampleid_output           <- getSampleID(processCounts_output, plate_list)
-  getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-  getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+  qc_results                <- runQC(sero_data, plate_list)
   message("QC Processes completed.")
 
   #############################################################
   # Step 3: Plotting
   #############################################################
-  stdcurve_plot             <- suppressWarnings(plotStds_PkPfPv(sero_data, experiment_name))
-  plateqc_plot              <- plotCounts(getCounts_output, experiment_name)
-  check_repeats_output      <- getRepeats(getCounts_output, processCounts_output, plate_list)
+  stdcurve_plot             <- suppressWarnings(plotStds_PkPfPv(sero_data, experiment_name, panel))
+  plateqc_plot              <- plotCounts(qc_results, experiment_name)
+  check_repeats_output      <- getRepeats(qc_results, plate_list)
   blanks_plot               <- plotBlanks(sero_data, experiment_name)
   message("QC Plotting completed.")
 
@@ -106,14 +102,14 @@ runPlasmoPipeline <- function(
     plate_list = plate_list,
     panel = panel,
     std_point = std_point,
-    counts_QC_output = getCountsQC_output
+    qc_results = qc_results
   )
   message("MFI to RAU conversion completed.")
 
   #############################################################
   # Step 5: Perform Pv classification
   #############################################################
-  Pv_classified <- classifyPv(mfi_outputs, algorithm_type, sens_spec, getCountsQC_output)
+  Pv_classified             <- classifyResults(mfi_outputs, algorithm_type, sens_spec, qc_results, project = "pkpfpv")
   message("Pv classification completed.")
 
   #############################################################
