@@ -33,7 +33,7 @@ Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}
 
 ### Visualisation of the PvSeroApp Pipeline
 
-![](../man/figures/SeroTrackR_PvSeroApp.jpg)
+![](../man/figures/SeroTrackR_PvSeroApp.png)
 
 ### Using Tutorial Dataset: Load the Data
 
