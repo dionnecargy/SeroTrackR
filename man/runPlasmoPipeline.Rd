@@ -11,6 +11,7 @@ runPlasmoPipeline(
   panel = "panel1",
   std_point,
   experiment_name = "experiment1",
+  classify = "Yes",
   algorithm_type = "antibody_model",
   sens_spec = "balanced"
 )
@@ -27,6 +28,8 @@ runPlasmoPipeline(
 \item{std_point}{Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.}
 
 \item{experiment_name}{User-input experiment name. Default: "experiment1".}
+
+\item{classify}{"Yes" or "No" depending on whether you would like classification or not. Default = "Yes".}
 
 \item{algorithm_type}{User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or

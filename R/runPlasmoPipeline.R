@@ -6,6 +6,7 @@
 #' @param panel Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
 #' @param experiment_name User-input experiment name. Default: "experiment1".
+#' @param classify "Yes" or "No" depending on whether you would like classification or not. Default = "Yes".
 #' @param algorithm_type User-selected algorithm choice:
 #' - "antibody_model" (PvSeroTaT model; default), or
 #' - "antibody_model_excLF016" (PvSeroTaT excluding LF016).
@@ -69,6 +70,7 @@ runPlasmoPipeline <- function(
     panel = "panel1",
     std_point,
     experiment_name = "experiment1",
+    classify = "Yes",
     algorithm_type = "antibody_model",
     sens_spec = "balanced"
   ){
@@ -109,18 +111,24 @@ runPlasmoPipeline <- function(
   #############################################################
   # Step 5: Perform Pv classification
   #############################################################
-  Pv_classified             <- classifyResults(mfi_outputs, algorithm_type, sens_spec, qc_results, project = "pkpfpv")
-  message("Pv classification completed.")
-
-  #############################################################
-  # Outputs
-  #############################################################
-  return(list(
-    std_curve = stdcurve_plot,
-    bead_counts = plateqc_plot,
-    blanks = blanks_plot,
-    mfi_outputs = mfi_outputs,
-    pv_classification = Pv_classified
-  ))
+  if(classify == "Yes"){
+    Pv_classified             <- classifyResults(mfi_outputs, algorithm_type, sens_spec, qc_results, project = "pkpfpv")
+    message("Pv classification completed.")
+    return(list(
+      std_curve = stdcurve_plot,
+      bead_counts = plateqc_plot,
+      blanks = blanks_plot,
+      mfi_outputs = mfi_outputs,
+      pv_classification = Pv_classified
+    ))
+  } else {
+    message("No Classification Performed.")
+    return(list(
+      std_curve = stdcurve_plot,
+      bead_counts = plateqc_plot,
+      blanks = blanks_plot,
+      mfi_outputs = mfi_outputs
+    ))
+  }
 
 }
