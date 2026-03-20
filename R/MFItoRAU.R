@@ -317,7 +317,7 @@ MFItoRAU_Adj <- function(
   counts_QC_output              <- qc_results$getCountsQC_output
 
   # Reference Fit
-  refs <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/png_eth_stds.csv"))
+  refs <-read.csv(system.file("extdata", "png_eth_stds.csv", package = "SeroTrackR"))
 
   control = list(maxit = 10000, abstol = 1e-8, reltol = 1e-6)
   initial_solution = c(-1.0, 0.0, 10, 0.0, 0.0)
@@ -833,8 +833,7 @@ MFItoRAU_Plasmo <- function(
 
   # Add panel
   if(panel == "panel1"){
-    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
-
+    panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
   } else {
     panel <- read.csv(panel)
   }
