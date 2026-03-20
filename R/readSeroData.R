@@ -33,7 +33,7 @@
 #' )
 readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames = NULL){
   platemap_file <- system.file("extdata", "platemap.csv", package = "SeroTrackR")
-  platemap <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/platemap.csv"))
+  platemap <- read.csv(platemap_file)
 
   raw_data_filenames <- tolower(
     if (is.null(raw_data_filenames)) basename(raw_data) else raw_data_filenames
@@ -223,6 +223,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
     stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87|RBP2b)", ignore_case = TRUE)) ~ "RBP2b.P87",
     stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150",
+    stringr::str_detect(colnames(df), regex("PkTRAMPCSS|PkTRAMP-CSS|PkPC", ignore_case = TRUE)) ~ "PkTRAMP-CSS",
     stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
     stringr::str_detect(colnames(df), regex("(PfMSP1-19|PfMSP1|PfMSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
     stringr::str_detect(colnames(df), regex("PfAMA1", ignore_case = TRUE)) ~ "PfAMA1",
@@ -231,6 +232,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     stringr::str_detect(colnames(df), regex("PfGexp18", ignore_case = TRUE)) ~ "PfGexp18",
     stringr::str_detect(colnames(df), regex("PkSSP2", ignore_case = TRUE)) ~ "PkSSP2",
     stringr::str_detect(colnames(df), regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10",
+    stringr::str_detect(colnames(df), regex("PkRIPR", ignore_case = TRUE)) ~ "PkRIPR",
+    stringr::str_detect(colnames(df), regex("Sera3ag1", ignore_case = TRUE)) ~ "PkSERA3ag1",
     stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~ "Pk8",
     stringr::str_detect(colnames(df), regex("SERA3Ag2", ignore_case = TRUE)) ~ "PkSERA3Ag2",
     TRUE ~ colnames(df) # Keep unmatched names as-is
