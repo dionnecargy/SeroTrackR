@@ -241,13 +241,14 @@ plotStds_PkPfPv <- function(
     stop("Package 'zoo' is required for plotStds_PkPfPv(). Please install it.", call. = FALSE)
   }
 
-  #panel 1 is default - (future change to extdata?) else provides option for user specified option
-  if(panel == "panel1"){
-    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+  #panel 1 is default
 
+  if(panel == "panel1"){
+    panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
   } else {
     panel <- read.csv(panel)
   }
+
 
   master_file <- sero_data
   stds <- master_file$stds
