@@ -831,10 +831,27 @@ MFItoRAU_Plasmo <- function(
   PkPfPv_Final_MFI_RAU <- PkPfPv_Final %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI", ignore.case = FALSE), ends_with("_Dilution", ignore.case = FALSE))
 
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+  name_lookup <- setNames(new_names, old_names)
+
+  names(pfpv_Adj_final_results) <- vapply(
+    names(pfpv_Adj_final_results),
+    function(col) {
+      for (old in names(name_lookup)) {
+        col <- sub(paste0("^", old), name_lookup[[old]], col)
+      }
+      col
+    },
+    character(1)
+  )
+
   # Add panel
   if(panel == "panel1"){
     panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
-
+    panel <- panel %>%
+      dplyr::mutate(Antigens = dplyr::recode(Antigens, !!!name_lookup))
   } else {
     panel <- read.csv(panel)
   }
