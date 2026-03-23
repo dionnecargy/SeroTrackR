@@ -163,10 +163,13 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   } else if (ext == "csv") {
     first_lines <- readLines(file, n = 5)
     df <- if (any(grepl(";", first_lines))) {
-      suppressWarnings(readr::read_csv2(file))
+      suppressWarnings(read.csv2(file, header = F, col.names = paste0("x", 1:max(count.fields(file, sep = ";"))), fill = T)%>%
+                         janitor::row_to_names(1))
     } else {
-      suppressMessages(readr::read_csv(file))
+      suppressWarnings(read.csv(file, header = F, col.names = paste0("x", 1:max(count.fields(file, sep = ","))), fill = T) %>%
+                         janitor::row_to_names(1))
     }
+    colnames(df) <- make.names(colnames(df), unique = T)
     df <- dplyr::filter(df, rowSums(is.na(df)) != ncol(df))
   } else {
     stop("Unsupported file format! Please use .csv or .xlsx", call. = FALSE)
