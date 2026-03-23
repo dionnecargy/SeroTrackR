@@ -277,7 +277,7 @@ plotStds_PkPfPv <- function(
   # Code to keep
   ################################################################
   dplyr::select(-Location) %>%
-    tidyr::separate(Sample, c("Sample", "Beads"), sep = " ") %>%
+    tidyr::separate(Sample, c("Sample", "Beads"), sep = "[ -]") %>%
     tidyr::pivot_longer(-c(Sample, Beads, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
@@ -287,6 +287,12 @@ plotStds_PkPfPv <- function(
       MFI = as.numeric(MFI)
     ) %>%
     dplyr::left_join(panel, by = c("Antigen" = "Antigens")) %>%
+    dplyr::mutate(Species = case_when(
+      is.na(Species) & stringr::str_detect(Antigen, "Pv") ~ "Pv",
+      is.na(Species) & stringr::str_detect(Antigen, "Pf") ~ "Pf",
+      is.na(Species) & stringr::str_detect(Antigen, "Pk") ~ "Pk",
+      T ~ Species
+    )) %>%
     dplyr::mutate(stds_to_keep = case_when(
       Species=="Pk" & Beads == "PK" ~ "keep",
       Species=="Pf" & Beads == "ETH" ~ "keep",
