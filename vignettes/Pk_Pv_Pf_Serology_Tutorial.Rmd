@@ -31,7 +31,7 @@ For all of these analyses you can run as many plates as you wish.
 
 ### Visualisation of the Pk/Pv/Pf Pipeline
 
-![](../man/figures/SeroTrackR_Pk_Pf_Pv.png)
+![](../man/figures/SeroTrackR_Pk_Pf_Pv.jpeg)
 
 ```{r setup pk analysis, eval=FALSE}
 library(SeroTrackR)

@@ -38,13 +38,13 @@ Within your plate layout in the MAGPIX, you can use the "U" button for all unkno
 
 You can also write in the Operator i.e., who ran the assay! This is useful to track variation in plates between experiments.
 
-![](../man/figures/magpix_raw.png)
+![](../man/figures/magpix_raw.jpeg)
 
 **For the Bioplex Machines**: 
 
 Isolate names will tend to be written as 'X1', 'X2', 'X3'... and saved as an .xlsx file. Specifics on Bio-Plex machines will be added shortly.
 
-![](../man/figures/bioplex_raw.png)
+![](../man/figures/bioplex_raw.jpeg)
 
 ### Plate Layout File 
 
@@ -58,7 +58,7 @@ Make sure that your sample labels in the plate layout are as follows:
 
 The package expects standards to start with "S" and blanks to start with "B", but everything else with a label will be considered an unknown sample. If you have other types of samples, for example a positive control, you can use a different sample label to the other unknown study samples (i.e. "PositiveControl" in addition to the "ABC" study codes).
 
-![](../man/figures/plate_layout_1.png)
+![](../man/figures/plate_layout_1.jpeg)
 
 The standards S1-10 correspond to the following dilution concentrations: 
 

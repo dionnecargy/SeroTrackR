@@ -22,10 +22,8 @@
 #' @author Dionne Argyropoulos
 #'
 #' @examples
-#'
 #' ## Not run on CRAN because it requires interactive rendering and can be slow:
-#' if (interactive()) {
-#'
+#' \dontrun{
 #'   # Example raw data files (MAGPIX platform)
 #'   your_raw_data <- c(
 #'     system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),

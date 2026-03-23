@@ -25,6 +25,10 @@ setup <- function() {
 
 setup()
 library(SeroTrackR)
+
+knitr::opts_chunk$set(
+  dpi = 72
+)
 ```
 
 ## Data Analysis: LDH

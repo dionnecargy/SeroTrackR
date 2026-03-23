@@ -12,10 +12,10 @@
 #'
 #' @examples
 #' # Minimal example that renders a temporary Rmd file.
-#' # Safe for CRAN because it only writes to tempdir() and runs
-#' # conditionally if rmarkdown is installed.
-#' \donttest{
-#' if (requireNamespace("rmarkdown", quietly = TRUE)) {
+#' # Safe for CRAN because it only writes to tempdir()
+#' \dontrun{
+#' if (requireNamespace("rmarkdown", quietly = TRUE) &&
+#'     rmarkdown::pandoc_available()) {
 #'
 #'   # Create a temporary Rmd that declares params in the YAML
 #'   rmd_file <- tempfile(fileext = ".Rmd")

@@ -6,8 +6,6 @@
 \alias{SeroTrackR-package}
 \title{SeroTrackR: Serology-Based Data Analysis and Visualization}
 \description{
-\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
-
 Data wrangling and cleaning, quality control checks and implementation of machine learning classification algorithm.
 }
 \seealso{

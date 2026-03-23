@@ -25,6 +25,14 @@ setup <- function() {
 
 setup()
 library(SeroTrackR)
+
+knitr::opts_chunk$set(
+  dpi = 72
+)
+
+knitr::opts_chunk$set(
+  dpi = 72
+)
 ```
 
 ## Data Analysis: `runPvSeroPipeline()` 
@@ -33,7 +41,7 @@ Run this global function `runPvSeroPipeline()` embedded within the `{SeroTrackR}
 
 ### Visualisation of the PvSeroApp Pipeline
 
-![](../man/figures/SeroTrackR_PvSeroApp.png)
+![](../man/figures/SeroTrackR_PvSeroApp.jpeg)
 
 ### Using Tutorial Dataset: Load the Data
 
