@@ -351,7 +351,7 @@ MFItoRAU_Adj <- function(
     eth_qa_sc <- subset_data %>%
       dplyr::filter(type.letter == "S") %>%
       tidyr::pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
-      dplyr::mutate(dilution = 2 ^ (-as.numeric(gsub( # 2 = dilution factor
+      dplyr::mutate(dilution = dilution_factor ^ (-as.numeric(gsub(
         "\\D", "", .data$`Sample`
       )) + 1))  %>%
       dplyr::group_by(.data$antigen) %>%
