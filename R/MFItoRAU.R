@@ -859,7 +859,14 @@ MFItoRAU_Plasmo <- function(
 
   PkPfPv_long_mfi_rau <- suppressWarnings(
     PkPfPv_long_mfi %>%
-      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species"))
+      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")) %>%
+      dplyr::mutate(Species = case_when(
+        is.na(Species) & stringr::str_detect(Antigens, "Pv") ~ "Pv",
+        is.na(Species) & stringr::str_detect(Antigens, "Pf") ~ "Pf",
+        is.na(Species) & stringr::str_detect(Antigens, "Pk") ~ "Pk",
+        T ~ Species
+
+      ))
   ) %>%
     dplyr::select(SampleID, Plate, Antigens, Species, MFI, RAU, RAU_Method)
 
