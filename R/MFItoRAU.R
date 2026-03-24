@@ -816,8 +816,11 @@ MFItoRAU_Plasmo <- function(
   PfPv_Final[[1]] <- PfPv_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_loglog_Dilution", .x))
   PfPv_Final[[2]] <- PfPv_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_loglog_Dilution", .x))
 
-  PfPv_Adj_Final[[1]] <- PfPv_Adj_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x))
-  PfPv_Adj_Final[[2]] <- PfPv_Adj_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x))
+  PfPv_Adj_Final[[1]] <- PfPv_Adj_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x)) %>%
+    dplyr::mutate(across(contains("_Adjloglog_Dilution")), ~if_else(.x<1.95e-05, 1.95e-05, .x)) # catch any values below 1.95e-05 (S11 min)
+  PfPv_Adj_Final[[2]] <- PfPv_Adj_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x)) %>%
+    dplyr::mutate(across(contains("_Adjloglog_Dilution")), ~if_else(.x<1.95e-05, 1.95e-05, .x)) # catch any values below 1.95e-05 (S11 min)
+
 
   # Join Dataframes Together
   pk_final_results            <- Pk_Final
