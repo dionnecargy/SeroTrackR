@@ -359,7 +359,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     # Filter to correct section of df
     dplyr::slice((row1 + 1):(row2 - 1)) %>%
     #make blank cells NA so they are dropped in next line
-    mutate(across(everything(), na_if, "")) %>%
+    mutate(across(.cols = everything(), .fns = ~na_if(.x, ""))) %>%
     # Drop all-NA columns
     dplyr::select(dplyr::where(~ !all(is.na(.x)))) %>%
     # Drop all-NA rows
