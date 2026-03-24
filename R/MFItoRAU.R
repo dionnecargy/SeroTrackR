@@ -351,7 +351,7 @@ MFItoRAU_Adj <- function(
     eth_qa_sc <- subset_data %>%
       dplyr::filter(type.letter == "S") %>%
       tidyr::pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
-      dplyr::mutate(dilution = 2 ^ (-as.numeric(gsub( # 2 = dilution factor
+      dplyr::mutate(dilution = dilution_factor ^ (-as.numeric(gsub( # 2 = dilution factor
         "\\D", "", .data$`Sample`
       )) + 1))  %>%
       dplyr::group_by(.data$antigen) %>%
@@ -830,6 +830,22 @@ MFItoRAU_Plasmo <- function(
       left_join(pfpv_Adj_final_results))
   PkPfPv_Final_MFI_RAU <- PkPfPv_Final %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI", ignore.case = FALSE), ends_with("_Dilution", ignore.case = FALSE))
+
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+  name_lookup <- setNames(new_names, old_names)
+
+  names(pfpv_Adj_final_results) <- vapply(
+    names(pfpv_Adj_final_results),
+    function(col) {
+      for (old in names(name_lookup)) {
+        col <- sub(paste0("^", old), name_lookup[[old]], col)
+      }
+      col
+    },
+    character(1)
+  )
 
   # Add panel
   if(panel == "panel1"){
