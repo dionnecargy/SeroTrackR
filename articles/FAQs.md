@@ -1,0 +1,259 @@
+# FAQs
+
+## How do I install R packages other than `SeroTrackR`?
+
+The key package that you will need to be able to run the `SeroTrackR` R
+package and perform any other subsequent analyses is the `tidyverse` R
+packages.
+
+``` r
+install.packages("tidyverse")
+```
+
+Then once you have installed the tidyverse meta-package, then you load
+the library in as below:
+
+``` r
+library(tidyverse)
+```
+
+There **are many** dependencies that the `SeroTrackR` R package relies
+on. These packages help us to wrangle our data, process our MFI data
+into RAU, apply the machine learning classification algorithm, and
+create PDF reports.
+
+If you are using R via RStudio, then when you load the SeroTrackR
+package it may prompt you to install all of these other files. Select
+yes if that is the case.
+
+If it does not prompt you automatically, or if you are using another
+platform to use R, then use the code below:
+
+``` r
+setup <- function(){
+  needed <- c(
+    # Imports: Required 
+    "dplyr", "drc", "forcats", "ggplot2", "here", "janitor", 
+    "kableExtra", "knitr", "magrittr", "openxlsx", "parsnip", 
+    "purrr", "ranger", "readr", "readxl", "rmarkdown", "stats", 
+    "stringr", "tidyr", "tidyselect", "utils", "workflows", 
+    # Imports: Suggested
+    "glue", "htmltools", "httr", "jsonlite", "shiny.fluent", 
+    "tidyverse", "zoo"
+    )
+  for(package in needed){
+    if(!sum(installed.packages() %in% package)){
+      install.packages(package)
+    }
+    
+    require(package, character.only = TRUE)
+  }
+}
+
+setup()
+```
+
+## How do I organise my files?
+
+It is best practice to create an `R project (.Rproj)` file and store all
+of your files in there. A comprehensive tutorial on how to create an R
+project can be found
+[here](https://kzeglinski.github.io/new_wehi_r_course/session_1.html).
+
+You can then create a Quarto Markdown Document `data_processing.qmd`
+inside your R project where you can process all of your serological
+data.
+
+``` bash
+my_R_project
+└── data/
+    ├── raw_data_plate1.csv
+    ├── raw_data_plate2.csv
+    ├── raw_data_plate3.csv
+    ├── platelayout.xlsx
+└── results/
+└── data_processing.qmd
+```
+
+## How can I read in my data?
+
+Once you have an `R project (.Rproj)` setup, you can save all of your
+files into a new folder called “data”. Then you can read in your data as
+follows:
+
+``` r
+my_raw_data       <- "data/my_plate1.csv"
+my_plate_layout   <- "data/my_plate_layout.xlsx"
+```
+
+## Is there capability to run this without internet?
+
+You will need internet to initially download the R package and to
+process certain files which call upon the internet.
+
+The developers are currently working on how to leverage a safe
+no-internet option that allows for the incorporation of the
+classification algorithm. The reason we use the internet at the moment
+is because the files containing the algorithm are quite **large**.
+
+## I have multiple plate layout files. How can I input them?
+
+Use the
+[`getPlateLayout()`](https://dionnecargy.github.io/SeroTrackR/reference/getPlateLayout.md)
+function to create a master plate layout file to then input into the
+other functions in the package!
+
+``` r
+getPlateLayout("your/folder/with/plate/layouts/")
+```
+
+Here replace “your/folder/with/plate/layouts/” with the main file that
+contains your folders. For example, if your folder looks like this:
+
+``` bash
+my_R_project/
+└── data/
+    ├── plate_1/
+    │   ├── raw_magpix_data_plate1.csv
+    │   └── plate_layout_1.xlsx
+    ├── plate_2/
+    │   ├── raw_magpix_data_plate2.csv
+    │   └── plate_layout_2.xlsx
+    └── plate_3/
+        ├── raw_magpix_data_plate3.csv
+        └── plate_layout_3.xlsx
+```
+
+you would write:
+
+``` r
+getPlateLayout("data/")
+```
+
+you could ALSO write:
+
+``` r
+getPlateLayout()
+```
+
+OR:
+
+``` r
+getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
+```
+
+## I have multiple Luminex data types I’d like to analyse. How can I do this?
+
+If you have, for example, both Bio-Plex and MAGPIX files and would like
+to analyse them both, then you can do some clever data manipulation as
+below:
+
+\*Note that in this example, there is one plate layout that contains all
+files in it. But the same idea can apply to
+[`readPlateLayout()`](https://dionnecargy.github.io/SeroTrackR/reference/readPlateLayout.md).
+
+**Input your Bio-Plex file/s**:
+
+Using a reproducible example:
+
+``` r
+library(SeroTrackR)
+library(tidyverse)
+
+bioplex_raw_plates <- c(
+  system.file("extdata", "example_BioPlex_plate1.xlsx", package = "SeroTrackR"),
+  system.file("extdata", "example_BioPlex_plate2.xlsx", package = "SeroTrackR")
+)
+all_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
+```
+
+For your data:
+
+``` r
+bioplex_raw_plates <- c(
+  "data/example_BioPlex_plate1.xlsx", 
+  "data/example_BioPlex_plate2.xlsx"
+)
+all_plate_layout <- "data/example_platelayout_1.xlsx" 
+```
+
+**Input your MAGPIX file/s**:
+
+Using a reproducible example:
+
+``` r
+magpix_raw_plate     <- system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
+```
+
+For your data:
+
+``` r
+magpix_raw_plate      <- "data/example_MAGPIX_plate3.csv"
+```
+
+**Read the serological data files in**:
+
+``` r
+# Serological data
+bioplex_sero_data <- readSeroData(
+  raw_data = bioplex_raw_plates,
+  platform = "bioplex"
+)
+magpix_sero_data <- readSeroData(
+  raw_data = magpix_raw_plate,
+  platform = "magpix", 
+  version = "4.2"
+)
+```
+
+**Merge the files together**:
+
+``` r
+sero_data_merged <- NULL
+# data_raw 
+sero_data_merged$data_raw <- bioplex_sero_data$data_raw %>% 
+  bind_rows(magpix_sero_data$data_raw)
+
+# results 
+sero_data_merged$results <- bioplex_sero_data$results %>% 
+  bind_rows(magpix_sero_data$results)
+
+# counts 
+sero_data_merged$counts <- bioplex_sero_data$counts %>% 
+  bind_rows(magpix_sero_data$counts)
+
+# blanks
+sero_data_merged$blanks <- bioplex_sero_data$blanks %>% 
+  bind_rows(magpix_sero_data$blanks)
+
+# stds
+sero_data_merged$stds <- bioplex_sero_data$stds %>% 
+  bind_rows(magpix_sero_data$stds)
+
+# run 
+sero_data_merged$run <- bioplex_sero_data$run %>% 
+  bind_rows(magpix_sero_data$run)
+```
+
+**Continue the rest of the pipeline**:
+
+``` r
+plate_list_all  <- readPlateLayout(
+  plate_layout = all_plate_layout, 
+  sero_data = sero_data_merged
+)
+
+qc_results <- runQC(
+  sero_data = sero_data_merged, 
+  plate_list = all_plate_layout
+)
+
+mfi_to_rau_output <- MFItoRAU(
+  sero_data = sero_data_merged,
+  plate_list = all_plate_layout, 
+  qc_results = qc_results, 
+  std_point = 10
+)
+
+# etc.. 
+```

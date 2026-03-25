@@ -15,11 +15,11 @@ getCountsQC(antigen_counts_output, counts_output)
 
 - antigen_counts_output:
 
-  Output from \`getAntigenCounts\` (reactive).
+  Output from \`getAntigenCounts\`.
 
 - counts_output:
 
-  Output from \`getCounts\` (reactive).
+  Output from \`getCounts\`.
 
 ## Value
 

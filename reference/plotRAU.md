@@ -12,11 +12,11 @@ plotRAU(mfi_to_rau_output, location)
 
 - mfi_to_rau_output:
 
-  Output from \`MFItoRAU()\` or \`MFItoRAU_ETH()\` (reactive).
+  Output from \`MFItoRAU()\` or \`MFItoRAU_Adj()\` .
 
 - location:
 
-  "PNG" or "ETH" (reactive).
+  "PNG" or "ETH".
 
 ## Value
 
@@ -50,17 +50,13 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
-  sero_data = sero_data,
-  plate_list         = plate_list,
-  counts_QC_output   = counts_qc
+mfi_to_rau <- MFItoRAU_Adj(
+  sero_data   = sero_data,
+  plate_list  = plate_list,
+  qc_results  = qc_results
 )
 #> Joining with `by = join_by(antigen)`
 #> Joining with `by = join_by(antigen)`

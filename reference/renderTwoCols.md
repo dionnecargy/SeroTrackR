@@ -55,4 +55,8 @@ if (requireNamespace("shiny.fluent", quietly = TRUE) &&
   # Render two columns with default widths
   renderTwoCols(first_col = col1, second_col = col2)
 }
+#> <div class="react-container" data-react-id="wgkudferwyoprgbxbzpe">
+#>   <script class="react-data" type="application/json">{"type":"element","module":"@fluentui/react","name":"Stack","props":{"type":"object","value":{"horizontal":{"type":"raw","value":true},"tokens":{"type":"raw","value":{"childrenGap":40}},"children":{"type":"array","value":[{"type":"element","name":"div","props":{"type":"object","value":{"tokens":{"type":"raw","value":{"childrenGap":15}},"style":{"type":"raw","value":{"width":"50%"}},"children":{"type":"array","value":[{"type":"element","name":"div","props":{"type":"raw","value":{"children":"First column content"}}}]}}}},{"type":"element","name":"div","props":{"type":"object","value":{"tokens":{"type":"raw","value":{"childrenGap":15}},"style":{"type":"raw","value":{"width":"50%"}},"children":{"type":"array","value":[{"type":"element","name":"div","props":{"type":"raw","value":{"children":"Second column content"}}}]}}}}]}}}}</script>
+#>   <script>jsmodule['@/shiny.react'].findAndRenderReactData('wgkudferwyoprgbxbzpe')</script>
+#> </div>
 ```

@@ -19,7 +19,7 @@ plotBoxPlotClassification(all_classifications, selected_threshold)
 
 - selected_threshold:
 
-  String with the threshold (reactive).
+  String with the threshold.
 
 ## Value
 
@@ -54,17 +54,13 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
-  sero_data = sero_data,
-  plate_list         = plate_list,
-  counts_QC_output   = counts_qc
+mfi_to_rau <- MFItoRAU_Adj(
+  sero_data    = sero_data,
+  plate_list   = plate_list,
+  qc_results   = qc_results
 )
 #> Joining with `by = join_by(antigen)`
 #> Joining with `by = join_by(antigen)`
@@ -75,7 +71,7 @@ mfi_to_rau <- MFItoRAU_ETH(
 
 # Step 4: Define sens/spec thresholds
 sens_spec_all <- c(
-  "maximised", "85% sensitivity", "90% sensitivity", "95% sensitivity",
+  "balanced", "85% sensitivity", "90% sensitivity", "95% sensitivity",
   "85% specificity", "90% specificity", "95% specificity"
 )
 
@@ -85,14 +81,14 @@ all_classifications <- purrr::map_dfr(sens_spec_all, ~{
     mfi_to_rau_output = mfi_to_rau,
     algorithm_type = "antibody_model",
     sens_spec = .x,
-    counts_QC_output = counts_qc
+    qc_results = qc_results
   ) |>
   as.data.frame() |>
   dplyr::mutate(sens_spec = .x)
 })
 
 # Plot classification for a single threshold
-plotBoxPlotClassification(all_classifications, "maximised")
+plotBoxPlotClassification(all_classifications, "balanced")
 
 # }
 ```

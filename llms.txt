@@ -69,31 +69,24 @@ Process raw Luminex data and plate layouts.
 
 Quality control checking functions.
 
-- [`getAntigenCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/getAntigenCounts.md)
-  : Get Count Data for each Antigen from the Raw Median Fluorescent
-  Intensity
-- [`getCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/getCounts.md)
-  : Get Count Data from Raw Median Fluorescent Intensity
-- [`getCountsQC()`](https://dionnecargy.github.io/SeroTrackR/reference/getCountsQC.md)
-  : Get All Counts Data
-- [`plotBeadCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBeadCounts.md)
-  : Plot Bead Counts per Plate per Antigen
-- [`plotCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/plotCounts.md)
-  : Plot Bead Count Data
-- [`processCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/processCounts.md)
-  : Process Counts from Raw Serological Data file
+- [`runQC()`](https://dionnecargy.github.io/SeroTrackR/reference/runQC.md)
+  : Run Quality Control Pipeline
 - [`getRepeats()`](https://dionnecargy.github.io/SeroTrackR/reference/getRepeats.md)
   : Check Beads to Repeat
-- [`getSampleID()`](https://dionnecargy.github.io/SeroTrackR/reference/getSampleID.md)
-  : Get SampleID from Plate Layout
+- [`plotBeadCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBeadCounts.md)
+  : Plot Bead Counts per Plate per Antigen
 - [`plotBlanks()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBlanks.md)
   : Plot Raw Median Fluorescent Intensity Blanks Data
+- [`plotBoxPlotClassification()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBoxPlotClassification.md)
+  : Plot Classification
+- [`plotCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/plotCounts.md)
+  : Plot Bead Count Data
 - [`plotMFI()`](https://dionnecargy.github.io/SeroTrackR/reference/plotMFI.md)
   : Median Fluorescent Intensity (MFI) Box Plots
 - [`plotModel()`](https://dionnecargy.github.io/SeroTrackR/reference/plotModel.md)
   : Plot the Median Fluorescent Intensity (MFI) to Relative Antibody
   Units (RAU) Results Data
-- [`plotModel_ETH()`](https://dionnecargy.github.io/SeroTrackR/reference/plotModel_ETH.md)
+- [`plotModel_Adj()`](https://dionnecargy.github.io/SeroTrackR/reference/plotModel_Adj.md)
   : Plot the Median Fluorescent Intensity (MFI) to Relative Antibody
   Units (RAU) Results Data based on ETH standard
 - [`plotRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/plotRAU.md)
@@ -117,15 +110,12 @@ Functions for converting MFI to RAU.
 - [`MFItoRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU.md)
   : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
   conversion
-- [`MFItoRAU_ETH()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_ETH.md)
+- [`MFItoRAU_Adj()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_Adj.md)
   : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
-  conversion based on ETH standard
+  conversion based on other standard
 - [`MFItoRAU_LDH()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_LDH.md)
   : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
   conversion for LDH
-- [`MFItoRAU_PfPv()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_PfPv.md)
-  : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
-  conversion for either PNG or ETH standard
 - [`MFItoRAU_Pk()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_Pk.md)
   : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
   conversion for Pk proteins
@@ -139,8 +129,6 @@ Functions for converting MFI to RAU.
 
 Classify serological data.
 
-- [`classifyPv()`](https://dionnecargy.github.io/SeroTrackR/reference/classifyPv.md)
-  : Random Forest Classification for Pv only in Pk/Pf/Pv analysis
 - [`classifyResults()`](https://dionnecargy.github.io/SeroTrackR/reference/classifyResults.md)
   : Random Forest Classification
 - [`plotBoxPlotClassification()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBoxPlotClassification.md)
@@ -154,31 +142,59 @@ Classify serological data.
 
 Internal functions and helpers.
 
-- [`checkPlatform()`](https://dionnecargy.github.io/SeroTrackR/reference/checkPlatform.md)
+- [`MFItoRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU.md)
+  : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
+  conversion
+- [`MFItoRAU_Adj()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_Adj.md)
+  : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
+  conversion based on other standard
+- [`MFItoRAU_LDH()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_LDH.md)
+  : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
+  conversion for LDH
+- [`MFItoRAU_Pk()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_Pk.md)
+  : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
+  conversion for Pk proteins
+- [`MFItoRAU_Plasmo()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU_Plasmo.md)
+  : Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU)
+  conversion for Pk/Pf/Pv Master Function
+- [`classifyResults()`](https://dionnecargy.github.io/SeroTrackR/reference/classifyResults.md)
+  : Random Forest Classification
+- [`.check_platform()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-check_platform.md)
   : Check Platform
-- [`convert_dilution_to_mfi()`](https://dionnecargy.github.io/SeroTrackR/reference/convert_dilution_to_mfi.md)
+- [`.clean_bioplex()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-clean_bioplex.md)
+  : Helper function to process bioplex data
+- [`.clean_luminex()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-clean_luminex.md)
+  : Helper function to process luminex (Magpix/Intelliflex) data
+- [`.convert_dilution_to_mfi()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-convert_dilution_to_mfi.md)
   : Convert known dilution to mfi from fitted standard curve
-- [`convert_mfi_to_dilution()`](https://dionnecargy.github.io/SeroTrackR/reference/convert_mfi_to_dilution.md)
+- [`.convert_mfi_to_dilution()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-convert_mfi_to_dilution.md)
   : Convert mfi to dilution using known standard curve fit.
-- [`convert_mfi_to_dilution_no_bounds()`](https://dionnecargy.github.io/SeroTrackR/reference/convert_mfi_to_dilution_no_bounds.md)
+- [`.convert_mfi_to_dilution_no_bounds()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-convert_mfi_to_dilution_no_bounds.md)
   : Convert mfi to dilution using known standard curve fit and no bounds
-- [`convert_mfi_to_dilution_no_lower_bound()`](https://dionnecargy.github.io/SeroTrackR/reference/convert_mfi_to_dilution_no_lower_bound.md)
+- [`.convert_mfi_to_dilution_no_lower_bound()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-convert_mfi_to_dilution_no_lower_bound.md)
   : Convert mfi to dilution using known standard curve fit and no lower
   bound
-- [`fit_standard_curve()`](https://dionnecargy.github.io/SeroTrackR/reference/fit_standard_curve.md)
+- [`.extract_luminex_sections()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-extract_luminex_sections.md)
+  : Helper function to process luminex sections
+- [`.fit_standard_curve()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-fit_standard_curve.md)
   : Fit a standard curve to known mfi and dilution values.
-- [`getGithubRelease()`](https://dionnecargy.github.io/SeroTrackR/reference/getGithubRelease.md)
-  : Get GitHub Version
-- [`makeCard()`](https://dionnecargy.github.io/SeroTrackR/reference/makeCard.md)
-  : Make Card in Fluent UI
-- [`relabel_columns()`](https://dionnecargy.github.io/SeroTrackR/reference/relabel_columns.md)
+- [`.magpix_version_config()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-magpix_version_config.md)
+  : Helper function to identify Magpix version
+- [`.merge_mfitorau()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-merge_mfitorau.md)
+  : Helper function to add Sample IDs to output.
+- [`.post_process_bioplex()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-post_process_bioplex.md)
+  : Helper function to process bioplex sections
+- [`.post_process_luminex()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-post_process_luminex.md)
+  : Helper function to process luminex into master_list
+- [`.process_antigen_loglog()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-process_antigen_loglog.md)
+  : Helper function to fit a 5-parameter logistic standard curve to
+  dilutions
+- [`.read_luminex_file()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-read_luminex_file.md)
+  : Helper function to read raw luminex files
+- [`.relabel_columns()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-relabel_columns.md)
   : Relabel column names to Standardised Naming Convention
-- [`renderReport()`](https://dionnecargy.github.io/SeroTrackR/reference/renderReport.md)
-  : Render Markdown report
-- [`renderTwoCols()`](https://dionnecargy.github.io/SeroTrackR/reference/renderTwoCols.md)
-  : Create two columns in Fluent UI
-- [`renderDetailsList()`](https://dionnecargy.github.io/SeroTrackR/reference/renderDetailsList.md)
-  : Create a Fluent UI Table
+- [`.setup_mfitorau_inputs()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-setup_mfitorau_inputs.md)
+  : Helper function to set up MFI to RAU function
 - [`example_BioPlex_PvLDH_plate1_xlsx`](https://dionnecargy.github.io/SeroTrackR/reference/example_BioPlex_PvLDH_plate1_xlsx.md)
   : Example Serological Dataset: Bioplex PvLDH Plate 1
 - [`example_BioPlex_plate1_xlsx`](https://dionnecargy.github.io/SeroTrackR/reference/example_BioPlex_plate1_xlsx.md)
@@ -214,17 +230,85 @@ Internal functions and helpers.
   : 10-Point Standard Curve Example Plate Layout
 - [`example_platelayout_pk_5std_xlsx`](https://dionnecargy.github.io/SeroTrackR/reference/example_platelayout_pk_5std_xlsx.md)
   : 5-Point Standard Curve Example Plate Layout
+- [`getAntigenCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/getAntigenCounts.md)
+  : Get Count Data for each Antigen from the Raw Median Fluorescent
+  Intensity
+- [`getCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/getCounts.md)
+  : Get Count Data from Raw Median Fluorescent Intensity
+- [`getCountsQC()`](https://dionnecargy.github.io/SeroTrackR/reference/getCountsQC.md)
+  : Get All Counts Data
+- [`getGithubRelease()`](https://dionnecargy.github.io/SeroTrackR/reference/getGithubRelease.md)
+  : Get GitHub Version
+- [`getPlateLayout()`](https://dionnecargy.github.io/SeroTrackR/reference/getPlateLayout.md)
+  : Find and create a master plate layout file
+- [`getRepeats()`](https://dionnecargy.github.io/SeroTrackR/reference/getRepeats.md)
+  : Check Beads to Repeat
+- [`getSampleID()`](https://dionnecargy.github.io/SeroTrackR/reference/getSampleID.md)
+  : Get SampleID from Plate Layout
+- [`makeCard()`](https://dionnecargy.github.io/SeroTrackR/reference/makeCard.md)
+  : Make Card in Fluent UI
+- [`plotBeadCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBeadCounts.md)
+  : Plot Bead Counts per Plate per Antigen
+- [`plotBlanks()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBlanks.md)
+  : Plot Raw Median Fluorescent Intensity Blanks Data
+- [`plotBoxPlotClassification()`](https://dionnecargy.github.io/SeroTrackR/reference/plotBoxPlotClassification.md)
+  : Plot Classification
+- [`plotCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/plotCounts.md)
+  : Plot Bead Count Data
+- [`plotMFI()`](https://dionnecargy.github.io/SeroTrackR/reference/plotMFI.md)
+  : Median Fluorescent Intensity (MFI) Box Plots
+- [`plotModel()`](https://dionnecargy.github.io/SeroTrackR/reference/plotModel.md)
+  : Plot the Median Fluorescent Intensity (MFI) to Relative Antibody
+  Units (RAU) Results Data
+- [`plotModel_Adj()`](https://dionnecargy.github.io/SeroTrackR/reference/plotModel_Adj.md)
+  : Plot the Median Fluorescent Intensity (MFI) to Relative Antibody
+  Units (RAU) Results Data based on ETH standard
+- [`plotRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/plotRAU.md)
+  : Relative Antibody Unit (RAU) Box Plots
+- [`plotStds()`](https://dionnecargy.github.io/SeroTrackR/reference/plotStds.md)
+  : Plot Raw Median Fluorescent Intensity of Standard Curve Data
+- [`plotStds_PkPfPv()`](https://dionnecargy.github.io/SeroTrackR/reference/plotStds_PkPfPv.md)
+  : Plot Raw Median Fluorescent Intensity of Pk/Pf/Pv Standard Curve
+  Data
+- [`plotStds_all()`](https://dionnecargy.github.io/SeroTrackR/reference/plotStds_all.md)
+  : Plot Raw Median Fluorescent Intensity of Standard Curve Data
+- [`processCounts()`](https://dionnecargy.github.io/SeroTrackR/reference/processCounts.md)
+  : Process Counts from Raw Serological Data file
+- [`processPkPfPv()`](https://dionnecargy.github.io/SeroTrackR/reference/processPkPfPv.md)
+  : Processing Serological Data for Pk/Pf/Pv MFI to RAU conversion
+- [`readPlateLayout()`](https://dionnecargy.github.io/SeroTrackR/reference/readPlateLayout.md)
+  : Read Plate Layout/s
+- [`readSeroData()`](https://dionnecargy.github.io/SeroTrackR/reference/readSeroData.md)
+  : Read Raw Serological Data
+- [`renderClassificationTable()`](https://dionnecargy.github.io/SeroTrackR/reference/renderClassificationTable.md)
+  : All Classification Data
+- [`renderDetailsList()`](https://dionnecargy.github.io/SeroTrackR/reference/renderDetailsList.md)
+  : Create a Fluent UI Table
+- [`renderQCReport()`](https://dionnecargy.github.io/SeroTrackR/reference/renderQCReport.md)
+  : Generate QC PDF Report
+- [`renderReport()`](https://dionnecargy.github.io/SeroTrackR/reference/renderReport.md)
+  : Render Markdown report
+- [`renderTwoCols()`](https://dionnecargy.github.io/SeroTrackR/reference/renderTwoCols.md)
+  : Create two columns in Fluent UI
+- [`runLDHPipeline()`](https://dionnecargy.github.io/SeroTrackR/reference/runLDHPipeline.md)
+  : Run LDH Pipeline from Start to End
+- [`runPlasmoPipeline()`](https://dionnecargy.github.io/SeroTrackR/reference/runPlasmoPipeline.md)
+  : Run Pk/Pf/Pv Data Analysis Pipeline from Start to End
+- [`runPvSeroPipeline()`](https://dionnecargy.github.io/SeroTrackR/reference/runPvSeroPipeline.md)
+  : Run PvSero Pipeline from Start to End
+- [`runQC()`](https://dionnecargy.github.io/SeroTrackR/reference/runQC.md)
+  : Run Quality Control Pipeline
 
 # Articles
 
 ### All vignettes
 
-- [Before You
-  Begin](https://dionnecargy.github.io/SeroTrackR/articles/01_setup.md):
-- [PvSeroApp in R
-  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/02_PvSeroApp_R_Tutorial.md):
+- [FAQs](https://dionnecargy.github.io/SeroTrackR/articles/FAQs.md):
 - [Pk/Pv/Pf Serology
-  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/03_Pk_Pv_Pf_Serology_Tutorial.md):
+  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/Pk_Pv_Pf_Serology_Tutorial.md):
 - [PvLDH
-  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/04_PvLDH_Tutorial.md):
-- [FAQs](https://dionnecargy.github.io/SeroTrackR/articles/05_FAQs.md):
+  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/PvLDH_Tutorial.md):
+- [PvSeroApp in R
+  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/PvSeroApp_R_Tutorial.md):
+- [Before You
+  Begin](https://dionnecargy.github.io/SeroTrackR/articles/setup.md):

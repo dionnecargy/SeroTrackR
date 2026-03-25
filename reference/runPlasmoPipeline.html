@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">SeroTrackR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,11 +18,11 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/01_setup.html">Before You Begin</a></li>
-    <li><a class="dropdown-item" href="../articles/02_PvSeroApp_R_Tutorial.html">PvSeroApp in R Tutorial</a></li>
-    <li><a class="dropdown-item" href="../articles/03_Pk_Pv_Pf_Serology_Tutorial.html">Pk/Pv/Pf Serology Tutorial</a></li>
-    <li><a class="dropdown-item" href="../articles/04_PvLDH_Tutorial.html">PvLDH Tutorial</a></li>
-    <li><a class="dropdown-item" href="../articles/05_FAQs.html">FAQs</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/FAQs.html">FAQs</a></li>
+    <li><a class="dropdown-item" href="../articles/Pk_Pv_Pf_Serology_Tutorial.html">Pk/Pv/Pf Serology Tutorial</a></li>
+    <li><a class="dropdown-item" href="../articles/PvLDH_Tutorial.html">PvLDH Tutorial</a></li>
+    <li><a class="dropdown-item" href="../articles/PvSeroApp_R_Tutorial.html">PvSeroApp in R Tutorial</a></li>
+    <li><a class="dropdown-item" href="../articles/setup.html">Before You Begin</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -42,7 +42,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Run Pk/Pf/Pv Data Analysis Pipeline from Start to End</h1>
-      <small class="dont-index">Source: <a href="https://github.com/dionnecargy/SeroTrackR/blob/HEAD/R/runPlasmoPipeline.R" class="external-link"><code>R/runPlasmoPipeline.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dionnecargy/SeroTrackR/blob/master/R/runPlasmoPipeline.R" class="external-link"><code>R/runPlasmoPipeline.R</code></a></small>
       <div class="d-none name"><code>runPlasmoPipeline.Rd</code></div>
     </div>
 
@@ -59,8 +59,9 @@
 <span>  panel <span class="op">=</span> <span class="st">"panel1"</span>,</span>
 <span>  <span class="va">std_point</span>,</span>
 <span>  experiment_name <span class="op">=</span> <span class="st">"experiment1"</span>,</span>
+<span>  classify <span class="op">=</span> <span class="st">"Yes"</span>,</span>
 <span>  algorithm_type <span class="op">=</span> <span class="st">"antibody_model"</span>,</span>
-<span>  sens_spec <span class="op">=</span> <span class="st">"maximised"</span></span>
+<span>  sens_spec <span class="op">=</span> <span class="st">"balanced"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -81,7 +82,7 @@
 
 
 <dt id="arg-panel">panel<a class="anchor" aria-label="anchor" href="#arg-panel"></a></dt>
-<dd><p>Panel of Pk/Pf/Pv antigens. Default = "panel1".</p></dd>
+<dd><p>Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of Antigens and Species.</p></dd>
 
 
 <dt id="arg-std-point">std_point<a class="anchor" aria-label="anchor" href="#arg-std-point"></a></dt>
@@ -92,6 +93,10 @@
 <dd><p>User-input experiment name. Default: "experiment1".</p></dd>
 
 
+<dt id="arg-classify">classify<a class="anchor" aria-label="anchor" href="#arg-classify"></a></dt>
+<dd><p>"Yes" or "No" depending on whether you would like classification or not. Default = "Yes".</p></dd>
+
+
 <dt id="arg-algorithm-type">algorithm_type<a class="anchor" aria-label="anchor" href="#arg-algorithm-type"></a></dt>
 <dd><p>User-selected algorithm choice:
 - "antibody_model" (PvSeroTaT model; default), or
@@ -100,7 +105,7 @@
 
 <dt id="arg-sens-spec">sens_spec<a class="anchor" aria-label="anchor" href="#arg-sens-spec"></a></dt>
 <dd><p>User-selected Sensitivity/Specificity threshold:
-- "maximised" (default),
+- "balanced" (default),
 - "85% sensitivity",
 - "90% sensitivity",
 - "95% sensitivity",
@@ -158,9 +163,6 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Plate layouts correctly identified!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> QC Processes completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> QC Plotting completed.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> PTEX150_MFI, MSP8_MFI)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> MFI to RAU conversion completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Pv classification completed.</span>
 <span class="r-in"><span></span></span>
@@ -171,9 +173,6 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Plate layouts correctly identified!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> QC Processes completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> QC Plotting completed.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> PTEX150_MFI, MSP8_MFI)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> MFI to RAU conversion completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Pv classification completed.</span>
 <span class="r-in"><span></span></span>

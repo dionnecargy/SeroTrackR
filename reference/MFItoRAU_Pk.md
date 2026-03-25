@@ -5,7 +5,7 @@ This function is utilised in the master function \`MFItoRAU_Plasmo()\`.
 ## Usage
 
 ``` r
-MFItoRAU_Pk(processed_Pk, plate_list, std_point, counts_QC_output)
+MFItoRAU_Pk(processed_Pk, plate_list, std_point, qc_results)
 ```
 
 ## Arguments
@@ -20,12 +20,12 @@ MFItoRAU_Pk(processed_Pk, plate_list, std_point, counts_QC_output)
 
 - std_point:
 
-  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is
-  an integer.
+  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH"
+  for LDH specific curve. Default = 10. Value is an integer.
 
-- counts_QC_output:
+- qc_results:
 
-  Output from \`getCountsQC()\`
+  Output from \`runQC()\`.
 
 ## Value
 

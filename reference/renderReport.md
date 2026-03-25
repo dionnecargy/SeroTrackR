@@ -72,12 +72,12 @@ if (requireNamespace("rmarkdown", quietly = TRUE)) {
 }
 #> 
 #> 
-#> processing file: file21792fd3df86.Rmd
+#> processing file: file1ead5d091dc0.Rmd
 #> 1/1
-#> output file: file21792fd3df86.knit.md
-#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS file21792fd3df86.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/file21797ef7eef1.html --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/table-classes.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/rmarkdown-str217947685156.html 
+#> output file: file1ead5d091dc0.knit.md
+#> /opt/hostedtoolcache/pandoc/3.1.11/x64/pandoc +RTS -K512m -RTS file1ead5d091dc0.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpLzzMlQ/file1ead4240bb43.html --lua-filter /home/runner/work/_temp/Library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/runner/work/_temp/Library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /home/runner/work/_temp/Library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /tmp/RtmpLzzMlQ/rmarkdown-str1ead4d38ba9a.html 
 #> 
-#> Output created: /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/file21797ef7eef1.html
-#> [1] "/var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/file21797ef7eef1.html"
+#> Output created: /tmp/RtmpLzzMlQ/file1ead4240bb43.html
+#> [1] "/tmp/RtmpLzzMlQ/file1ead4240bb43.html"
 # }
 ```

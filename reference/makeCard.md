@@ -28,7 +28,7 @@ makeCard(title, id, content, size = 12, style = "")
 
 - style:
 
-  Value for any css styling (reactive).
+  Value for any css styling.
 
 ## Value
 
@@ -57,4 +57,10 @@ if (requireNamespace("shiny.fluent", quietly = TRUE) &&
     size    = 6
   )
 }
+#> <div id="example-card" class="card ms-depth-8 ms-sm6 ms-xl6" style="">
+#>   <div class="react-container" data-react-id="tfztbnsrafhqmlsyefrm">
+#>     <script class="react-data" type="application/json">{"type":"element","module":"@fluentui/react","name":"Stack","props":{"type":"object","value":{"tokens":{"type":"raw","value":{"padding":20,"childrenGap":5}},"children":{"type":"array","value":[{"type":"element","module":"@fluentui/react","name":"Text","props":{"type":"raw","value":{"variant":"large","block":true,"children":"Example Card"}}},{"type":"array","value":[{"type":"element","name":"div","props":{"type":"raw","value":{"children":"This is some example text inside the card."}}}]}]}}}}</script>
+#>     <script>jsmodule['@/shiny.react'].findAndRenderReactData('tfztbnsrafhqmlsyefrm')</script>
+#>   </div>
+#> </div>
 ```

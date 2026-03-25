@@ -1,18 +1,12 @@
 # Median Fluorescent Intensity (MFI) to Relative Antibody Units (RAU) conversion for Pk/Pf/Pv Master Function
 
-This function leverages \`MFItoRAU_Pk()\` and \`MFItoRAU_PfPv()\` to
-create a final MFI to RAU output for Pk/Pf/Pv analyses.
+This function leverages \`MFItoRAU_Pk()\` and \`MFItoRAU()\` to create a
+final MFI to RAU output for Pk/Pf/Pv analyses.
 
 ## Usage
 
 ``` r
-MFItoRAU_Plasmo(
-  sero_data,
-  plate_list,
-  panel = "panel1",
-  std_point,
-  counts_QC_output
-)
+MFItoRAU_Plasmo(sero_data, plate_list, panel = "panel1", std_point, qc_results)
 ```
 
 ## Arguments
@@ -27,16 +21,17 @@ MFItoRAU_Plasmo(
 
 - panel:
 
-  Panel of Pk/Pf/Pv antigens. Default = "panel1".
+  Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of
+  Antigens and Species.
 
 - std_point:
 
-  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is
-  an integer.
+  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH"
+  for LDH specific curve. Default = 10. Value is an integer.
 
-- counts_QC_output:
+- qc_results:
 
-  Output from \`getCountsQC()\`.
+  Output from \`runQC()\`.
 
 ## Value
 
@@ -47,7 +42,7 @@ in long-format
 
 ## Author
 
-Dionne Argyropoulos
+Dionne Argyropoulos, Caitlin Bourke
 
 ## Examples
 
@@ -80,11 +75,7 @@ plate_list <- readPlateLayout(
 )
 #> Plate layouts correctly identified!
 # Quality control
-processCounts_output      <- processCounts(sero_data)
-getCounts_output          <- getCounts(processCounts_output)
-sampleid_output           <- getSampleID(processCounts_output, plate_list)
-getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Run MFI to RAU conversion
 mfi_outputs               <- MFItoRAU_Plasmo(
@@ -92,11 +83,8 @@ mfi_outputs               <- MFItoRAU_Plasmo(
   plate_list = plate_list,
   panel = "panel1",
   std_point = 5,
-  counts_QC_output = getCountsQC_output
+  qc_results = qc_results
 )
-#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,
-#> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,
-#> PTEX150_MFI, MSP8_MFI)`
 
 # View All Outputs
 mfi_outputs
@@ -124,40 +112,40 @@ mfi_outputs
 #> 
 #> $MFI_RAU
 #> # A tibble: 168 × 44
-#>    SampleID Plate  Pk8_MFI PkMSP10_MFI PkSERA3Ag2_MFI PkSSP2_MFI LF005_MFI
-#>    <chr>    <chr>    <dbl>       <dbl>          <dbl>      <dbl>     <dbl>
-#>  1 ABC-0001 plate1     601        346            858        320       389 
-#>  2 ABC-0002 plate1     344        228.           384        112.      217 
-#>  3 ABC-0003 plate1     716        584           4397        271       634 
-#>  4 ABC-0004 plate1     357        235            438.       144.      238 
-#>  5 ABC-0005 plate1    1320        746           1620        778       746 
-#>  6 ABC-0006 plate1     899        733           2702.      1015       678.
-#>  7 ABC-0007 plate1     975        652           3860        531       716.
-#>  8 ABC-0008 plate1     637        228.          1018        459       226.
-#>  9 ABC-0009 plate1    1635       1299           1068        795       951 
-#> 10 ABC-0010 plate1     256        100            534         38        72 
+#>    SampleID Plate  Pk8_MFI PkMSP10_MFI PkSERA3Ag2_MFI PkSSP2_MFI `Pv-fam-a_MFI`
+#>    <chr>    <chr>    <dbl>       <dbl>          <dbl>      <dbl>          <dbl>
+#>  1 ABC-0001 plate1     601        346            858        320            389 
+#>  2 ABC-0002 plate1     344        228.           384        112.           217 
+#>  3 ABC-0003 plate1     716        584           4397        271            634 
+#>  4 ABC-0004 plate1     357        235            438.       144.           238 
+#>  5 ABC-0005 plate1    1320        746           1620        778            746 
+#>  6 ABC-0006 plate1     899        733           2702.      1015            678.
+#>  7 ABC-0007 plate1     975        652           3860        531            716.
+#>  8 ABC-0008 plate1     637        228.          1018        459            226.
+#>  9 ABC-0009 plate1    1635       1299           1068        795            951 
+#> 10 ABC-0010 plate1     256        100            534         38             72 
 #> # ℹ 158 more rows
-#> # ℹ 37 more variables: LF010_MFI <dbl>, LF016_MFI <dbl>, EBP_MFI <dbl>,
-#> #   RBP2b.P87_MFI <dbl>, PvCSS_MFI <dbl>, PTEX150_MFI <dbl>, MSP8_MFI <dbl>,
-#> #   `PfMSP1-19_MFI` <dbl>, PfAMA1_MFI <dbl>, Pfetramp5Ag1_MFI <dbl>,
-#> #   PfHSP40Ag1_MFI <dbl>, PfGexp18_MFI <dbl>, Pk8_Dilution <dbl>,
-#> #   PkMSP10_Dilution <dbl>, PkSERA3Ag2_Dilution <dbl>, PkSSP2_Dilution <dbl>,
-#> #   LF005_loglog_Dilution <dbl>, LF010_loglog_Dilution <dbl>, …
+#> # ℹ 37 more variables: PvMSP5_MFI <dbl>, `PvMSP1-19_MFI` <dbl>,
+#> #   PvEBP_MFI <dbl>, PvRBP2b_MFI <dbl>, PvCSS_MFI <dbl>, PvPTEX150_MFI <dbl>,
+#> #   PvMSP8_MFI <dbl>, `PfMSP1-19_MFI` <dbl>, PfAMA1_MFI <dbl>,
+#> #   Pfetramp5Ag1_MFI <dbl>, PfHSP40Ag1_MFI <dbl>, PfGexp18_MFI <dbl>,
+#> #   Pk8_Dilution <dbl>, PkMSP10_Dilution <dbl>, PkSERA3Ag2_Dilution <dbl>,
+#> #   PkSSP2_Dilution <dbl>, `Pv-fam-a_loglog_Dilution` <dbl>, …
 #> 
 #> $MFI_RAU_long
 #> # A tibble: 4,200 × 7
-#>    SampleID Plate  Antigens   Species   MFI       RAU RAU_Method    
-#>    <chr>    <chr>  <chr>      <chr>   <dbl>     <dbl> <chr>         
-#>  1 ABC-0001 plate1 Pk8        Pk        601 0.00171   loglog        
-#>  2 ABC-0001 plate1 PkMSP10    Pk        346 0.0000195 loglog        
-#>  3 ABC-0001 plate1 PkSERA3Ag2 Pk        858 0.000513  loglog        
-#>  4 ABC-0001 plate1 PkSSP2     Pk        320 0.00196   loglog        
-#>  5 ABC-0001 plate1 LF005      Pv        389 0.0000834 loglog        
-#>  6 ABC-0001 plate1 LF005      Pv        389 0.0000923 ETHtoPNGloglog
-#>  7 ABC-0001 plate1 LF010      Pv        392 0.0000852 loglog        
-#>  8 ABC-0001 plate1 LF010      Pv        392 0.0000800 ETHtoPNGloglog
-#>  9 ABC-0001 plate1 LF016      Pv        502 0.0000195 loglog        
-#> 10 ABC-0001 plate1 LF016      Pv        502 0.0000762 ETHtoPNGloglog
+#>    SampleID Plate  Antigens   Species   MFI       RAU RAU_Method
+#>    <chr>    <chr>  <chr>      <chr>   <dbl>     <dbl> <chr>     
+#>  1 ABC-0001 plate1 Pk8        Pk        601 0.00171   loglog    
+#>  2 ABC-0001 plate1 PkMSP10    Pk        346 0.0000195 loglog    
+#>  3 ABC-0001 plate1 PkSERA3Ag2 Pk        858 0.000513  loglog    
+#>  4 ABC-0001 plate1 PkSSP2     Pk        320 0.00196   loglog    
+#>  5 ABC-0001 plate1 Pv-fam-a   Pv        389 0.0000834 loglog    
+#>  6 ABC-0001 plate1 Pv-fam-a   Pv        389 0.0000923 Adj_loglog
+#>  7 ABC-0001 plate1 PvMSP5     Pv        392 0.0000856 loglog    
+#>  8 ABC-0001 plate1 PvMSP5     Pv        392 0.0000800 Adj_loglog
+#>  9 ABC-0001 plate1 PvMSP1-19  Pv        502 0.0000195 loglog    
+#> 10 ABC-0001 plate1 PvMSP1-19  Pv        502 0.0000762 Adj_loglog
 #> # ℹ 4,190 more rows
 #> 
 # }

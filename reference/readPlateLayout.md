@@ -18,12 +18,11 @@ readPlateLayout(plate_layout, sero_data)
 
 - plate_layout:
 
-  An ".xlsx" file with sheets labelled plate1, plate2... etc.
-  (reactive).
+  An ".xlsx" file with sheets labelled plate1, plate2... etc..
 
 - sero_data:
 
-  Output from \`readSeroData()\` (reactive).
+  Output from \`readSeroData()\`.
 
 ## Value
 

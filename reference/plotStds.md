@@ -5,22 +5,27 @@ This function gets the standards data and plots the standard curves.
 ## Usage
 
 ``` r
-plotStds(sero_data, location, experiment_name)
+plotStds(sero_data, std_point = 10, location, experiment_name)
 ```
 
 ## Arguments
 
 - sero_data:
 
-  Output from \`readSeroData()\` (reactive).
+  Output from \`readSeroData()\`.
+
+- std_point:
+
+  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Default
+  = 10. Value is an integer.
 
 - location:
 
-  "PNG" or "ETH" to filter WEHI standard curve data (reactive).
+  "PNG" or "ETH" to filter WEHI standard curve data.
 
 - experiment_name:
 
-  User-input experiment name (reactive).
+  User-input experiment name.
 
 ## Value
 
@@ -30,7 +35,7 @@ background of plot with user data.
 
 ## Author
 
-Shazia Ruybal-Pesantez, Dionne Argyropoulos
+Dionne Argyropoulos, Shazia Ruybal-Pesantez
 
 ## Examples
 
@@ -61,6 +66,7 @@ plotStds(
   experiment_name = "experiment1"
 )
 #> Warning: Ignoring unknown aesthetics: text
+
 
 # }
 ```

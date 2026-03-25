@@ -7,18 +7,18 @@ different plates so that they can be visualised.
 ## Usage
 
 ``` r
-plotCounts(counts_output, experiment_name)
+plotCounts(qc_results, experiment_name)
 ```
 
 ## Arguments
 
-- counts_output:
+- qc_results:
 
-  Output from \`getCounts()\` (reactive).
+  Output from \`runQC()\`.
 
 - experiment_name:
 
-  User-input experiment name (reactive).
+  User-input experiment name.
 
 ## Value
 
@@ -53,11 +53,10 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts <- processCounts(sero_data)
-getCounts_output <- getCounts(counts)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Plot Counts
-plotCounts(getCounts_output, "experiment1")
+plotCounts(qc_results, "experiment1")
 
 # }
 ```

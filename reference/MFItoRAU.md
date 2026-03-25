@@ -7,22 +7,31 @@ values into relative antibody units (RAU) written by Connie Li Wai Suen.
 ## Usage
 
 ``` r
-MFItoRAU(sero_data, plate_list, counts_QC_output)
+MFItoRAU(sero_data, plate_list, qc_results, std_point = 10, project = NULL)
 ```
 
 ## Arguments
 
 - sero_data:
 
-  Output from \`readSeroData()\` (reactive).
+  Output from \`readSeroData()\`.
 
 - plate_list:
 
-  Output from \`readPlateLayout()\` (reactive).
+  Output from \`readPlateLayout()\`.
 
-- counts_QC_output:
+- qc_results:
 
-  Output from \`getCountsQC()\` (reactive).
+  Output from \`runQC()\`.
+
+- std_point:
+
+  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH"
+  for LDH specific curve. Default = 10. Value is an integer.
+
+- project:
+
+  Default = NULL. Only write "pkpfpv" if using Pk/Pf/Pv pipeline.
 
 ## Value
 
@@ -32,7 +41,7 @@ function 3. Data frame of RAU data for random forest classification use.
 
 ## Author
 
-Connie Li Wai Suen, Dionne Argyropoulos
+Dionne Argyropoulos, Connie Li Wai Suen
 
 ## Examples
 
@@ -58,46 +67,14 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results  <- runQC(sero_data, plate_list)
 
-# Step 3: Convert MFI to RAU using PNG beads
+# Step 3: Convert MFI to RAU
 mfi_to_rau <- MFItoRAU(
   sero_data = sero_data,
   plate_list = plate_list,
-  counts_QC_output = counts_qc
+  qc_results = qc_results
 )
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # }
 ```

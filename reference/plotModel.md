@@ -14,11 +14,11 @@ plotModel(mfi_to_rau_output, sero_data)
 
 - mfi_to_rau_output:
 
-  Output from \`MFItoRAU()\` (reactive).
+  Output from \`MFItoRAU()\`.
 
 - sero_data:
 
-  Output from \`readSeroData()\` (reactive).
+  Output from \`readSeroData()\`.
 
 ## Value
 
@@ -53,37 +53,22 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
+mfi_to_rau <- MFItoRAU(
   sero_data = sero_data,
   plate_list = plate_list,
-  counts_QC_output = counts_qc
+  qc_results = qc_results
 )
-#> Joining with `by = join_by(antigen)`
-#> Joining with `by = join_by(antigen)`
-#> Joining with `by = join_by(antigen)`
-#> Joining with `by = join_by(antigen)`
-#> Joining with `by = join_by(antigen)`
-#> Joining with `by = join_by(antigen)`
 
 # Step 4: Plot Model Results
 plotModel(mfi_to_rau, sero_data)
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> Warning: Coercing LHS to a list
-#> list()
+#> $`1`
+
+#> 
+#> $`2`
+
+#> 
 # }
 ```

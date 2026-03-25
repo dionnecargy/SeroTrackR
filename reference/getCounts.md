@@ -15,7 +15,7 @@ getCounts(processed_counts)
 
 - processed_counts:
 
-  Output from \`processCounts()\` (reactive).
+  Output from \`processCounts()\`.
 
 ## Value
 

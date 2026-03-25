@@ -6,22 +6,18 @@ repeat or a statement to confirm that none need to be repeated.
 ## Usage
 
 ``` r
-getRepeats(counts_output, processed_counts, plate_list)
+getRepeats(qc_results, plate_list)
 ```
 
 ## Arguments
 
-- counts_output:
+- qc_results:
 
-  Output from \`getCounts()\` (reactive).
-
-- processed_counts:
-
-  Output from \`processCounts()\`.
+  Output from \`runQC()\`.
 
 - plate_list:
 
-  Output from \`readPlateLayout()\` (reactive).
+  Output from \`readPlateLayout()\`.
 
 ## Value
 
@@ -45,21 +41,19 @@ raw_data <- c(
 plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
 
 # Step 1: Read data and plate layout
-sero_data <- readSeroData(raw_data, platform = "magpix")
+sero_data   <- readSeroData(raw_data, platform = "magpix")
 #> PASS: File example_magpix_plate1.csv successfully validated.
 #> PASS: File example_magpix_plate2.csv successfully validated.
 #> PASS: File example_magpix_plate3.csv successfully validated.
-plate_list <- readPlateLayout(plate_layout, sero_data)
+plate_list  <- readPlateLayout(plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts
-processed_counts <- processCounts(sero_data)
-counts_output <- getCounts(processed_counts)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Identify samples to repeat
 repeats_table <- getRepeats(
-  counts_output = counts_output,
-  processed_counts = processed_counts,
+  qc_results = qc_results,
   plate_list = plate_list
 )
 

@@ -1,20 +1,26 @@
 # Random Forest Classification
 
 This function classifies unknown samples as recently exposed or not
-(Note: MFItoRAU() or MFItoRAU_ETH() needs to be run first to convert to
+(Note: MFItoRAU() or MFItoRAU_Adj() needs to be run first to convert to
 RAU).
 
 ## Usage
 
 ``` r
-classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
+classifyResults(
+  mfi_to_rau_output,
+  algorithm_type = "antibody_model",
+  sens_spec = "balanced",
+  qc_results,
+  project = NULL
+)
 ```
 
 ## Arguments
 
 - mfi_to_rau_output:
 
-  Output from \`MFItoRAU()\` or \`MFItoRAU_ETH()\` (reactive).
+  Output from \`MFItoRAU()\` or \`MFItoRAU_Adj()\`.
 
 - algorithm_type:
 
@@ -23,14 +29,18 @@ classifyResults(mfi_to_rau_output, algorithm_type, sens_spec, counts_QC_output)
 
 - sens_spec:
 
-  User-selected Sensitivity/Specificity threshold: - "maximised"
+  User-selected Sensitivity/Specificity threshold: - "balanced"
   (default), - "85% sensitivity", - "90% sensitivity", - "95%
   sensitivity", - "85% specificity", - "90% specificity". - "95%
   specificity".
 
-- counts_QC_output:
+- qc_results:
 
-  Output from \`getCountsQC()\` (reactive).
+  Output from \`runQC()\`.
+
+- project:
+
+  Default = NULL. Only write "pkpfpv" if using Pk/Pf/Pv pipeline.
 
 ## Value
 
@@ -65,17 +75,13 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
-counts_qc   <- getCountsQC(antigen_cts, counts_raw)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Convert MFI to RAU using ETH beads
-mfi_to_rau <- MFItoRAU_ETH(
-  sero_data = sero_data,
-  plate_list         = plate_list,
-  counts_QC_output   = counts_qc
+mfi_to_rau <- MFItoRAU_Adj(
+  sero_data   = sero_data,
+  plate_list  = plate_list,
+  qc_results  = qc_results
 )
 #> Joining with `by = join_by(antigen)`
 #> Joining with `by = join_by(antigen)`
@@ -88,8 +94,8 @@ mfi_to_rau <- MFItoRAU_ETH(
 pv_classified <- classifyResults(
   mfi_to_rau_output = mfi_to_rau,
   algorithm_type    = "antibody_model",
-  sens_spec         = "maximised",
-  counts_QC_output  = counts_qc
+  sens_spec         = "balanced",
+  qc_results        = qc_results
 )
 # }
 ```

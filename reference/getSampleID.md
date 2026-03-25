@@ -12,7 +12,7 @@ getSampleID(processed_counts, plate_list)
 
 - processed_counts:
 
-  Output from \`processCounts()\` (reactive).
+  Output from \`processCounts()\`.
 
 - plate_list:
 

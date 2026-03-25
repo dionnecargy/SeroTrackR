@@ -13,6 +13,7 @@ renderQCReport(
   date = format(Sys.Date(), "%Y%m%d"),
   experiment_notes = "no notes",
   location,
+  std_point = 10,
   path = "."
 )
 ```
@@ -46,6 +47,11 @@ renderQCReport(
 - location:
 
   A string for experiment location: "ETH" or "PNG" accepted.
+
+- std_point:
+
+  Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve, "PvLDH"
+  for LDH specific curve. Default = 10. Value is an integer.
 
 - path:
 
@@ -87,30 +93,4 @@ if (interactive()) {
     location     = "ETH"
   )
 }
-#> PASS: File example_magpix_plate1.csv successfully validated.
-#> PASS: File example_magpix_plate2.csv successfully validated.
-#> PASS: File example_magpix_plate3.csv successfully validated.
-#> Plate layouts correctly identified!
-#> 
-#> 
-#> processing file: template.Rmd
-#> 1/15                       
-#> 2/15 [setup]               
-#> 3/15                       
-#> 4/15 [standard curves plot]
-#> 5/15                       
-#> 6/15 [model results plot]  
-#> 7/15                       
-#> 8/15 [bead counts plot]    
-#> 9/15                       
-#> 10/15 [check repeats table] 
-#> 11/15                       
-#> 12/15 [blank samples plot]  
-#> 13/15                       
-#> 14/15 [plate layouts]       
-#> 15/15                       
-#> output file: template.knit.md
-#> /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64/pandoc +RTS -K512m -RTS template.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/Dionne/Documents/GitHub/SeroTrackR/experiment1_20251216_ETH_v1.4.0_QCreport.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/bh/0yzt0_x97vj_zktb_39c1xvh0000gn/T//RtmpxBCYB6/rmarkdown-str2179de9d916.html --variable 'geometry:margin=1in' 
-#> 
-#> Output created: /Users/Dionne/Documents/GitHub/SeroTrackR/experiment1_20251216_ETH_v1.4.0_QCreport.pdf
 ```

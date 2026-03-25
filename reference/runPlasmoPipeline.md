@@ -12,8 +12,9 @@ runPlasmoPipeline(
   panel = "panel1",
   std_point,
   experiment_name = "experiment1",
+  classify = "Yes",
   algorithm_type = "antibody_model",
-  sens_spec = "maximised"
+  sens_spec = "balanced"
 )
 ```
 
@@ -33,7 +34,8 @@ runPlasmoPipeline(
 
 - panel:
 
-  Panel of Pk/Pf/Pv antigens. Default = "panel1".
+  Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of
+  Antigens and Species.
 
 - std_point:
 
@@ -44,6 +46,11 @@ runPlasmoPipeline(
 
   User-input experiment name. Default: "experiment1".
 
+- classify:
+
+  "Yes" or "No" depending on whether you would like classification or
+  not. Default = "Yes".
+
 - algorithm_type:
 
   User-selected algorithm choice: - "antibody_model" (PvSeroTaT model;
@@ -51,7 +58,7 @@ runPlasmoPipeline(
 
 - sens_spec:
 
-  User-selected Sensitivity/Specificity threshold: - "maximised"
+  User-selected Sensitivity/Specificity threshold: - "balanced"
   (default), - "85% sensitivity", - "90% sensitivity", - "95%
   sensitivity", - "85% specificity", - "90% specificity". - "95%
   specificity".
@@ -106,9 +113,6 @@ results_5std <- run_example_std(5)
 #> Plate layouts correctly identified!
 #> QC Processes completed.
 #> QC Plotting completed.
-#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,
-#> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,
-#> PTEX150_MFI, MSP8_MFI)`
 #> MFI to RAU conversion completed.
 #> Pv classification completed.
 
@@ -119,9 +123,6 @@ results_10std <- run_example_std(10)
 #> Plate layouts correctly identified!
 #> QC Processes completed.
 #> QC Plotting completed.
-#> Joining with `by = join_by(SampleID, Location, Location.2, Sample, Plate,
-#> QC_total, LF005_MFI, LF010_MFI, LF016_MFI, EBP_MFI, RBP2b.P87_MFI, PvCSS_MFI,
-#> PTEX150_MFI, MSP8_MFI)`
 #> MFI to RAU conversion completed.
 #> Pv classification completed.
 

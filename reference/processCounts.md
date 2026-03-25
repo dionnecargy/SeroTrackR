@@ -12,7 +12,7 @@ processCounts(sero_data)
 
 - sero_data:
 
-  Output from \`readSeroData()\` (reactive).
+  Output from \`readSeroData()\`.
 
 ## Value
 

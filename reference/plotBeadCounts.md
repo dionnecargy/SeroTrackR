@@ -7,14 +7,14 @@ hover (transformed to Plotly in server.R)
 ## Usage
 
 ``` r
-plotBeadCounts(antigen_counts_output)
+plotBeadCounts(qc_results)
 ```
 
 ## Arguments
 
-- antigen_counts_output:
+- qc_results:
 
-  Output from \`getAntigenCounts()\` (reactive).
+  Output from \`runQC()\`.
 
 ## Value
 
@@ -50,13 +50,10 @@ plate_list <- readPlateLayout(your_plate_layout, sero_data)
 #> Plate layouts correctly identified!
 
 # Step 2: Process counts and perform quality control
-counts      <- processCounts(sero_data)
-counts_raw  <- getCounts(counts)
-sample_ids  <- getSampleID(counts, plate_list)
-antigen_cts <- getAntigenCounts(counts, plate_list)
+qc_results  <- runQC(sero_data, plate_list)
 
 # Step 3: Plot Bead Counts
-plotBeadCounts(antigen_cts)
+plotBeadCounts(qc_results)
 
 # }
 ```

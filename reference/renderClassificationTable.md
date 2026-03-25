@@ -6,23 +6,23 @@ sensitivity and specificity options.
 ## Usage
 
 ``` r
-renderClassificationTable(mfi_to_rau_output, algorithm_type, counts_QC_output)
+renderClassificationTable(mfi_to_rau_output, algorithm_type, qc_results)
 ```
 
 ## Arguments
 
 - mfi_to_rau_output:
 
-  Output from \`MFItoRAU()\` or \`MFItoRAU_ETH()\` (reactive).
+  Output from \`MFItoRAU()\` or \`MFItoRAU_Adj()\`.
 
 - algorithm_type:
 
   User-selected algorithm choice: - "antibody_model" (PvSeroTaT model;
   default), or - "antibody_model_excLF016" (PvSeroTat excluding LF016).
 
-- counts_QC_output:
+- qc_results:
 
-  Output from \`getCountsQC()\` (reactive).
+  Output from \`runQC()\`.
 
 ## Value
 
@@ -45,7 +45,7 @@ your_raw_data <- c(
 your_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package = "SeroTrackR")
 
 # Step 1: Reading in Raw Data
-sero_data       <- readSeroData(raw_data = your_raw_data, "magpix")
+sero_data     <- readSeroData(raw_data = your_raw_data, "magpix")
 #> PASS: File example_magpix_plate1.csv successfully validated.
 #> PASS: File example_magpix_plate2.csv successfully validated.
 plate_list    <- readPlateLayout(
@@ -55,14 +55,10 @@ plate_list    <- readPlateLayout(
 #> Plate layouts correctly identified!
 
 # Step 2: Quality Control and MFI to RAU
-processCounts_output      <- processCounts(sero_data)
-getCounts_output          <- getCounts(processCounts_output)
-sampleid_output           <- getSampleID(processCounts_output, plate_list)
-getAntigenCounts_output   <- getAntigenCounts(processCounts_output, plate_list)
-getCountsQC_output        <- getCountsQC(getAntigenCounts_output, getCounts_output)
+qc_results <- runQC(sero_data, plate_list)
 
 # Step 4: Run MFI to RAU (e.g., using ETH beads)
-mfi_to_rau_output  <- MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output)
+mfi_to_rau_output  <- MFItoRAU_Adj(sero_data, plate_list, qc_results)
 #> Joining with `by = join_by(antigen)`
 #> Joining with `by = join_by(antigen)`
 #> Joining with `by = join_by(antigen)`
@@ -74,7 +70,7 @@ mfi_to_rau_output  <- MFItoRAU_ETH(sero_data, plate_list, getCountsQC_output)
 renderClassificationTable(
   mfi_to_rau_output = mfi_to_rau_output,
   algorithm_type = "antibody_model",
-  counts_QC_output = getCountsQC_output
+  qc_results = qc_results
 )
 #> # A tibble: 7 × 3
 #> # Groups:   Sensitivity/Specificity [7]
@@ -86,7 +82,7 @@ renderClassificationTable(
 #> 4 90% specificity                     92           76
 #> 5 95% sensitivity                    160            8
 #> 6 95% specificity                     65          103
-#> 7 maximised                          150           18
+#> 7 balanced                           150           18
 
 # }
 ```

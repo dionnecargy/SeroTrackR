@@ -13,11 +13,11 @@ plotStds_all(sero_data, experiment_name)
 
 - sero_data:
 
-  Output from \`readSeroData()\` (reactive).
+  Output from \`readSeroData()\`.
 
 - experiment_name:
 
-  User-input experiment name (reactive).
+  User-input experiment name.
 
 ## Value
 

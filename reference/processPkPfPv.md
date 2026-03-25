@@ -22,7 +22,8 @@ processPkPfPv(sero_data, plate_list, panel = "panel1")
 
 - panel:
 
-  Panel of Pk/Pf/Pv antigens. Default = "panel1".
+  Panel of Pk/Pf/Pv antigens. Default = "panel1" or user provided csv of
+  Antigens and Species.
 
 ## Value
 
@@ -68,7 +69,7 @@ plate_list <- readPlateLayout(
 # Process multi-species panel
 processed_master <- processPkPfPv(
   sero_data = sero_data,
-  plate_list,
+  plate_list = plate_list,
   panel = "panel1"
 )
 # }
