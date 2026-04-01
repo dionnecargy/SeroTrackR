@@ -2,6 +2,8 @@
 
 ## SeroTrackR 1.0.0
 
+CRAN release: 2026-03-26
+
 - runQC() aims to streamline all the quality control steps into one
   function
 - “maximised”” threshold in the Pv classification algorithm has been

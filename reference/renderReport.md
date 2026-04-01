@@ -34,10 +34,10 @@ Dionne Argyropoulos
 
 ``` r
 # Minimal example that renders a temporary Rmd file.
-# Safe for CRAN because it only writes to tempdir() and runs
-# conditionally if rmarkdown is installed.
-# \donttest{
-if (requireNamespace("rmarkdown", quietly = TRUE)) {
+# Safe for CRAN because it only writes to tempdir()
+if (FALSE) { # \dontrun{
+if (requireNamespace("rmarkdown", quietly = TRUE) &&
+    rmarkdown::pandoc_available()) {
 
   # Create a temporary Rmd that declares params in the YAML
   rmd_file <- tempfile(fileext = ".Rmd")
@@ -70,14 +70,5 @@ if (requireNamespace("rmarkdown", quietly = TRUE)) {
   # Optionally inspect the output path
   out_file
 }
-#> 
-#> 
-#> processing file: file1ead5d091dc0.Rmd
-#> 1/1
-#> output file: file1ead5d091dc0.knit.md
-#> /opt/hostedtoolcache/pandoc/3.1.11/x64/pandoc +RTS -K512m -RTS file1ead5d091dc0.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpLzzMlQ/file1ead4240bb43.html --lua-filter /home/runner/work/_temp/Library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/runner/work/_temp/Library/rmarkdown/rmarkdown/lua/latex-div.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --template /home/runner/work/_temp/Library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /tmp/RtmpLzzMlQ/rmarkdown-str1ead4d38ba9a.html 
-#> 
-#> Output created: /tmp/RtmpLzzMlQ/file1ead4240bb43.html
-#> [1] "/tmp/RtmpLzzMlQ/file1ead4240bb43.html"
-# }
+} # }
 ```

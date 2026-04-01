@@ -65,7 +65,6 @@ plotStds(
   location = "ETH",
   experiment_name = "experiment1"
 )
-#> Warning: Ignoring unknown aesthetics: text
 
 
 # }
