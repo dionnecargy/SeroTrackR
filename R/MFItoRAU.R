@@ -328,10 +328,18 @@ MFItoRAU_Adj <- function(
     dplyr::mutate(
       .keep = "none",
       eth_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$eth_mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$eth_mfi, .x$dilution, control)
+          )
+        )
       }),
       png_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$png_mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$png_mfi, .x$dilution, control)
+          )
+        )
       })
     )
 
@@ -395,7 +403,11 @@ MFItoRAU_Adj <- function(
     # MODEL RESULTS AND PLOTS
     sc_fit <- eth_qa_sc %>%
       dplyr::mutate(.keep = "none", new_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$mfi, .x$dilution, control)
+          )
+        )
       }))
 
     qa_converted <- dplyr::inner_join(sc_fit, eth_qa_sc) |>
