@@ -50,9 +50,34 @@
 #' }
 #' }
 renderReport <- function(input, output, params) {
-  rmarkdown::render(input,
-                    output_file = output,
-                    params = params,
-                    envir = new.env(parent = globalenv())
+
+  # Turn on debugging
+  Sys.setenv(TINYTEX_DEBUG = "1")
+
+  # Render without cleaning (keeps .log file)
+  rmarkdown::render(
+    input = input,
+    output_file = output,
+    params = params,
+    envir = new.env(parent = globalenv()),
+    clean = FALSE
   )
+
+  # Locate the .log file
+  log_file <- sub("\\.pdf$", ".log", output)
+
+  # If not found, try .tex → .log
+  if (!file.exists(log_file)) {
+    tex_file <- sub("\\.pdf$", ".tex", output)
+    log_file <- sub("\\.tex$", ".log", tex_file)
+  }
+
+  # Print log into Shiny logs
+  if (file.exists(log_file)) {
+    cat("\n===== LATEX LOG START =====\n")
+    cat(readLines(log_file), sep = "\n")
+    cat("\n===== LATEX LOG END =====\n")
+  } else {
+    cat("No LaTeX log file found.\n")
+  }
 }

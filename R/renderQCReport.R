@@ -18,6 +18,7 @@
 #' @importFrom rmarkdown render
 #' @importFrom here here
 #' @importFrom kableExtra kable_styling
+#' @importFrom janitor clean_names
 #'
 #' @author Dionne Argyropoulos
 #'
@@ -63,7 +64,7 @@ renderQCReport <- function(
   ###############################################################################
 
   sero_data                 <- readSeroData(raw_data, platform)
-  raw_data_info             <- sero_data$data_raw
+  raw_data_info             <- sero_data$data_raw %>% janitor::clean_names()
   raw_data_filename         <- tolower(basename(raw_data))
   plate_list                <- readPlateLayout(plate_layout, sero_data)
   version                   <- getGithubRelease("dionnecargy", "PvSeroApp")
@@ -92,9 +93,9 @@ renderQCReport <- function(
   operator_output <- function() {
     if (platform %in% c("magpix", "intelliflex")) {
       op <- raw_data_info %>%
-        dplyr::filter(Program == "Operator") %>%
-        dplyr::select(Plate, Operator = xPONENT)
-      paste(paste0(op$Plate, ": ", op$Operator), collapse = ", ")
+        dplyr::filter(program == "Operator") %>%
+        dplyr::select(plate, Operator = x_ponent)
+      paste(paste0(op$plate, ": ", op$Operator), collapse = ", ")
     } else {
       return("Information not available for bioplex machine run.")
     }
@@ -103,14 +104,14 @@ renderQCReport <- function(
   volume_output <- function() {
     if (platform == "magpix") {
       vol <- raw_data_info %>%
-        dplyr::filter(Program == "SampleVolume") %>%
-        dplyr::select(Plate, `Acquisition Volume` = xPONENT)
-      paste(paste0(vol$Plate, ": ", vol$`Acquisition Volume`), collapse = ", ")
+        dplyr::filter(program == "SampleVolume") %>%
+        dplyr::select(plate, `Acquisition Volume` = x_ponent)
+      paste(paste0(vol$plate, ": ", vol$`Acquisition Volume`), collapse = ", ")
     } else if (platform == "intelliflex") {
       vol <- raw_data_info %>%
-        dplyr::filter(Program == "MaxSampleUptakeVolume") %>%
-        dplyr::select(Plate, `Acquisition Volume` = xPONENT)
-      paste(paste0(vol$Plate, ": ", vol$`Acquisition Volume`), collapse = ", ")
+        dplyr::filter(program == "MaxSampleUptakeVolume") %>%
+        dplyr::select(plate, `Acquisition Volume` = x_ponent)
+      paste(paste0(vol$plate, ": ", vol$`Acquisition Volume`), collapse = ", ")
     } else {
       return("Information not available for bioplex machine run.")
     }
@@ -119,14 +120,14 @@ renderQCReport <- function(
   calibration_output <- function() {
     if (platform == "magpix") {
       calib <- raw_data_info %>%
-        dplyr::filter(Program %in% c("Last CAL Calibration", "Last VER Verification", "Last Fluidics Test")) %>%
-        dplyr::select(Plate, Program, Result = xPONENT)
-      paste(paste0(calib$Plate, ": ", calib$Program, ": ", calib$Result), collapse = ", ")
+        dplyr::filter(program %in% c("Last CAL Calibration", "Last VER Verification", "Last Fluidics Test")) %>%
+        dplyr::select(plate, program, Result = x_ponent)
+      paste(paste0(calib$plate, ": ", calib$program, ": ", calib$Result), collapse = ", ")
     } else if (platform == "intelliflex") {
       calib <- raw_data_info %>%
-        dplyr::filter(Program %in% c("Last Calibration", "Last Verification", "Last Fluidics Test")) %>%
-        dplyr::select(Plate, Program, Result = xPONENT)
-      paste(paste0(calib$Plate, ": ", calib$Program, ": ", calib$Result), collapse = ", ")
+        dplyr::filter(program %in% c("Last Calibration", "Last Verification", "Last Fluidics Test")) %>%
+        dplyr::select(plate, program, Result = x_ponent)
+      paste(paste0(calib$plate, ": ", calib$program, ": ", calib$Result), collapse = ", ")
     } else {
       return("Information not available for bioplex machine run.")
     }
@@ -151,20 +152,23 @@ renderQCReport <- function(
       below_indices <- below_indices[below_indices <= nrow(filtered_df)]
       # Filter the data frame for these rows
       machine <- filtered_df[below_indices, , drop = FALSE] %>% dplyr::rename(`Machine Serial Number` = col_name)
-      machine_levels <- unique(raw_data_info$Plate)
+      machine_levels <- unique(raw_data_info$plate)
       paste(paste0(machine_levels, ": ", machine$`Machine Serial Number`), collapse = ", ")
 
     } else if (platform == "bioplex") {
 
-      machine <- raw_data_info %>% filter(str_detect(Run, "Reader Serial Number")) %>% mutate(Run = gsub("Reader Serial Number: ", "", Run)) %>% dplyr::select(Run)
-      machine_levels <- unique(raw_data_info$Plate)
-      paste(paste0(machine_levels, ": ", machine$Run), collapse = ", ")
+      machine <- raw_data_info %>%
+        dplyr::filter(str_detect(run_column, "Reader Serial Number")) %>%
+        dplyr::mutate(run_column = gsub("Reader Serial Number: ", "", run_column)) %>%
+        dplyr::select(run_column)
+      machine_levels <- unique(raw_data_info$plate)
+      paste(paste0(machine_levels, ": ", machine$run_column), collapse = ", ")
 
     } else if (platform == "intelliflex") {
       machine <- raw_data_info %>%
-        dplyr::filter(Program == "SN") %>%
-        dplyr::select(Plate, `Machine Serial Number` = xPONENT)
-      paste(paste0(machine$Plate, ": ", machine$`Machine Serial Number`), collapse = ", ")
+        dplyr::filter(program == "SN") %>%
+        dplyr::select(plate, `Machine Serial Number` = x_ponent)
+      paste(paste0(machine$plate, ": ", machine$`Machine Serial Number`), collapse = ", ")
 
     }
   }
