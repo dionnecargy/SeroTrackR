@@ -328,10 +328,18 @@ MFItoRAU_Adj <- function(
     dplyr::mutate(
       .keep = "none",
       eth_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$eth_mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$eth_mfi, .x$dilution, control)
+          )
+        )
       }),
       png_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$png_mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$png_mfi, .x$dilution, control)
+          )
+        )
       })
     )
 
@@ -351,7 +359,7 @@ MFItoRAU_Adj <- function(
     eth_qa_sc <- subset_data %>%
       dplyr::filter(type.letter == "S") %>%
       tidyr::pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
-      dplyr::mutate(dilution = dilution_factor ^ (-as.numeric(gsub( # 2 = dilution factor
+      dplyr::mutate(dilution = dilution_factor ^ (-as.numeric(gsub(
         "\\D", "", .data$`Sample`
       )) + 1))  %>%
       dplyr::group_by(.data$antigen) %>%
@@ -395,7 +403,11 @@ MFItoRAU_Adj <- function(
     # MODEL RESULTS AND PLOTS
     sc_fit <- eth_qa_sc %>%
       dplyr::mutate(.keep = "none", new_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$mfi, .x$dilution, control)
+          )
+        )
       }))
 
     qa_converted <- dplyr::inner_join(sc_fit, eth_qa_sc) |>
@@ -853,6 +865,8 @@ MFItoRAU_Plasmo <- function(
   # Add panel
   if(panel == "panel1"){
     panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
+    panel <- panel %>%
+      dplyr::mutate(Antigens = dplyr::recode(Antigens, !!!name_lookup))
   } else {
     panel <- read.csv(panel)
   }

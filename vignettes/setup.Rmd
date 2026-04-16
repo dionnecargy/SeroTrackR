@@ -13,17 +13,13 @@ The following files are required for this app. You might like to organise your f
 
 ```bash
 my_R_project
-└── raw_data_files/
-    ├── raw_MAGPIX_data/
-    │   ├── raw_data_plate1.csv
-    │   ├── raw_data_plate2.csv
-    │   └── raw_data_plate3.csv
-    ├── raw_BioPlex_data/
-    │   ├── raw_data_plate4.xlsx
-    │   ├── raw_data_plate5.xlsx
-    │   └── raw_data_plate6.xlsx
+└── data/
+    ├── raw_data_plate1.csv
+    ├── raw_data_plate2.csv
+    ├── raw_data_plate3.csv
     ├── platelayout.xlsx
-    └── outputs/
+└── results/
+└── data_processing.qmd
 ```
 
 ### Raw Data Files 

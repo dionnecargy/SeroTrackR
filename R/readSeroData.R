@@ -220,7 +220,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 .relabel_columns <- function(df) {
   colnames(df) <- dplyr::case_when(
     stringr::str_detect(colnames(df), regex("EBP", ignore_case = TRUE)) ~ "EBP",
-    stringr::str_detect(colnames(df), regex("(LF005|Pv-fam-a)", ignore_case = TRUE)) ~ "LF005",
+    stringr::str_detect(colnames(df), regex("(LF005|Pv.fam.a|fam.a|Pv-fam-a)", ignore_case = TRUE)) ~ "LF005",
     stringr::str_detect(colnames(df), regex("(LF010|MSP5)", ignore_case = TRUE)) ~ "LF010",
     stringr::str_detect(colnames(df), regex("(LF016|PvMSP1-19|PvMSP1.19)", ignore_case = TRUE)) ~ "LF016",
     stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
