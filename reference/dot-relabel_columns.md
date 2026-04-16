@@ -51,20 +51,9 @@ if (
     .relabel_columns()
 }
 #> Warning: Row 1 does not provide unique names. Consider running clean_names() after row_to_names().
-#> # A tibble: 96 × 11
-#>    Location  Sample EBP     LF005 LF010   LF016   MSP8   RBP2b.P87 PTEX150 PvCSS
-#>    <chr>     <chr>  <chr>   <chr> <chr>   <chr>   <chr>  <chr>     <chr>   <chr>
-#>  1 1(1,A1)   Blank1 20      200   20      10      20     10        30      20   
-#>  2 2(1,A2)   Blank2 15      291   15      15      15     10        20      15   
-#>  3 3(1,A3)   S1     15710.5 11990 22583   21244   24306  7907.5    13207   12427
-#>  4 4(1,A4)   S2     13545   8285  16947.5 16146   17172  7186      8550    8034 
-#>  5 5(1,A5)   S3     9767    4950  10865   10621.5 11358  4475.5    5329    4990 
-#>  6 6(1,A6)   S4     5648.5  2519  6060    5968.5  6237   3508      2671    2446…
-#>  7 7(1,A7)   S5     4104.5  1431  3711.5  3738    3883.5 2082      1548    1299 
-#>  8 8(1,A8)   S6     2105    676.5 1889    1667    2136   1102      698.5   581  
-#>  9 9(1,A9)   S7     1107    328   1106    890     1204   657       333     264  
-#> 10 10(1,A10) S8     452.5   141   465     405.5   522    277       156     111  
-#> # ℹ 86 more rows
-#> # ℹ 1 more variable: `Total Events` <chr>
+#> Error in dplyr::case_when(stringr::str_detect(colnames(df), regex("EBP",     ignore_case = TRUE)) ~ "EBP", stringr::str_detect(colnames(df),     regex("(LF005|Pv.fam.a|fam.a|Pv-fam-a)", ignore_case = TRUE)) ~     "LF005", stringr::str_detect(colnames(df), regex("(LF010|MSP5)",     ignore_case = TRUE)) ~ "LF010", stringr::str_detect(colnames(df),     regex("(LF016|PvMSP1-19|PvMSP1.19)", ignore_case = TRUE)) ~     "LF016", stringr::str_detect(colnames(df), regex("(MSP8|L34)",     ignore_case = TRUE)) ~ "MSP8", stringr::str_detect(colnames(df),     regex("(P87|RBP2b-P87|RBP2b|PvRBP)", ignore_case = TRUE)) ~     "RBP2b.P87", stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)",     ignore_case = TRUE)) ~ "PTEX150", stringr::str_detect(colnames(df),     regex("PkTRAMPCSS|PkTRAMP-CSS|PkPC", ignore_case = TRUE)) ~     "PkTRAMP-CSS", stringr::str_detect(colnames(df), regex("CSS",     ignore_case = TRUE)) ~ "PvCSS", stringr::str_detect(colnames(df),     regex("(PfMSP1-19|PfMSP1|PfMSP1.19)", ignore_case = TRUE)) ~     "PfMSP1-19", stringr::str_detect(colnames(df), regex("PfAMA1",     ignore_case = TRUE)) ~ "PfAMA1", stringr::str_detect(colnames(df),     regex("Pfetramp5Ag1|Pfetramp", ignore_case = TRUE)) ~ "Pfetramp5Ag1",     stringr::str_detect(colnames(df), regex("HSP40Ag1", ignore_case = TRUE)) ~         "PfHSP40Ag1", stringr::str_detect(colnames(df), regex("PfGexp18",         ignore_case = TRUE)) ~ "PfGexp18", stringr::str_detect(colnames(df),         regex("PkSSP2", ignore_case = TRUE)) ~ "PkSSP2", stringr::str_detect(colnames(df),         regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10", stringr::str_detect(colnames(df),         regex("PkRIPR", ignore_case = TRUE)) ~ "PkRIPR", stringr::str_detect(colnames(df),         regex("Sera3ag1", ignore_case = TRUE)) ~ "PkSERA3ag1",     stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~         "Pk8", stringr::str_detect(colnames(df), regex("SERA3Ag2",         ignore_case = TRUE)) ~ "PkSERA3Ag2", TRUE ~ colnames(df)): Failed to evaluate the left-hand side of formula 1.
+#> Caused by error in `dplyr::select()`:
+#> ! Names can't be empty.
+#> ✖ Empty names found at locations 12, 13, 14, 15, 16, etc.
 # }
 ```
