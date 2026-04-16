@@ -317,7 +317,7 @@ MFItoRAU_Adj <- function(
   counts_QC_output              <- qc_results$getCountsQC_output
 
   # Reference Fit
-  refs <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/png_eth_stds.csv"))
+  refs <-read.csv(system.file("extdata", "png_eth_stds.csv", package = "SeroTrackR"))
 
   control = list(maxit = 10000, abstol = 1e-8, reltol = 1e-6)
   initial_solution = c(-1.0, 0.0, 10, 0.0, 0.0)
@@ -828,8 +828,11 @@ MFItoRAU_Plasmo <- function(
   PfPv_Final[[1]] <- PfPv_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_loglog_Dilution", .x))
   PfPv_Final[[2]] <- PfPv_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_loglog_Dilution", .x))
 
-  PfPv_Adj_Final[[1]] <- PfPv_Adj_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x))
-  PfPv_Adj_Final[[2]] <- PfPv_Adj_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x))
+  PfPv_Adj_Final[[1]] <- PfPv_Adj_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x)) %>%
+    dplyr::mutate(across(contains("Adjloglog"), ~if_else(.x<1.95e-05, 1.95e-05, .x))) # catch any values below 1.95e-05 (S11 min)
+  PfPv_Adj_Final[[2]] <- PfPv_Adj_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x)) %>%
+    dplyr::mutate(across(contains("Adjloglog"), ~if_else(.x<1.95e-05, 1.95e-05, .x)))# catch any values below 1.95e-05 (S11 min)
+
 
   # Join Dataframes Together
   pk_final_results            <- Pk_Final
@@ -861,7 +864,7 @@ MFItoRAU_Plasmo <- function(
 
   # Add panel
   if(panel == "panel1"){
-    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+    panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
     panel <- panel %>%
       dplyr::mutate(Antigens = dplyr::recode(Antigens, !!!name_lookup))
   } else {
@@ -889,7 +892,14 @@ MFItoRAU_Plasmo <- function(
 
   PkPfPv_long_mfi_rau <- suppressWarnings(
     PkPfPv_long_mfi %>%
-      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species"))
+      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")) %>%
+      dplyr::mutate(Species = case_when(
+        is.na(Species) & stringr::str_detect(Antigens, "Pv") ~ "Pv",
+        is.na(Species) & stringr::str_detect(Antigens, "Pf") ~ "Pf",
+        is.na(Species) & stringr::str_detect(Antigens, "Pk") ~ "Pk",
+        T ~ Species
+
+      ))
   ) %>%
     dplyr::select(SampleID, Plate, Antigens, Species, MFI, RAU, RAU_Method)
 
