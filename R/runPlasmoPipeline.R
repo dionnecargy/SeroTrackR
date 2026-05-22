@@ -7,17 +7,9 @@
 #' @param std_point Standard Point Curve: 5 = 5-point curve, 10 = 10-point curve. Value is an integer.
 #' @param experiment_name User-input experiment name. Default: "experiment1".
 #' @param classify "Yes" or "No" depending on whether you would like classification or not. Default = "Yes".
-#' @param algorithm_type User-selected algorithm choice:
-#' - "antibody_model" (PvSeroTaT model; default), or
-#' - "antibody_model_excLF016" (PvSeroTaT excluding LF016).
-#' @param sens_spec User-selected Sensitivity/Specificity threshold:
-#' - "balanced" (default),
-#' - "85\% sensitivity",
-#' - "90\% sensitivity",
-#' - "95\% sensitivity",
-#' - "85\% specificity",
-#' - "90\% specificity".
-#' - "95\% specificity".
+#' @param algorithm_type Algorithm: "antibody_model" (PvSEM algorithm; default)
+#' @param sens_spec User-selected Sensitivity/Specificity threshold: "balanced"
+#' (default) or "90\% specificity".
 #'
 #' @return A data frame containing the MFI and RAU Dilution values for each sample, QC plots for standard curve, bead counts and blanks.
 #' @export

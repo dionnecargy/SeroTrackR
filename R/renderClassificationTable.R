@@ -4,9 +4,7 @@
 #' and specificity options.
 #'
 #' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_Adj()`.
-#' @param algorithm_type User-selected algorithm choice:
-#' - "antibody_model" (PvSeroTaT model; default), or
-#' - "antibody_model_excLF016" (PvSeroTat excluding LF016).
+#' @param algorithm_type Algorithm: "antibody_model" (PvSEM algorithm; default)
 #' @param qc_results Output from `runQC()`.
 #' @return A table of all classification outputs.
 #' @export
@@ -48,8 +46,7 @@
 #'
 renderClassificationTable <- function(mfi_to_rau_output, algorithm_type, qc_results){
   # Load All sens_spec possibilities to cycle through
-  sens_spec_all <- c("balanced", "85% sensitivity", "90% sensitivity", "95% sensitivity",
-                     "85% specificity", "90% specificity", "95% specificity")
+  sens_spec_all <- c("balanced", "90% specificity")
 
   # Run classify_final_results
   all_classifications <- purrr::map_dfr(sens_spec_all, ~{

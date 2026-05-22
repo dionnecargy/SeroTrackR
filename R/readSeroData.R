@@ -54,7 +54,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     file <- raw_data[i]
     file_name <- raw_data_filenames[i]
 
-    if (.check_platform(file, platform) == TRUE) {
+    if (.check_platform(file, platform, file_name) == TRUE) {
       message("PASS: File ", file_name, " successfully validated.")
     }
 
@@ -78,7 +78,14 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
       master_list <- .post_process_luminex(sections, file_name, master_list)
 
     } else {
-      stop("Unsupported file type. Please use either MagPix, Intelliflex or Bioplex!")
+      stop(
+        paste0(
+          "Unsupported platform: '", platform, "'.\n",
+          "  ✓ Supported platforms are: 'magpix', 'bioplex', or 'intelliflex'.\n",
+          "  ℹ Please check your platform argument and try again."
+        ),
+        call. = FALSE
+      )
     }
 
   }
@@ -92,7 +99,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' with the correct format as expected. Will report error if NOT aligned.
 #'
 #' @param raw_data String with the raw data path.
-#' @param platform "magpix" or "bioplex".
+#' @param platform "magpix", "bioplex" or "intelliflex".
+#' @param file_name String with the raw data filename (for error messaging).
 #'
 #' @return TRUE: if platform == file format, ERROR message when platform does
 #' not equal file format.
@@ -105,11 +113,11 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #'
 #' @examples
 #' your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
-#' .check_platform(raw_data = your_raw_data, platform = "magpix")
-.check_platform <- function(raw_data, platform) {
+#' .check_platform(raw_data = your_raw_data, platform = "magpix", file_name = basename(your_raw_data))
+.check_platform <- function(raw_data, platform, file_name) {
 
   if (length(raw_data) == 0) {
-    stop("No raw data files were provided.")
+    stop("No raw data files were provided.", call. = FALSE)
   }
 
   # Read file
@@ -126,14 +134,46 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   is_magpix <- any(grepl("Program|row", first_two_cols, ignore.case = TRUE)) ||
     any(grepl("xPonent|col", first_two_cols, ignore.case = TRUE))
 
+  # Detect if file is Bioplex (inverse of Magpix detection)
+  is_bioplex <- !is_magpix
+
   # User selected "magpix" but the file does not have "Program" or "xPonent"
   if (platform == "magpix" && !is_magpix) {
-    stop(paste("Error: The file", file_name, "does not appear to be a 'magpix' file, but the platform was set to 'magpix'. Please check your selection."))
+    stop(
+      paste0(
+        "Platform mismatch for file '", file_name, "':\n",
+        "  ✗ You specified platform = 'magpix', but this file appears to be 'bioplex' or 'intelliflex'.\n",
+        "  ✓ Please try platform = 'bioplex' or platform = 'intelliflex'.\n",
+        "  ℹ MagPix files contain columns like 'xPONENT', 'Program', or 'row'."
+      ),
+      call. = FALSE
+    )
   }
 
   # User selected "bioplex" but the file contains "Program" or "xPonent"
   if (platform == "bioplex" && is_magpix) {
-    stop(paste("Error: The file", file_name, "appears to be a 'magpix' file, but the platform was set to 'bioplex'. Please check your selection."))
+    stop(
+      paste0(
+        "Platform mismatch for file '", file_name, "':\n",
+        "  ✗ You specified platform = 'bioplex', but this file appears to be 'magpix'.\n",
+        "  ✓ Please try platform = 'magpix'.\n",
+        "  ℹ Bioplex files do not contain 'xPONENT' or 'Program' columns."
+      ),
+      call. = FALSE
+    )
+  }
+
+  # User selected "intelliflex" but file is Magpix
+  if (platform == "intelliflex" && is_magpix) {
+    stop(
+      paste0(
+        "Platform mismatch for file '", file_name, "':\n",
+        "  ✗ You specified platform = 'intelliflex', but this file appears to be 'magpix'.\n",
+        "  ✓ Please try platform = 'magpix'.\n",
+        "  ℹ Intelliflex files have a different structure than Magpix files."
+      ),
+      call. = FALSE
+    )
   }
 
   return(TRUE)

@@ -22,5 +22,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Dionne Argyropoulos \email{argyropoulos.d@wehi.edu.au}
 
+Authors:
+\itemize{
+  \item Dionne Argyropoulos \email{argyropoulos.d@wehi.edu.au}
+}
+
 }
 \keyword{internal}

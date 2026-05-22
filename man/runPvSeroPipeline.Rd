@@ -31,18 +31,10 @@ runPvSeroPipeline(
 
 \item{classify}{"Yes" or "No" depending on whether you would like classification or not. Default = "Yes".}
 
-\item{algorithm_type}{User-selected algorithm choice:
-- "antibody_model" (PvSeroTaT model; default), or
-- "antibody_model_excLF016" (PvSeroTat excluding LF016).}
+\item{algorithm_type}{Algorithm: "antibody_model" (PvSEM algorithm; default)}
 
-\item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "balanced" (default),
-- "85\% sensitivity",
-- "90\% sensitivity",
-- "95\% sensitivity",
-- "85\% specificity",
-- "90\% specificity".
-- "95\% specificity".}
+\item{sens_spec}{User-selected Sensitivity/Specificity threshold: "balanced"
+(default) or "90\% specificity".}
 }
 \value{
 classifyResults_output, stdcurve_plot, plateqc_plot, check_repeats_output, blanks_plot, model_plot
