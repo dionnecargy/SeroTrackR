@@ -62,7 +62,7 @@ plotMFI <- function(mfi_to_rau_output, location){
       MFI = as.numeric(MFI)
     )
 
-  df_wehi <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/longitudinal_MFI.csv")) %>%
+  df_wehi <- read.csv(system.file("extdata", "longitudinal_MFI.csv", package = "SeroTrackR")) %>%
     dplyr::mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
 
   plot <- df_results %>%

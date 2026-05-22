@@ -104,8 +104,16 @@ classifyResults <- function(
   #############################################################################
   # Load files from package
   #############################################################################
-  antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
-  threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
+  # Check if this is a CRAN submission
+  if (Sys.getenv("CRAN_SUBMISSION") == "true") {
+    # CRAN version: use URL
+    antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
+    threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
+  } else {
+    # Master version: use local file
+    antibody_model    <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
+    threshold_values  <- system.file("extdata", "threshold_values.csv", package = "SeroTrackR")
+  }
 
   #############################################################################
   # Model-specific functions
