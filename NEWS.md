@@ -1,7 +1,5 @@
 # SeroTrackR 1.1.0
 
-# SeroTrackR 1.0.1
-
 * Updated `readSeroData()` error messaging for `.check_platform()`
 * Removed algorithm without PvMSP1-19 as it is no longer necessary
 * Kept only balanced and 90% specificity threshold options for algorithm 
