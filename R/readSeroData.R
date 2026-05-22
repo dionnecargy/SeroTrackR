@@ -33,7 +33,7 @@
 #' )
 readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames = NULL){
   platemap_file <- system.file("extdata", "platemap.csv", package = "SeroTrackR")
-  platemap <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/platemap.csv"))
+  platemap <- read.csv(platemap_file)
 
   raw_data_filenames <- tolower(
     if (is.null(raw_data_filenames)) basename(raw_data) else raw_data_filenames
@@ -54,7 +54,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     file <- raw_data[i]
     file_name <- raw_data_filenames[i]
 
-    if (.check_platform(file, platform) == TRUE) {
+    if (.check_platform(file, platform, file_name) == TRUE) {
       message("PASS: File ", file_name, " successfully validated.")
     }
 
@@ -78,7 +78,14 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
       master_list <- .post_process_luminex(sections, file_name, master_list)
 
     } else {
-      stop("Unsupported file type. Please use either MagPix, Intelliflex or Bioplex!")
+      stop(
+        paste0(
+          "Unsupported platform: '", platform, "'.\n",
+          "  ✓ Supported platforms are: 'magpix', 'bioplex', or 'intelliflex'.\n",
+          "  ℹ Please check your platform argument and try again."
+        ),
+        call. = FALSE
+      )
     }
 
   }
@@ -92,7 +99,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' with the correct format as expected. Will report error if NOT aligned.
 #'
 #' @param raw_data String with the raw data path.
-#' @param platform "magpix" or "bioplex".
+#' @param platform "magpix", "bioplex" or "intelliflex".
+#' @param file_name String with the raw data filename (for error messaging).
 #'
 #' @return TRUE: if platform == file format, ERROR message when platform does
 #' not equal file format.
@@ -105,11 +113,11 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #'
 #' @examples
 #' your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
-#' .check_platform(raw_data = your_raw_data, platform = "magpix")
-.check_platform <- function(raw_data, platform) {
+#' .check_platform(raw_data = your_raw_data, platform = "magpix", file_name = basename(your_raw_data))
+.check_platform <- function(raw_data, platform, file_name) {
 
   if (length(raw_data) == 0) {
-    stop("No raw data files were provided.")
+    stop("No raw data files were provided.", call. = FALSE)
   }
 
   # Read file
@@ -126,14 +134,46 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   is_magpix <- any(grepl("Program|row", first_two_cols, ignore.case = TRUE)) ||
     any(grepl("xPonent|col", first_two_cols, ignore.case = TRUE))
 
+  # Detect if file is Bioplex (inverse of Magpix detection)
+  is_bioplex <- !is_magpix
+
   # User selected "magpix" but the file does not have "Program" or "xPonent"
   if (platform == "magpix" && !is_magpix) {
-    stop(paste("Error: The file", file_name, "does not appear to be a 'magpix' file, but the platform was set to 'magpix'. Please check your selection."))
+    stop(
+      paste0(
+        "Platform mismatch for file '", file_name, "':\n",
+        "  ✗ You specified platform = 'magpix', but this file appears to be 'bioplex' or 'intelliflex'.\n",
+        "  ✓ Please try platform = 'bioplex' or platform = 'intelliflex'.\n",
+        "  ℹ MagPix files contain columns like 'xPONENT', 'Program', or 'row'."
+      ),
+      call. = FALSE
+    )
   }
 
   # User selected "bioplex" but the file contains "Program" or "xPonent"
   if (platform == "bioplex" && is_magpix) {
-    stop(paste("Error: The file", file_name, "appears to be a 'magpix' file, but the platform was set to 'bioplex'. Please check your selection."))
+    stop(
+      paste0(
+        "Platform mismatch for file '", file_name, "':\n",
+        "  ✗ You specified platform = 'bioplex', but this file appears to be 'magpix'.\n",
+        "  ✓ Please try platform = 'magpix'.\n",
+        "  ℹ Bioplex files do not contain 'xPONENT' or 'Program' columns."
+      ),
+      call. = FALSE
+    )
+  }
+
+  # User selected "intelliflex" but file is Magpix
+  if (platform == "intelliflex" && is_magpix) {
+    stop(
+      paste0(
+        "Platform mismatch for file '", file_name, "':\n",
+        "  ✗ You specified platform = 'intelliflex', but this file appears to be 'magpix'.\n",
+        "  ✓ Please try platform = 'magpix'.\n",
+        "  ℹ Intelliflex files have a different structure than Magpix files."
+      ),
+      call. = FALSE
+    )
   }
 
   return(TRUE)
@@ -163,10 +203,13 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   } else if (ext == "csv") {
     first_lines <- readLines(file, n = 5)
     df <- if (any(grepl(";", first_lines))) {
-      suppressWarnings(readr::read_csv2(file))
+      suppressWarnings(read.csv2(file, header = F, col.names = paste0("x", 1:max(count.fields(file, sep = ";"),na.rm = T)), fill = T)%>%
+                         janitor::row_to_names(1))
     } else {
-      suppressMessages(readr::read_csv(file))
+      suppressWarnings(read.csv(file, header = F, col.names = paste0("x", 1:max(count.fields(file, sep = ","),na.rm = T)), fill = T) %>%
+                         janitor::row_to_names(1))
     }
+    colnames(df) <- make.names(colnames(df), unique = T)
     df <- dplyr::filter(df, rowSums(is.na(df)) != ncol(df))
   } else {
     stop("Unsupported file format! Please use .csv or .xlsx", call. = FALSE)
@@ -217,20 +260,23 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 .relabel_columns <- function(df) {
   colnames(df) <- dplyr::case_when(
     stringr::str_detect(colnames(df), regex("EBP", ignore_case = TRUE)) ~ "EBP",
-    stringr::str_detect(colnames(df), regex("(LF005|Pv-fam-a)", ignore_case = TRUE)) ~ "LF005",
+    stringr::str_detect(colnames(df), regex("(LF005|Pv.fam.a|fam.a|Pv-fam-a)", ignore_case = TRUE)) ~ "LF005",
     stringr::str_detect(colnames(df), regex("(LF010|MSP5)", ignore_case = TRUE)) ~ "LF010",
-    stringr::str_detect(colnames(df), regex("(LF016|PvMSP1-19|PvMSP1.19|PvMSP1)", ignore_case = TRUE)) ~ "LF016",
+    stringr::str_detect(colnames(df), regex("(LF016|PvMSP1-19|PvMSP1.19)", ignore_case = TRUE)) ~ "LF016",
     stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
-    stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87|RBP2b)", ignore_case = TRUE)) ~ "RBP2b.P87",
+    stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87|RBP2b|PvRBP)", ignore_case = TRUE)) ~ "RBP2b.P87",
     stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150",
+    stringr::str_detect(colnames(df), regex("PkTRAMPCSS|PkTRAMP-CSS|PkPC", ignore_case = TRUE)) ~ "PkTRAMP-CSS",
     stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
     stringr::str_detect(colnames(df), regex("(PfMSP1-19|PfMSP1|PfMSP1.19)", ignore_case = TRUE)) ~ "PfMSP1-19",
     stringr::str_detect(colnames(df), regex("PfAMA1", ignore_case = TRUE)) ~ "PfAMA1",
     stringr::str_detect(colnames(df), regex("Pfetramp5Ag1|Pfetramp", ignore_case = TRUE)) ~ "Pfetramp5Ag1",
-    stringr::str_detect(colnames(df), regex("PfHSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
+    stringr::str_detect(colnames(df), regex("HSP40Ag1", ignore_case = TRUE)) ~ "PfHSP40Ag1",
     stringr::str_detect(colnames(df), regex("PfGexp18", ignore_case = TRUE)) ~ "PfGexp18",
     stringr::str_detect(colnames(df), regex("PkSSP2", ignore_case = TRUE)) ~ "PkSSP2",
     stringr::str_detect(colnames(df), regex("PkMSP10", ignore_case = TRUE)) ~ "PkMSP10",
+    stringr::str_detect(colnames(df), regex("PkRIPR", ignore_case = TRUE)) ~ "PkRIPR",
+    stringr::str_detect(colnames(df), regex("Sera3ag1", ignore_case = TRUE)) ~ "PkSERA3ag1",
     stringr::str_detect(colnames(df), regex("Pk8", ignore_case = TRUE)) ~ "Pk8",
     stringr::str_detect(colnames(df), regex("SERA3Ag2", ignore_case = TRUE)) ~ "PkSERA3Ag2",
     TRUE ~ colnames(df) # Keep unmatched names as-is
@@ -352,6 +398,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
   df2 <- df %>%
     # Filter to correct section of df
     dplyr::slice((row1 + 1):(row2 - 1)) %>%
+    #make blank cells NA so they are dropped in next line
+    mutate(across(.cols = everything(), .fns = ~na_if(.x, ""))) %>%
     # Drop all-NA columns
     dplyr::select(dplyr::where(~ !all(is.na(.x)))) %>%
     # Drop all-NA rows

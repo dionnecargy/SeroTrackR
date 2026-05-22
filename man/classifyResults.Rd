@@ -15,18 +15,10 @@ classifyResults(
 \arguments{
 \item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`.}
 
-\item{algorithm_type}{User-selected algorithm choice:
-- "antibody_model" (PvSeroTaT model; default), or
-- "antibody_model_excLF016" (PvSeroTaT excluding LF016).}
+\item{algorithm_type}{Algorithm: "antibody_model" (PvSEM algorithm; default)}
 
-\item{sens_spec}{User-selected Sensitivity/Specificity threshold:
-- "balanced" (default),
-- "85\% sensitivity",
-- "90\% sensitivity",
-- "95\% sensitivity",
-- "85\% specificity",
-- "90\% specificity".
-- "95\% specificity".}
+\item{sens_spec}{User-selected Sensitivity/Specificity threshold: "balanced"
+(default) or "90\% specificity".}
 
 \item{qc_results}{Output from `runQC()`.}
 

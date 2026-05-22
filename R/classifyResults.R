@@ -5,17 +5,9 @@
 #' RAU).
 #'
 #' @param mfi_to_rau_output Output from `MFItoRAU()` or `MFItoRAU_Adj()`.
-#' @param algorithm_type User-selected algorithm choice:
-#' - "antibody_model" (PvSeroTaT model; default), or
-#' - "antibody_model_excLF016" (PvSeroTaT excluding LF016).
-#' @param sens_spec User-selected Sensitivity/Specificity threshold:
-#' - "balanced" (default),
-#' - "85\% sensitivity",
-#' - "90\% sensitivity",
-#' - "95\% sensitivity",
-#' - "85\% specificity",
-#' - "90\% specificity".
-#' - "95\% specificity".
+#' @param algorithm_type Algorithm: "antibody_model" (PvSEM algorithm; default)
+#' @param sens_spec User-selected Sensitivity/Specificity threshold: "balanced"
+#' (default) or "90\% specificity".
 #' @param qc_results Output from `runQC()`.
 #' @param project Default = NULL. Only write "pkpfpv" if using Pk/Pf/Pv pipeline.
 #'
@@ -112,25 +104,19 @@ classifyResults <- function(
   #############################################################################
   # Load files from package
   #############################################################################
-  antibody_model <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
-  antibody_model_excLF016 <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/random_forest_excludingLF016.rds")
-  threshold_values <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
-  excluding_LF016_threshold_values <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/excluding_LF016_threshold_values.csv")
+  antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
+  threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
 
   #############################################################################
   # Model-specific functions
   #############################################################################
 
   # Step 1. Reads in serostatus using the trained random forest
-
   antibody_model <- readRDS(antibody_model) # Model 1: All top 8
-  antibody_model_excLF016 <- readRDS(antibody_model_excLF016) # Model 2: w/o LF016
 
   # Step 2: Read in the random forest votes threshold values
   threshold_table <- if(algorithm_type == "antibody_model"){
     read.csv(threshold_values)
-  } else if (algorithm_type == "antibody_model_excLF016"){
-    read.csv(excluding_LF016_threshold_values)
   } else {
     stop("Invalid model provided")
   }
@@ -138,18 +124,8 @@ classifyResults <- function(
   # Step 3: Determine random forest votes threshold based on the algorithm_type string
   threshold <- if (sens_spec == "balanced") {
     threshold_table %>% filter(sens_spec == "max_sens_spec") %>% pull(threshold)
-  } else if (sens_spec == "85% sensitivity") {
-    threshold_table %>% filter(sens_spec == "85_sens") %>% pull(threshold)
-  } else if (sens_spec == "90% sensitivity") {
-    threshold_table %>% filter(sens_spec == "90_sens") %>% pull(threshold)
-  } else if (sens_spec == "95% sensitivity") {
-    threshold_table %>% filter(sens_spec == "95_sens") %>% pull(threshold)
-  } else if (sens_spec == "85% specificity") {
-    threshold_table %>% filter(sens_spec == "85_spec") %>% pull(threshold)
   } else if (sens_spec == "90% specificity") {
     threshold_table %>% filter(sens_spec == "90_spec") %>% pull(threshold)
-  } else if (sens_spec == "95% specificity") {
-    threshold_table %>% filter(sens_spec == "95_spec") %>% pull(threshold)
   } else {
     stop("Invalid sensitivity/specificity type provided.")
   }

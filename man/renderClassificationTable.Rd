@@ -9,9 +9,7 @@ renderClassificationTable(mfi_to_rau_output, algorithm_type, qc_results)
 \arguments{
 \item{mfi_to_rau_output}{Output from `MFItoRAU()` or `MFItoRAU_Adj()`.}
 
-\item{algorithm_type}{User-selected algorithm choice:
-- "antibody_model" (PvSeroTaT model; default), or
-- "antibody_model_excLF016" (PvSeroTat excluding LF016).}
+\item{algorithm_type}{Algorithm: "antibody_model" (PvSEM algorithm; default)}
 
 \item{qc_results}{Output from `runQC()`.}
 }

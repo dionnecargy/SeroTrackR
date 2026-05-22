@@ -317,7 +317,7 @@ MFItoRAU_Adj <- function(
   counts_QC_output              <- qc_results$getCountsQC_output
 
   # Reference Fit
-  refs <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/png_eth_stds.csv"))
+  refs <-read.csv(system.file("extdata", "png_eth_stds.csv", package = "SeroTrackR"))
 
   control = list(maxit = 10000, abstol = 1e-8, reltol = 1e-6)
   initial_solution = c(-1.0, 0.0, 10, 0.0, 0.0)
@@ -328,10 +328,18 @@ MFItoRAU_Adj <- function(
     dplyr::mutate(
       .keep = "none",
       eth_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$eth_mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$eth_mfi, .x$dilution, control)
+          )
+        )
       }),
       png_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$png_mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$png_mfi, .x$dilution, control)
+          )
+        )
       })
     )
 
@@ -351,7 +359,7 @@ MFItoRAU_Adj <- function(
     eth_qa_sc <- subset_data %>%
       dplyr::filter(type.letter == "S") %>%
       tidyr::pivot_longer(-c(Sample, Location, Plate, type.letter), names_to = "antigen", values_to = "mfi") %>%
-      dplyr::mutate(dilution = 2 ^ (-as.numeric(gsub( # 2 = dilution factor
+      dplyr::mutate(dilution = dilution_factor ^ (-as.numeric(gsub(
         "\\D", "", .data$`Sample`
       )) + 1))  %>%
       dplyr::group_by(.data$antigen) %>%
@@ -395,7 +403,11 @@ MFItoRAU_Adj <- function(
     # MODEL RESULTS AND PLOTS
     sc_fit <- eth_qa_sc %>%
       dplyr::mutate(.keep = "none", new_fit = purrr::map(data, ~ {
-        .fit_standard_curve(.x$mfi, .x$dilution, control)
+        suppressMessages(
+          suppressWarnings(
+            .fit_standard_curve(.x$mfi, .x$dilution, control)
+          )
+        )
       }))
 
     qa_converted <- dplyr::inner_join(sc_fit, eth_qa_sc) |>
@@ -816,8 +828,11 @@ MFItoRAU_Plasmo <- function(
   PfPv_Final[[1]] <- PfPv_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_loglog_Dilution", .x))
   PfPv_Final[[2]] <- PfPv_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_loglog_Dilution", .x))
 
-  PfPv_Adj_Final[[1]] <- PfPv_Adj_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x))
-  PfPv_Adj_Final[[2]] <- PfPv_Adj_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x))
+  PfPv_Adj_Final[[1]] <- PfPv_Adj_Final[[1]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x)) %>%
+    dplyr::mutate(across(contains("Adjloglog"), ~if_else(.x<1.95e-05, 1.95e-05, .x))) # catch any values below 1.95e-05 (S11 min)
+  PfPv_Adj_Final[[2]] <- PfPv_Adj_Final[[2]] %>% rename_with(~ gsub("_Dilution$", "_Adjloglog_Dilution", .x)) %>%
+    dplyr::mutate(across(contains("Adjloglog"), ~if_else(.x<1.95e-05, 1.95e-05, .x)))# catch any values below 1.95e-05 (S11 min)
+
 
   # Join Dataframes Together
   pk_final_results            <- Pk_Final
@@ -831,10 +846,27 @@ MFItoRAU_Plasmo <- function(
   PkPfPv_Final_MFI_RAU <- PkPfPv_Final %>%
     dplyr::select(SampleID, Plate, ends_with("_MFI", ignore.case = FALSE), ends_with("_Dilution", ignore.case = FALSE))
 
+  # relabel antigen names from lab codes to proper antigen names
+  old_names <- c("EBP", "LF005", "LF010", "LF016", "MSP8", "RBP2b.P87", "PTEX150", "PvCSS")
+  new_names <- c("PvEBP", "Pv-fam-a", "PvMSP5", "PvMSP1-19",  "PvMSP8", "PvRBP2b", "PvPTEX150", "PvCSS")
+  name_lookup <- setNames(new_names, old_names)
+
+  names(pfpv_Adj_final_results) <- vapply(
+    names(pfpv_Adj_final_results),
+    function(col) {
+      for (old in names(name_lookup)) {
+        col <- sub(paste0("^", old), name_lookup[[old]], col)
+      }
+      col
+    },
+    character(1)
+  )
+
   # Add panel
   if(panel == "panel1"){
-    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
-
+    panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
+    panel <- panel %>%
+      dplyr::mutate(Antigens = dplyr::recode(Antigens, !!!name_lookup))
   } else {
     panel <- read.csv(panel)
   }
@@ -860,7 +892,14 @@ MFItoRAU_Plasmo <- function(
 
   PkPfPv_long_mfi_rau <- suppressWarnings(
     PkPfPv_long_mfi %>%
-      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species"))
+      right_join(PkPfPv_long_rau, by = c("SampleID", "Plate", "Antigens", "Species")) %>%
+      dplyr::mutate(Species = case_when(
+        is.na(Species) & stringr::str_detect(Antigens, "Pv") ~ "Pv",
+        is.na(Species) & stringr::str_detect(Antigens, "Pf") ~ "Pf",
+        is.na(Species) & stringr::str_detect(Antigens, "Pk") ~ "Pk",
+        T ~ Species
+
+      ))
   ) %>%
     dplyr::select(SampleID, Plate, Antigens, Species, MFI, RAU, RAU_Method)
 

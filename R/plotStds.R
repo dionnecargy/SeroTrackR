@@ -73,37 +73,46 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
       dplyr::filter(Location==location_1) %>%
       mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
 
-    ggplot2::ggplot() +
-      ggplot2::geom_point(data = wehi_stds, aes(x = Sample, y = MFI), colour = "grey", alpha = 0.25) +
-      ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
-                                             text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
-      ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-      ggplot2::labs(
-        x = "Standard Curve",
-        y = "MFI",
-        title = experiment_name
-      ) +
-      ggplot2::facet_wrap(~Antigen) +
-      ggplot2::theme_bw() +
-      ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    suppressMessages(
+      suppressWarnings(
+        ggplot2::ggplot() +
+          ggplot2::geom_point(data = wehi_stds, aes(x = Sample, y = MFI), colour = "grey", alpha = 0.25) +
+          ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
+                                                 text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
+          ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+          ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+          ggplot2::labs(
+            x = "Standard Curve",
+            y = "MFI",
+            title = experiment_name
+          ) +
+          ggplot2::facet_wrap(~Antigen) +
+          ggplot2::theme_bw() +
+          ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      )
+    )
 
   } else if (std_point == 5){
 
     stds_1 <- stds_1 %>% dplyr::mutate(Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5")))
-    ggplot2::ggplot() +
-      ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
-                                             text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
-      ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-      ggplot2::labs(
-        x = "Standard Curve",
-        y = "MFI",
-        title = experiment_name
-      ) +
-      ggplot2::facet_wrap(~Antigen) +
-      ggplot2::theme_bw() +
-      ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+    suppressMessages(
+      suppressWarnings(
+        ggplot2::ggplot() +
+        ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate,
+                                               text = paste("Sample:", Sample, "<br>MFI:", MFI, "<br>Plate:", Plate))) +
+        ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+        ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+        ggplot2::labs(
+          x = "Standard Curve",
+          y = "MFI",
+          title = experiment_name
+        ) +
+        ggplot2::facet_wrap(~Antigen) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      )
+    )
 
   } else {
     message("Please write a standard point curve.")
@@ -170,18 +179,23 @@ plotStds_all <- function(sero_data, experiment_name){
       MFI = as.numeric(MFI)
     )
 
-  ggplot() +
-    ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-    ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-    ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-    ggplot2::labs(
-      x = "Standard Curve",
-      y = "MFI",
-      title = experiment_name
-    ) +
-    ggplot2::facet_wrap(~Antigen) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  suppressMessages(
+    suppressWarnings(
+      ggplot() +
+      ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+      ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+      ggplot2::labs(
+        x = "Standard Curve",
+        y = "MFI",
+        title = experiment_name
+      ) +
+      ggplot2::facet_wrap(~Antigen) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    )
+  )
 
 }
 #' Plot Raw Median Fluorescent Intensity of Pk/Pf/Pv Standard Curve Data
@@ -241,13 +255,14 @@ plotStds_PkPfPv <- function(
     stop("Package 'zoo' is required for plotStds_PkPfPv(). Please install it.", call. = FALSE)
   }
 
-  #panel 1 is default - (future change to extdata?) else provides option for user specified option
-  if(panel == "panel1"){
-    panel <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
+  #panel 1 is default
 
+  if(panel == "panel1"){
+    panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
   } else {
     panel <- read.csv(panel)
   }
+
 
   master_file <- sero_data
   stds <- master_file$stds
@@ -276,7 +291,7 @@ plotStds_PkPfPv <- function(
   # Code to keep
   ################################################################
   dplyr::select(-Location) %>%
-    tidyr::separate(Sample, c("Sample", "Beads"), sep = " ") %>%
+    tidyr::separate(Sample, c("Sample", "Beads"), sep = "[ -]") %>%
     tidyr::pivot_longer(-c(Sample, Beads, Plate), names_to = "Antigen", values_to = "MFI") %>%
     dplyr::mutate(
       Plate = factor(Plate, levels = unique(Plate[order(as.numeric(str_extract(Plate, "\\d+")))])), # reorder by plate number
@@ -286,6 +301,12 @@ plotStds_PkPfPv <- function(
       MFI = as.numeric(MFI)
     ) %>%
     dplyr::left_join(panel, by = c("Antigen" = "Antigens")) %>%
+    dplyr::mutate(Species = case_when(
+      is.na(Species) & stringr::str_detect(Antigen, "Pv") ~ "Pv",
+      is.na(Species) & stringr::str_detect(Antigen, "Pf") ~ "Pf",
+      is.na(Species) & stringr::str_detect(Antigen, "Pk") ~ "Pk",
+      T ~ Species
+    )) %>%
     dplyr::mutate(stds_to_keep = case_when(
       Species=="Pk" & Beads == "PK" ~ "keep",
       Species=="Pf" & Beads == "ETH" ~ "keep",
@@ -295,13 +316,18 @@ plotStds_PkPfPv <- function(
     dplyr::filter(stds_to_keep == "keep") %>%
     dplyr::select(-stds_to_keep)
 
-  ggplot() +
-    ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-    ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
-    ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
-    ggplot2::labs(x = "Standard Curve", y = "MFI", title = experiment_name) +
-    ggplot2::facet_wrap(~Antigen) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  suppressMessages(
+    suppressWarnings(
+      ggplot() +
+      ggplot2::geom_point(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+      ggplot2::geom_line(data = stds_1, aes(x = Sample, y = MFI, color = Plate, group = Plate)) +
+      ggplot2::scale_y_log10(breaks = c(0, 10, 100, 1000, 10000)) +
+      ggplot2::labs(x = "Standard Curve", y = "MFI", title = experiment_name) +
+      ggplot2::facet_wrap(~Antigen) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    )
+  )
 
 }

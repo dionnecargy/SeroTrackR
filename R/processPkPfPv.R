@@ -87,10 +87,10 @@ processPkPfPv <- function(sero_data, plate_list, panel = "panel1"){
 
   # Extract Reference IDs for Antigens
   if(panel == "panel1"){
-    PkPfPv_Panel_1 <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PkPfPv_Panel_1.csv"))
-    pv_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)
-    pf_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
-    pk_antigens <- PkPfPv_Panel_1 %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
+    panel <-read.csv(system.file("extdata", "PkPfPv_Panel_1.csv", package = "SeroTrackR"))
+    pv_antigens <- panel %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)
+    pf_antigens <- panel %>% dplyr::filter(Species == "Pf") %>% dplyr::pull(Antigens)
+    pk_antigens <- panel %>% dplyr::filter(Species == "Pk") %>% dplyr::pull(Antigens)
   } else {
     panel <- read.csv(panel)
     pv_antigens <- panel %>% dplyr::filter(Species == "Pv") %>% dplyr::pull(Antigens)

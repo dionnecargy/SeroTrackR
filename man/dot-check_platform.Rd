@@ -4,12 +4,14 @@
 \alias{.check_platform}
 \title{Check Platform}
 \usage{
-.check_platform(raw_data, platform)
+.check_platform(raw_data, platform, file_name)
 }
 \arguments{
 \item{raw_data}{String with the raw data path.}
 
-\item{platform}{"magpix" or "bioplex".}
+\item{platform}{"magpix", "bioplex" or "intelliflex".}
+
+\item{file_name}{String with the raw data filename (for error messaging).}
 }
 \value{
 TRUE: if platform == file format, ERROR message when platform does
@@ -21,7 +23,7 @@ with the correct format as expected. Will report error if NOT aligned.
 }
 \examples{
 your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
-.check_platform(raw_data = your_raw_data, platform = "magpix")
+.check_platform(raw_data = your_raw_data, platform = "magpix", file_name = basename(your_raw_data))
 }
 \author{
 Dionne Argyropoulos
