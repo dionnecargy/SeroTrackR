@@ -6,22 +6,19 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   sync-cran:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
       - name: Checkout CRAN branch
         run: git checkout CRAN
@@ -29,20 +26,13 @@ jobs:
       - name: Merge master
         run: git merge master --no-ff -m "Auto-sync from master"
 
-      - name: Remove pkgdown-related files and directories
+      - name: Remove pkgdown-related files
         run: |
-          rm -rf docs/
-          rm -rf inst/hex/
-          rm -rf inst/tutorials/
-          rm -f _pkgdown.yml
-          rm -f .github/workflows/pkgdown.yaml
+          rm -rf docs/ inst/hex/ inst/tutorials/ _pkgdown.yml .github/workflows/pkgdown.yaml
           git add -A
 
       - name: Update .Rbuildignore
         run: |
-          grep -v "^docs$\|^inst/hex$\|^inst/tutorials$\|^_pkgdown.yml$\|^\.github/workflows/pkgdown\.yaml$" .Rbuildignore > .Rbuildignore.tmp || true
-          mv .Rbuildignore.tmp .Rbuildignore
-
           cat >> .Rbuildignore << 'EOF'
           ^docs$
           ^inst/hex$
@@ -50,12 +40,9 @@ jobs:
           ^_pkgdown.yml$
           ^\.github/workflows/pkgdown\.yaml$
           EOF
-
           git add .Rbuildignore
 
-      - name: Commit changes
+      - name: Commit and push
         run: |
-          git commit -m "CRAN: Remove pkgdown files and directories" || echo "No changes to commit"
-
-      - name: Push to CRAN branch
-        run: git push origin CRAN
+          git commit -m "CRAN: Remove pkgdown files" || echo "No changes"
+          git push origin CRAN
