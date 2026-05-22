@@ -68,7 +68,7 @@ plotStds <- function(sero_data, std_point = 10, location, experiment_name){
     stds_1 <- stds_1 %>% dplyr::mutate(Sample = factor(Sample, c("S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10")))
 
     location_1 <- ifelse(location == "ETH", "ETH", "PNG")
-    wehi_stds <- read.csv(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/all_stds_MFI.csv"))
+    wehi_stds <- read.csv(system.file("extdata", "all_stds_MFI.csv", package = "SeroTrackR"))
     wehi_stds <- wehi_stds %>%
       dplyr::filter(Location==location_1) %>%
       mutate(Antigen = dplyr::recode(Antigen, !!!name_lookup))
