@@ -108,29 +108,21 @@ classifyResults <- function(
   local_file <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
 
   # Check if this is a CRAN submission
+  # Step 1. Reads in serostatus using the trained random forest
   if (file.exists(local_file)) {
     # Master version: use local file
-    antibody_model    <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
-    threshold_values  <- system.file("extdata", "threshold_values.csv", package = "SeroTrackR")
+    antibody_model    <- readRDS(system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR"))
   } else {
     # CRAN: use URL (requires internet)
-    antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
-    threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
+    antibody_model    <- readRDS(url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds"))
   }
+
+  # Step 2: Read in the random forest votes threshold values
+  threshold_table   <- read.csv(system.file("extdata", "threshold_values.csv", package = "SeroTrackR"))
 
   #############################################################################
   # Model-specific functions
   #############################################################################
-
-  # Step 1. Reads in serostatus using the trained random forest
-  antibody_model <- readRDS(antibody_model) # Model 1: All top 8
-
-  # Step 2: Read in the random forest votes threshold values
-  threshold_table <- if(algorithm_type == "antibody_model"){
-    read.csv(threshold_values)
-  } else {
-    stop("Invalid model provided")
-  }
 
   # Step 3: Determine random forest votes threshold based on the algorithm_type string
   threshold <- if (sens_spec == "balanced") {
