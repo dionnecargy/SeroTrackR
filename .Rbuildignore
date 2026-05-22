@@ -19,3 +19,8 @@
 ^inst/tutorials$
 ^_pkgdown.yml$
 ^\.github/workflows/pkgdown\.yaml$
+^docs$
+^inst/hex$
+^inst/tutorials$
+^_pkgdown.yml$
+^\.github/workflows/pkgdown\.yaml$
