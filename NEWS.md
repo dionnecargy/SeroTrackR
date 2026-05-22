@@ -1,3 +1,5 @@
+# SeroTrackR 1.1.0
+
 # SeroTrackR 1.0.1
 
 * Updated `readSeroData()` error messaging for `.check_platform()`
