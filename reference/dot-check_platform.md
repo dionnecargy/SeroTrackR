@@ -7,7 +7,7 @@ aligned.
 ## Usage
 
 ``` r
-.check_platform(raw_data, platform)
+.check_platform(raw_data, platform, file_name)
 ```
 
 ## Arguments
@@ -18,7 +18,11 @@ aligned.
 
 - platform:
 
-  "magpix" or "bioplex".
+  "magpix", "bioplex" or "intelliflex".
+
+- file_name:
+
+  String with the raw data filename (for error messaging).
 
 ## Value
 
@@ -33,6 +37,6 @@ Dionne Argyropoulos
 
 ``` r
 your_raw_data <- system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR")
-.check_platform(raw_data = your_raw_data, platform = "magpix")
+.check_platform(raw_data = your_raw_data, platform = "magpix", file_name = basename(your_raw_data))
 #> [1] TRUE
 ```

@@ -16,3 +16,7 @@ Useful links:
 ## Author
 
 **Maintainer**: Dionne Argyropoulos <argyropoulos.d@wehi.edu.au>
+
+Authors:
+
+- Dionne Argyropoulos <argyropoulos.d@wehi.edu.au>

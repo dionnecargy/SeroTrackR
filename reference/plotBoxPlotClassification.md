@@ -86,9 +86,12 @@ all_classifications <- purrr::map_dfr(sens_spec_all, ~{
   as.data.frame() |>
   dplyr::mutate(sens_spec = .x)
 })
+#> Error in map(.x, .f, ...): ℹ In index: 2.
+#> Caused by error in `classifyResults()`:
+#> ! Invalid sensitivity/specificity type provided.
 
 # Plot classification for a single threshold
 plotBoxPlotClassification(all_classifications, "balanced")
-
+#> Error: object 'all_classifications' not found
 # }
 ```

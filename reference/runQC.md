@@ -30,6 +30,7 @@ Dionne Argyropoulos
 ## Examples
 
 ``` r
+
 # \donttest{
 # Example data supplied with the package
 your_raw_data <- c(

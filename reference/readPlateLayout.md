@@ -35,6 +35,7 @@ Shazia Ruybal-Pesántez, Dionne Argyropoulos
 ## Examples
 
 ``` r
+
 # Example input files
 your_raw_data <- c(
   system.file("extdata", "example_MAGPIX_plate1.csv", package = "SeroTrackR"),

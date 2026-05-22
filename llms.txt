@@ -8,6 +8,7 @@ data and manipulate data visualisations to the user’s interest. You can
 download the R package using the following:
 
 ``` r
+
 # Run once to configure your package to use and deploy SeroTrackR
 if(!require(devtools)){
   install.packages("devtools") # If not already installed
@@ -20,6 +21,7 @@ Alternatively you can download the package from the
 [remotes](https://remotes.r-lib.org) R package:
 
 ``` r
+
 if(!require(remotes)){
   install.packages("remotes") # If not already installed
 } 

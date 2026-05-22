@@ -7,6 +7,7 @@ package and perform any other subsequent analyses is the `tidyverse` R
 packages.
 
 ``` r
+
 install.packages("tidyverse")
 ```
 
@@ -14,6 +15,7 @@ Then once you have installed the tidyverse meta-package, then you load
 the library in as below:
 
 ``` r
+
 library(tidyverse)
 ```
 
@@ -30,6 +32,7 @@ If it does not prompt you automatically, or if you are using another
 platform to use R, then use the code below:
 
 ``` r
+
 setup <- function(){
   needed <- c(
     # Imports: Required 
@@ -82,6 +85,7 @@ files into a new folder called “data”. Then you can read in your data as
 follows:
 
 ``` r
+
 my_raw_data       <- "data/my_plate1.csv"
 my_plate_layout   <- "data/my_plate_layout.xlsx"
 ```
@@ -104,6 +108,7 @@ function to create a master plate layout file to then input into the
 other functions in the package!
 
 ``` r
+
 getPlateLayout("your/folder/with/plate/layouts/")
 ```
 
@@ -127,18 +132,21 @@ my_R_project/
 you would write:
 
 ``` r
+
 getPlateLayout("data/")
 ```
 
 you could ALSO write:
 
 ``` r
+
 getPlateLayout()
 ```
 
 OR:
 
 ``` r
+
 getPlateLayout(folder_path = c("plate_layout_1.xlsx", "plate_layout_2.xlsx", "plate_layout_3.xlsx"))
 ```
 
@@ -157,6 +165,7 @@ files in it. But the same idea can apply to
 Using a reproducible example:
 
 ``` r
+
 library(SeroTrackR)
 library(tidyverse)
 
@@ -170,6 +179,7 @@ all_plate_layout <- system.file("extdata", "example_platelayout_1.xlsx", package
 For your data:
 
 ``` r
+
 bioplex_raw_plates <- c(
   "data/example_BioPlex_plate1.xlsx", 
   "data/example_BioPlex_plate2.xlsx"
@@ -182,18 +192,21 @@ all_plate_layout <- "data/example_platelayout_1.xlsx"
 Using a reproducible example:
 
 ``` r
+
 magpix_raw_plate     <- system.file("extdata", "example_MAGPIX_plate3.csv", package = "SeroTrackR")
 ```
 
 For your data:
 
 ``` r
+
 magpix_raw_plate      <- "data/example_MAGPIX_plate3.csv"
 ```
 
 **Read the serological data files in**:
 
 ``` r
+
 # Serological data
 bioplex_sero_data <- readSeroData(
   raw_data = bioplex_raw_plates,
@@ -209,6 +222,7 @@ magpix_sero_data <- readSeroData(
 **Merge the files together**:
 
 ``` r
+
 sero_data_merged <- NULL
 # data_raw 
 sero_data_merged$data_raw <- bioplex_sero_data$data_raw %>% 
@@ -238,6 +252,7 @@ sero_data_merged$run <- bioplex_sero_data$run %>%
 **Continue the rest of the pipeline**:
 
 ``` r
+
 plate_list_all  <- readPlateLayout(
   plate_layout = all_plate_layout, 
   sero_data = sero_data_merged

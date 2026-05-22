@@ -1,12 +1,21 @@
 # Changelog
 
+## SeroTrackR 1.0.1
+
+- Updated
+  [`readSeroData()`](https://dionnecargy.github.io/SeroTrackR/reference/readSeroData.md)
+  error messaging for
+  [`.check_platform()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-check_platform.md)
+- Removed algorithm without PvMSP1-19 as it is no longer necessary
+- Kept only balanced and 90% specificity threshold options for algorithm
+
 ## SeroTrackR 1.0.0
 
 CRAN release: 2026-03-26
 
-- runQC() aims to streamline all the quality control steps into one
-  function
-- “maximised”” threshold in the Pv classification algorithm has been
+- [`runQC()`](https://dionnecargy.github.io/SeroTrackR/reference/runQC.md)
+  aims to streamline all the quality control steps into one function
+- “maximised” threshold in the Pv classification algorithm has been
   relabeled as “balanced”
 - Incorporation of standard curve type: 5-point or 10-point for any MFI
   to RAU conversion
@@ -15,17 +24,20 @@ CRAN release: 2026-03-26
 
 ## SeroTrackR 0.5.1
 
-- Updated `readSeroData` to include `version` parameter accounting for
-  version 4.2 and 4.3 of the xPONENT software in MAGPIX Luminex
-  machines.
+- Updated
+  [`readSeroData()`](https://dionnecargy.github.io/SeroTrackR/reference/readSeroData.md)
+  to include `version` parameter accounting for version 4.2 and 4.3 of
+  the xPONENT software in MAGPIX Luminex machines.
 
 ## SeroTrackR 0.5.0
 
 - Initial CRAN submission.
 - First publication of pkgdown.
 - Created hex sticker.
-- Created `getPlateLayout` function.
-- Updated `renderQCreport` to save path specified by user.
+- Created
+  [`getPlateLayout()`](https://dionnecargy.github.io/SeroTrackR/reference/getPlateLayout.md)
+  function.
+- Updated `renderQCreport()` to save path specified by user.
 - Updated package dependencies.
 - Added PvLDH analysis pipeline.
 - Clearer MFI to RAU converion for pk/pf/pv analysis pipeline.
@@ -40,8 +52,10 @@ CRAN release: 2026-03-26
 ## SeroTrackR 0.3.0
 
 - Improved bioplex import functionality.
-- Used “`all_of`” or “`any_of`” in
-  [`dplyr::select`](https://dplyr.tidyverse.org/reference/select.html).
+- Used
+  “[`all_of()`](https://tidyselect.r-lib.org/reference/all_of.html)” or
+  “[`any_of()`](https://tidyselect.r-lib.org/reference/all_of.html)” in
+  [`dplyr::select()`](https://dplyr.tidyverse.org/reference/select.html).
 
 ## SeroTrackR 0.2.0
 

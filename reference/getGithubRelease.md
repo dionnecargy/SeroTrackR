@@ -31,6 +31,7 @@ Dionne Argyropoulos
 ## Examples
 
 ``` r
+
 getGithubRelease(
  repo_owner = "dionnecargy",
  repo_name = "SeroTrackR"

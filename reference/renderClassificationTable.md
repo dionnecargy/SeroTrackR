@@ -17,8 +17,7 @@ renderClassificationTable(mfi_to_rau_output, algorithm_type, qc_results)
 
 - algorithm_type:
 
-  User-selected algorithm choice: - "antibody_model" (PvSeroTaT model;
-  default), or - "antibody_model_excLF016" (PvSeroTat excluding LF016).
+  Algorithm: "antibody_model" (PvSEM algorithm; default)
 
 - qc_results:
 
@@ -72,17 +71,12 @@ renderClassificationTable(
   algorithm_type = "antibody_model",
   qc_results = qc_results
 )
-#> # A tibble: 7 × 3
-#> # Groups:   Sensitivity/Specificity [7]
+#> # A tibble: 2 × 3
+#> # Groups:   Sensitivity/Specificity [2]
 #>   `Sensitivity/Specificity` Seropositive Seronegative
 #>   <chr>                            <int>        <int>
-#> 1 85% sensitivity                    158           10
-#> 2 85% specificity                    125           43
-#> 3 90% sensitivity                    160            8
-#> 4 90% specificity                     92           76
-#> 5 95% sensitivity                    160            8
-#> 6 95% specificity                     65          103
-#> 7 balanced                           150           18
+#> 1 90% specificity                     92           76
+#> 2 balanced                           150           18
 
 # }
 ```
