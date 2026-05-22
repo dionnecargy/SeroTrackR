@@ -1,5 +1,7 @@
 # Changelog
 
+## SeroTrackR 1.1.0
+
 ## SeroTrackR 1.0.1
 
 - Updated
