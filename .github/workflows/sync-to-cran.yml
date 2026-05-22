@@ -1,0 +1,48 @@
+name: Sync to CRAN Branch
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  sync-cran:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout CRAN branch
+        run: git checkout CRAN
+
+      - name: Merge master
+        run: git merge master --no-ff -m "Auto-sync from master"
+
+      - name: Remove pkgdown-related files
+        run: |
+          rm -rf docs/ inst/hex/ inst/tutorials/ _pkgdown.yml .github/workflows/pkgdown.yaml
+          git add -A
+
+      - name: Update .Rbuildignore
+        run: |
+          cat >> .Rbuildignore << 'EOF'
+          ^docs$
+          ^inst/hex$
+          ^inst/tutorials$
+          ^_pkgdown.yml$
+          ^\.github/workflows/pkgdown\.yaml$
+          EOF
+          git add .Rbuildignore
+
+      - name: Commit and push
+        run: |
+          git commit -m "CRAN: Remove pkgdown files" || echo "No changes"
+          git push origin CRAN
