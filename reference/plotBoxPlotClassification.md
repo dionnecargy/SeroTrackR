@@ -71,8 +71,7 @@ mfi_to_rau <- MFItoRAU_Adj(
 
 # Step 4: Define sens/spec thresholds
 sens_spec_all <- c(
-  "balanced", "85% sensitivity", "90% sensitivity", "95% sensitivity",
-  "85% specificity", "90% specificity", "95% specificity"
+  "balanced", "90% specificity"
 )
 
 # Step 5: Classify results across all thresholds
@@ -86,12 +85,9 @@ all_classifications <- purrr::map_dfr(sens_spec_all, ~{
   as.data.frame() |>
   dplyr::mutate(sens_spec = .x)
 })
-#> Error in map(.x, .f, ...): ℹ In index: 2.
-#> Caused by error in `classifyResults()`:
-#> ! Invalid sensitivity/specificity type provided.
 
 # Plot classification for a single threshold
 plotBoxPlotClassification(all_classifications, "balanced")
-#> Error: object 'all_classifications' not found
+
 # }
 ```

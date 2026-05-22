@@ -127,8 +127,7 @@ classification (ggplot).</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Step 4: Define sens/spec thresholds</span></span></span>
 <span class="r-in"><span><span class="va">sens_spec_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"balanced"</span>, <span class="st">"85% sensitivity"</span>, <span class="st">"90% sensitivity"</span>, <span class="st">"95% sensitivity"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"85% specificity"</span>, <span class="st">"90% specificity"</span>, <span class="st">"95% specificity"</span></span></span>
+<span class="r-in"><span>  <span class="st">"balanced"</span>, <span class="st">"90% specificity"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Step 5: Classify results across all thresholds</span></span></span>
@@ -142,13 +141,10 @@ classification (ggplot).</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sens_spec <span class="op">=</span> <span class="va">.x</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in map(.x, .f, ...):</span> <span style="color: #00BBBB;">ℹ</span> In index: 2.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `classifyResults()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Invalid sensitivity/specificity type provided.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot classification for a single threshold</span></span></span>
 <span class="r-in"><span><span class="fu">plotBoxPlotClassification</span><span class="op">(</span><span class="va">all_classifications</span>, <span class="st">"balanced"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'all_classifications' not found</span>
+<span class="r-plt img"><img src="plotBoxPlotClassification-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

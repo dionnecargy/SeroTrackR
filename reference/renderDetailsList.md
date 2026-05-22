@@ -44,9 +44,9 @@ if (requireNamespace("shiny.fluent", quietly = TRUE) &&
 }
 #> <div class="ms-Grid-row">
 #>   <div class="ms-Grid-col ms-sm12">
-#>     <div class="react-container" data-react-id="jowknpghmxkfrbzdnvsg">
+#>     <div class="react-container" data-react-id="npghmxkfrbzdnvsgovam">
 #>       <script class="react-data" type="application/json">{"type":"element","module":"@fluentui/react","name":"Stack","props":{"type":"object","value":{"tokens":{"type":"raw","value":{"childrenGap":10}},"horizontal":{"type":"raw","value":true},"children":{"type":"element","name":"div","props":{"type":"object","value":{"style":{"type":"raw","value":"max-height: 600px; overflow: auto; width: 100%;"},"children":{"type":"element","module":"@fluentui/react","name":"DetailsList","props":{"type":"raw","value":{"items":[{"Sample":"A","Value":10},{"Sample":"B","Value":20}],"columns":[{"fieldName":"Sample","name":"Sample"},{"fieldName":"Value","name":"Value"}],"constrainMode":0,"checkboxVisibility":2,"styles":{"root":{"width":"100%","minWidth":"fit-content","overflowX":"auto"}}}}}}}}}}}</script>
-#>       <script>jsmodule['@/shiny.react'].findAndRenderReactData('jowknpghmxkfrbzdnvsg')</script>
+#>       <script>jsmodule['@/shiny.react'].findAndRenderReactData('npghmxkfrbzdnvsgovam')</script>
 #>     </div>
 #>   </div>
 #> </div>
