@@ -26,7 +26,7 @@ jobs:
       - name: Checkout CRAN branch from remote
         run: git checkout -b CRAN origin/CRAN
 
-      - name: Merge master
+      - name: Merge master into CRAN
         run: git merge origin/master --no-ff -m "Auto-sync from master"
 
       - name: Remove pkgdown-related files
