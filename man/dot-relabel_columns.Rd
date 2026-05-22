@@ -36,6 +36,7 @@ if (
   df |>
     dplyr::slice((row1 + 1):(row2 - 1)) |>
     janitor::row_to_names(row_number = 1) |>
+    janitor::clean_names() |>
     dplyr::select(dplyr::where(~ !all(is.na(.x)))) |>
     dplyr::filter(dplyr::if_any(dplyr::everything(), ~ !is.na(.x))) |>
     dplyr::mutate(dplyr::across(everything(), ~ gsub("NaN", 0, .))) |>

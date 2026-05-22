@@ -16,7 +16,7 @@
 #'
 #' @export
 #'
-#' @author Dionne Argyropoulos, Shazia Ruybal-Pesántez
+#' @author Dionne Argyropoulos, Shazia Ruybal-Pesantez
 #'
 #' @examples
 #' # Example raw data files (MAGPIX platform)
@@ -81,8 +81,8 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
       stop(
         paste0(
           "Unsupported platform: '", platform, "'.\n",
-          "  ✓ Supported platforms are: 'magpix', 'bioplex', or 'intelliflex'.\n",
-          "  ℹ Please check your platform argument and try again."
+          "  Supported platforms are: 'magpix', 'bioplex', or 'intelliflex'.\n",
+          "  Please check your platform argument and try again."
         ),
         call. = FALSE
       )
@@ -142,9 +142,9 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     stop(
       paste0(
         "Platform mismatch for file '", file_name, "':\n",
-        "  ✗ You specified platform = 'magpix', but this file appears to be 'bioplex' or 'intelliflex'.\n",
-        "  ✓ Please try platform = 'bioplex' or platform = 'intelliflex'.\n",
-        "  ℹ MagPix files contain columns like 'xPONENT', 'Program', or 'row'."
+        "  You specified platform = 'magpix', but this file appears to be 'bioplex' or 'intelliflex'.\n",
+        "  Please try platform = 'bioplex' or platform = 'intelliflex'.\n",
+        "  MagPix files contain columns like 'xPONENT', 'Program', or 'row'."
       ),
       call. = FALSE
     )
@@ -155,9 +155,9 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     stop(
       paste0(
         "Platform mismatch for file '", file_name, "':\n",
-        "  ✗ You specified platform = 'bioplex', but this file appears to be 'magpix'.\n",
-        "  ✓ Please try platform = 'magpix'.\n",
-        "  ℹ Bioplex files do not contain 'xPONENT' or 'Program' columns."
+        "  You specified platform = 'bioplex', but this file appears to be 'magpix'.\n",
+        "  Please try platform = 'magpix'.\n",
+        "  Bioplex files do not contain 'xPONENT' or 'Program' columns."
       ),
       call. = FALSE
     )
@@ -168,9 +168,9 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     stop(
       paste0(
         "Platform mismatch for file '", file_name, "':\n",
-        "  ✗ You specified platform = 'intelliflex', but this file appears to be 'magpix'.\n",
-        "  ✓ Please try platform = 'magpix'.\n",
-        "  ℹ Intelliflex files have a different structure than Magpix files."
+        "  You specified platform = 'intelliflex', but this file appears to be 'magpix'.\n",
+        "  Please try platform = 'magpix'.\n",
+        "  Intelliflex files have a different structure than Magpix files."
       ),
       call. = FALSE
     )
@@ -189,6 +189,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
 #' @importFrom dplyr filter
+#' @importFrom utils read.csv2 count.fields
 #'
 #' @author Dionne Argyropoulos
 #'
@@ -251,6 +252,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
 #'   df |>
 #'     dplyr::slice((row1 + 1):(row2 - 1)) |>
 #'     janitor::row_to_names(row_number = 1) |>
+#'     janitor::clean_names() |>
 #'     dplyr::select(dplyr::where(~ !all(is.na(.x)))) |>
 #'     dplyr::filter(dplyr::if_any(dplyr::everything(), ~ !is.na(.x))) |>
 #'     dplyr::mutate(dplyr::across(everything(), ~ gsub("NaN", 0, .))) |>
