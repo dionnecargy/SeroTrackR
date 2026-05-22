@@ -2,8 +2,6 @@
 
 ## SeroTrackR 1.1.0
 
-## SeroTrackR 1.0.1
-
 - Updated
   [`readSeroData()`](https://dionnecargy.github.io/SeroTrackR/reference/readSeroData.md)
   error messaging for
