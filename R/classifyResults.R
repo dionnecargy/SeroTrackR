@@ -104,13 +104,12 @@ classifyResults <- function(
   #############################################################################
   # Load files from package
   #############################################################################
-  # Check if running in CRAN submission mode
-  # (only true during automated CRAN workflow)
-  is_cran_build <- Sys.getenv("CRAN_SUBMISSION") == "true"
+  # Check if local file exists
+  local_file <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
 
   # Check if this is a CRAN submission
-  if (Sys.getenv("CRAN_SUBMISSION") == "true") {
-    # CRAN version: use URL
+  if (file.exists(local_file)) {
+    # CRAN: use URL (requires internet)
     antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
     threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
   } else {
