@@ -52,8 +52,7 @@ mfi_to_rau <- MFItoRAU_Adj(
 
 # Step 4: Define sens/spec thresholds
 sens_spec_all <- c(
-  "balanced", "85\% sensitivity", "90\% sensitivity", "95\% sensitivity",
-  "85\% specificity", "90\% specificity", "95\% specificity"
+  "balanced", "90\% specificity"
 )
 
 # Step 5: Classify results across all thresholds
