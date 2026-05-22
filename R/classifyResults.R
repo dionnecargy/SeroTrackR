@@ -109,13 +109,13 @@ classifyResults <- function(
 
   # Check if this is a CRAN submission
   if (file.exists(local_file)) {
-    # CRAN: use URL (requires internet)
-    antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
-    threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
-  } else {
     # Master version: use local file
     antibody_model    <- system.file("extdata", "PvSeroTaTmodel.rds", package = "SeroTrackR")
     threshold_values  <- system.file("extdata", "threshold_values.csv", package = "SeroTrackR")
+  } else {
+    # CRAN: use URL (requires internet)
+    antibody_model    <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/PvSeroTaTmodel.rds")
+    threshold_values  <- url("https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/threshold_values.csv")
   }
 
   #############################################################################
