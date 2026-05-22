@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   sync-cran:
@@ -15,8 +16,9 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
       - name: Checkout CRAN branch
         run: git checkout CRAN
@@ -35,11 +37,9 @@ jobs:
 
       - name: Update .Rbuildignore
         run: |
-          # Remove duplicates and add exclusions
           grep -v "^docs$\|^inst/hex$\|^inst/tutorials$\|^_pkgdown.yml$\|^\.github/workflows/pkgdown\.yaml$" .Rbuildignore > .Rbuildignore.tmp || true
           mv .Rbuildignore.tmp .Rbuildignore
 
-          # Add CRAN exclusions
           cat >> .Rbuildignore << 'EOF'
           ^docs$
           ^inst/hex$
