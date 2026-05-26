@@ -145,7 +145,7 @@ MFItoRAU <- function(
       model   <- model_list[[i]]
       rng     <- range(model$data$dilution, na.rm = TRUE)
       newx    <- exp(seq(log(rng[1]), log(rng[2]), length.out = 100))
-      pred    <- as.numeric(predict(model, newdata = data.frame(dilution = newx)))
+      pred    <- suppressWarnings(as.numeric(predict(model, newdata = data.frame(dilution = newx))))
 
       model_results[[i]] <- data.frame(
         dilution = newx,
