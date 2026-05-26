@@ -1,3 +1,9 @@
+# SeroTrackR 1.1.1
+
+* Removed warning messaging for `MFItoRAU()`
+* Patched `.clean_luminex()` line 404 to be specifically for characters
+* Patched `.relabel_columns()`: changed PvRBP to PvRBP2b as error arose with PvRBP2a
+
 # SeroTrackR 1.1.0
 
 * Updated `readSeroData()` error messaging for `.check_platform()`

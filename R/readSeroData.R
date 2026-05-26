@@ -266,7 +266,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     stringr::str_detect(colnames(df), regex("(LF010|MSP5)", ignore_case = TRUE)) ~ "LF010",
     stringr::str_detect(colnames(df), regex("(LF016|PvMSP1-19|PvMSP1.19)", ignore_case = TRUE)) ~ "LF016",
     stringr::str_detect(colnames(df), regex("(MSP8|L34)", ignore_case = TRUE)) ~ "MSP8",
-    stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87|RBP2b|PvRBP)", ignore_case = TRUE)) ~ "RBP2b.P87",
+    stringr::str_detect(colnames(df), regex("(P87|RBP2b-P87|RBP2b|PvRBP2b)", ignore_case = TRUE)) ~ "RBP2b.P87",
     stringr::str_detect(colnames(df), regex("(PTEX|PTEX150|L18)", ignore_case = TRUE)) ~ "PTEX150",
     stringr::str_detect(colnames(df), regex("PkTRAMPCSS|PkTRAMP-CSS|PkPC", ignore_case = TRUE)) ~ "PkTRAMP-CSS",
     stringr::str_detect(colnames(df), regex("CSS", ignore_case = TRUE)) ~ "PvCSS",
@@ -401,7 +401,7 @@ readSeroData <- function(raw_data, platform, version = "4.2", raw_data_filenames
     # Filter to correct section of df
     dplyr::slice((row1 + 1):(row2 - 1)) %>%
     #make blank cells NA so they are dropped in next line
-    mutate(across(.cols = everything(), .fns = ~na_if(.x, ""))) %>%
+    mutate(across(.cols = where(is.character), .fns = ~na_if(.x, ""))) %>%
     # Drop all-NA columns
     dplyr::select(dplyr::where(~ !all(is.na(.x)))) %>%
     # Drop all-NA rows
