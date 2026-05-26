@@ -74,3 +74,5 @@
 ^inst/tutorials$
 ^_pkgdown.yml$
 ^\.github/workflows/pkgdown\.yaml$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
