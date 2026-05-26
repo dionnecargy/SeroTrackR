@@ -1,6 +1,19 @@
 # Changelog
 
+## SeroTrackR 1.1.1
+
+- Removed warning messaging for
+  [`MFItoRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU.md)
+- Patched
+  [`.clean_luminex()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-clean_luminex.md)
+  line 404 to be specifically for characters
+- Patched
+  [`.relabel_columns()`](https://dionnecargy.github.io/SeroTrackR/reference/dot-relabel_columns.md):
+  changed PvRBP to PvRBP2b as error arose with PvRBP2a
+
 ## SeroTrackR 1.1.0
+
+CRAN release: 2026-05-22
 
 - Updated
   [`readSeroData()`](https://dionnecargy.github.io/SeroTrackR/reference/readSeroData.md)
