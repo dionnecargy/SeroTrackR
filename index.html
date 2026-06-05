@@ -77,19 +77,15 @@
 </div>
 <p><a href="https://github.com/dionnecargy/SeroTrackR" class="external-link">SeroTrackR</a> is a tool to for serology data analysis and visualisation, and for the application of the machine learning algorithms implemented in the <code>{PvSeroApp}</code>. The R package is intended to give users more flexibility in assessing serology data and manipulate data visualisations to the user’s interest. You can download the R package using the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Run once to configure your package to use and deploy SeroTrackR</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> <span class="co"># If not already installed</span></span>
-<span><span class="op">}</span> </span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"dionnecargy/SeroTrackR"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"SeroTrackR"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dionnecargy/SeroTrackR" class="external-link">SeroTrackR</a></span><span class="op">)</span></span></code></pre></div>
-<p>Alternatively you can download the package from the <a href="https://remotes.r-lib.org" class="external-link">remotes</a> R package:</p>
+<p>Alternatively you can download the package from the <a href="https://pak.r-lib.org/" class="external-link">pak</a> R package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> <span class="co"># If not already installed</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://pak.r-lib.org/" class="external-link">pak</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span> <span class="co"># If not already installed</span></span>
 <span><span class="op">}</span> </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"dionnecargy/SeroTrackR"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"dionnecargy/SeroTrackR"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dionnecargy/SeroTrackR" class="external-link">SeroTrackR</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="tutorials">Tutorials<a class="anchor" aria-label="anchor" href="#tutorials"></a>
 </h2>
@@ -129,8 +125,13 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://dionnecargy.github.io/" class="external-link">Dionne Argyropoulos</a> <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Dionne Argyropoulos, PhD <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-8068-0215" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Eamon Conway, PhD <br><small class="roles"> Author </small>   </li>
+<li>Caitlin Bourke, PhD <br><small class="roles"> Author </small>   </li>
+<li>Connie Li-Wai-Suen, PhD <br><small class="roles"> Author </small>   </li>
+<li>Shazia Ruybal-Pesántez, PhD <br><small class="roles"> Author </small>   </li>
+<li>Lauren Smith, PhD <br><small class="roles"> Author </small>   </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
@@ -141,7 +142,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://dionnecargy.github.io/" class="external-link">Dionne Argyropoulos</a>.</p>
+  <p>Developed by Dionne Argyropoulos, PhD, Eamon Conway, PhD, Caitlin Bourke, PhD, Connie Li-Wai-Suen, PhD, Shazia Ruybal-Pesántez, PhD, Lauren Smith, PhD.</p>
 </div>
 
 <div class="pkgdown-footer-right">

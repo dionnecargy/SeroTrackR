@@ -15,8 +15,23 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Dionne Argyropoulos <argyropoulos.d@wehi.edu.au>
+**Maintainer**: Dionne Argyropoulos, PhD <argyropoulos.d@wehi.edu.au>
+([ORCID](https://orcid.org/0000-0002-8068-0215))
 
 Authors:
 
-- Dionne Argyropoulos <argyropoulos.d@wehi.edu.au>
+- Eamon Conway, PhD
+
+- Caitlin Bourke, PhD
+
+- Connie Li-Wai-Suen, PhD
+
+- Shazia Ruybal-Pesántez, PhD
+
+- Lauren Smith, PhD
+
+Other contributors:
+
+- Ivo Mueller, PhD \[contributor\]
+
+- Rhea Longley, DPhil \[contributor\]

@@ -2,6 +2,8 @@
 
 ## SeroTrackR 1.1.1
 
+CRAN release: 2026-05-27
+
 - Removed warning messaging for
   [`MFItoRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU.md)
 - Patched
