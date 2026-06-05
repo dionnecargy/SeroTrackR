@@ -8,22 +8,18 @@ title: "Getting Started"
 You can download the R package using the following: 
 
 ``` r
-# Run once to configure your package to use and deploy SeroTrackR
-if(!require(devtools)){
-  install.packages("devtools") # If not already installed
-} 
-devtools::install_github("dionnecargy/SeroTrackR")
+install.packages("SeroTrackR")
 library(SeroTrackR)
 ```
 
-Alternatively you can download the package from the `{remotes}` R package: 
+Alternatively you can download the package from the `{pak}` R package: 
 
 ``` r
-if(!require(remotes)){
-  install.packages("remotes") # If not already installed
+if(!require(pak)){
+  install.packages("pak") # If not already installed
 } 
-library(remotes)
-remotes::install_github("dionnecargy/SeroTrackR")
+pak::pak("dionnecargy/SeroTrackR")
+library(SeroTrackR)
 ```
 
 ## Tutorials

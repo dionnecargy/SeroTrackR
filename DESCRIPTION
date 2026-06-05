@@ -4,9 +4,46 @@ Title: Serology-Based Data Analysis and Visualization
 Version: 1.1.1
 Authors@R: c(
     person(
-      "Dionne", "Argyropoulos",
+      given = "Dionne", 
+      family = "Argyropoulos, PhD",
       email = "argyropoulos.d@wehi.edu.au",
+      comment = c(ORCID = "0000-0002-8068-0215"),
       role = c("aut", "cre")
+    ),
+    person(
+      given = "Eamon", 
+      family = "Conway, PhD",
+      role = "aut"
+    ),
+    person(
+      given = "Caitlin", 
+      family = "Bourke, PhD",
+      role = "aut"
+    ),
+    person(
+      given = "Connie", 
+      family = "Li-Wai-Suen, PhD",
+      role = "aut"
+    ),
+    person(
+      given = "Shazia",
+      family = "Ruybal-Pesántez, PhD",
+      role = "aut"
+    ),
+    person(
+      given = "Ivo",
+      family = "Mueller, PhD",
+      role = "ctb"
+    ),
+    person(
+      given = "Rhea",
+      family = "Longley, DPhil",
+      role = "ctb"
+    ),
+    person(
+      given = "Lauren",
+      family = "Smith, PhD",
+      role = "aut"
     )
   )
 Description: Data wrangling and cleaning, quality control checks and 
@@ -52,3 +89,4 @@ Suggests:
     zoo
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.3

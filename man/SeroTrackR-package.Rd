@@ -20,11 +20,21 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Dionne Argyropoulos \email{argyropoulos.d@wehi.edu.au}
+\strong{Maintainer}: Dionne Argyropoulos, PhD \email{argyropoulos.d@wehi.edu.au} (\href{https://orcid.org/0000-0002-8068-0215}{ORCID})
 
 Authors:
 \itemize{
-  \item Dionne Argyropoulos \email{argyropoulos.d@wehi.edu.au}
+  \item Eamon Conway, PhD
+  \item Caitlin Bourke, PhD
+  \item Connie Li-Wai-Suen, PhD
+  \item Shazia Ruybal-Pesántez, PhD
+  \item Lauren Smith, PhD
+}
+
+Other contributors:
+\itemize{
+  \item Ivo Mueller, PhD [contributor]
+  \item Rhea Longley, DPhil [contributor]
 }
 
 }

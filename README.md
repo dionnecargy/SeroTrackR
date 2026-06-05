@@ -9,7 +9,14 @@ This package contains helper functions relevant for *Plasmodium* spp. projects f
 ## How to install the package:
 
 ```{r}
-devtools::install_github("dionnecargy/SeroTrackR") # To download the package
+install.packages("SeroTrackR")
+library(SeroTrackR)
+```
+
+Alternatively, you can download the developmental version on GitHub. 
+
+```{r}
+pak::pak("dionnecargy/SeroTrackR") # To download the package
 library(SeroTrackR) # To load the package 
 ```
 
