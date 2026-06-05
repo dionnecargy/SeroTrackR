@@ -75,6 +75,8 @@ Imports:
     tidyselect,
     utils,
     workflows
+Remotes:
+    Appsilon/shiny.fluent
 URL: https://github.com/dionnecargy/SeroTrackR, https://dionnecargy.github.io/SeroTrackR/
 BugReports: https://github.com/dionnecargy/SeroTrackR/issues
 Suggests: 
