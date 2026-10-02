@@ -22,7 +22,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/dionnecargy/SeroTrackR/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/dionnecargy/SeroTrackR/blob/v1.1.1/DESCRIPTION)
 
 Argyropoulos, PhD D, Conway, PhD E, Bourke, PhD C, Li-Wai-Suen, PhD C,
 Ruybal-Pesántez, PhD S, Smith, PhD L (2026). *SeroTrackR: Serology-Based

@@ -36,5 +36,5 @@ getGithubRelease(
  repo_owner = "dionnecargy",
  repo_name = "SeroTrackR"
 )
-#> NULL
+#> [1] "v1.1.1"
 ```
