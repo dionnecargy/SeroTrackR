@@ -17,18 +17,20 @@ This package contains helper functions relevant for *Plasmodium* spp. projects f
 ## How to install the package:
 
 ```{r}
-install.packages("SeroTrackR")
+# Download the package available on the Comprehensive R Archive Network (CRAN)
+install.packages("SeroTrackR") 
+# Load the package in your R session 
 library(SeroTrackR)
 ```
 
 Alternatively, you can download the developmental version on GitHub. 
 
 ```{r}
-pak::pak("dionnecargy/SeroTrackR") # To download the package
+pak::pak("dionnecargy/SeroTrackR") 
 library(SeroTrackR) # To load the package 
 ```
 
-The GitHub (master) version also bundles the trained classification model file locally, whereas the CRAN version downloads it from this repository at runtime — so the CRAN version requires an internet connection the first time functions such as `classifyResults()` are called.
+The GitHub (master) version also bundles the trained classification model file locally, whereas the CRAN version downloads it from this repository at runtime, so the CRAN version requires an internet connection the first time functions such as `classifyResults()` are called.
 
 ### Dependencies
 
@@ -51,15 +53,15 @@ vignette("Pk_Pv_Pf_Serology_Tutorial")
 ### Branch structure
 
 - **`master`** is the development branch. All changes (code, documentation, large data files in `inst/extdata/`) are made here. Large files such as `PvSeroTaTmodel.rds` (~24 MB) exceed CRAN's 5 MB package size limit and live only on master.
-- **`CRAN`** is the submission branch. It is kept in sync with master automatically by the `Sync to CRAN Branch` GitHub Action on every push to master. On this branch, oversized files and pkgdown-related files (`docs/`, `inst/hex/`, `inst/tutorials/`, `_pkgdown.yml`) are removed, and the package code downloads the missing data at runtime from `https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/`.
+- **`CRAN`** is the submission branch. It is kept in sync with master automatically by the `Sync to CRAN Branch` GitHub Action on every push to master. On this branch, oversized files and pkgdown-related files (`docs/`, `inst/hex/`, `inst/tutorials/`, `_pkgdown.yml`) are removed, and the package code downloads the missing data at runtime from `https://raw.githubusercontent.com/dionnecargy/SeroTrackR/master/inst/extdata/`. Note that the author needs to consciously upload the R package to CRAN to make changes to the version available at the [SeroTrackR CRAN DOI](https://doi.org/10.32614/CRAN.package.SeroTrackR). 
 
 ### Maintainer checklist
 
-- **Do not commit directly to `CRAN`** unless resolving a merge conflict; all changes should flow from master.
-- **When adding a new large data file** (approaching CRAN's 5 MB limit) to `inst/extdata/`:
+[] **Do not commit directly to `CRAN`** unless resolving a merge conflict; all changes should flow from master.
+[] **When adding a new large data file** (approaching CRAN's 5 MB limit) to `inst/extdata/`:
   1. Add its removal to the "Remove pkgdown-related files and oversized data" step of [`.github/workflows/sync-to-cran.yml`](.github/workflows/sync-to-cran.yml) and a matching line to the `.Rbuildignore` step.
   2. Write the loading code to fall back to the raw GitHub URL when the local file is absent (see `classifyResults()` for the pattern).
-- **After pushing to master**, check the Actions tab to confirm both workflows succeeded:
+[] **After pushing to master**, check the Actions tab to confirm both workflows succeeded:
   - `Sync to CRAN Branch` merges master into CRAN and re-applies the deletions. If it fails on merge conflicts, resolve manually: `git checkout CRAN && git merge master`, fix conflicts, push.
   - `R-CMD-check-CRAN` then runs `R CMD check --as-cran` on the CRAN branch; its badge above shows the latest result.
-- **Before a CRAN submission**, confirm the CRAN branch version number matches master, that the `R-CMD-check-CRAN` badge is passing with no warnings, and that the runtime-fetched URLs still resolve.
+[] **Before a CRAN submission**, confirm the CRAN branch version number matches master, that the `R-CMD-check-CRAN` badge is passing with no warnings, and that the runtime-fetched URLs still resolve.
