@@ -32,9 +32,12 @@ jobs:
       - name: Merge master into CRAN
         run: git merge origin/master --no-ff -m "Auto-sync from master"
 
-      - name: Remove pkgdown-related files
+      - name: Remove pkgdown-related files and oversized data
         run: |
           rm -rf docs/ inst/hex/ inst/tutorials/ _pkgdown.yml .github/workflows/pkgdown.yaml
+          # Exceeds CRAN's 5 MB size limit; package code downloads it from
+          # master at runtime when the local file is absent
+          rm -f inst/extdata/PvSeroTaTmodel.rds
           git add -A
 
       - name: Update .Rbuildignore
@@ -45,6 +48,7 @@ jobs:
           ^inst/tutorials$
           ^_pkgdown.yml$
           ^\.github/workflows/pkgdown\.yaml$
+          ^inst/extdata/PvSeroTaTmodel\.rds$
           EOF
           git add .Rbuildignore
 
