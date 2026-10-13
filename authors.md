@@ -22,7 +22,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/dionnecargy/SeroTrackR/blob/HEAD/inst/CITATION)
+[`inst/CITATION`](https://github.com/dionnecargy/SeroTrackR/blob/master/inst/CITATION)
 
 Argyropoulos D, Conway E, Bourke C, Li-Wai-Suen C, Ruybal-Pesántez S,
 Smith L, Mueller I, Longley R (2026). “SeroTrackR: An R Package for
