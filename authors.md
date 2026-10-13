@@ -22,17 +22,34 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/dionnecargy/SeroTrackR/blob/master/DESCRIPTION)
+[`inst/CITATION`](https://github.com/dionnecargy/SeroTrackR/blob/HEAD/inst/CITATION)
 
-Argyropoulos, PhD D, Conway, PhD E, Bourke, PhD C, Li-Wai-Suen, PhD C,
-Ruybal-Pesántez, PhD S, Smith, PhD L (2026). *SeroTrackR: Serology-Based
-Data Analysis and Visualization*. R package version 1.1.1,
-<https://github.com/dionnecargy/SeroTrackR>.
+Argyropoulos D, Conway E, Bourke C, Li-Wai-Suen C, Ruybal-Pesántez S,
+Smith L, Mueller I, Longley R (2026). “SeroTrackR: An R Package for
+Serological Data Analysis, Visualisation and Machine Learning
+Classification.” *VeriXiv*, **3**, 313.
+<https://verixiv.org/articles/3-313/v1>.
+
+    @Article{,
+      title = {SeroTrackR: An R Package for Serological Data Analysis, Visualisation and Machine Learning Classification},
+      author = {Dionne Argyropoulos and Eamon Conway and Caitlin Bourke and Connie Li-Wai-Suen and Shazia Ruybal-Pesántez and Lauren Smith and Ivo Mueller and Rhea Longley},
+      journal = {VeriXiv},
+      year = {2026},
+      volume = {3},
+      pages = {313},
+      url = {https://verixiv.org/articles/3-313/v1},
+    }
+
+Argyropoulos D, Conway E, Bourke C, Li-Wai-Suen C, Ruybal-Pesántez S,
+Smith L, Mueller I, Longley R (2026). *SeroTrackR: Serology-Based Data
+Analysis and Visualization*.
+[doi:10.32614/CRAN.package.SeroTrackR](https://doi.org/10.32614/CRAN.package.SeroTrackR).
+<https://CRAN.R-project.org/package=SeroTrackR>.
 
     @Manual{,
       title = {SeroTrackR: Serology-Based Data Analysis and Visualization},
-      author = {Dionne {Argyropoulos, PhD} and Eamon {Conway, PhD} and Caitlin {Bourke, PhD} and Connie {Li-Wai-Suen, PhD} and Shazia {Ruybal-Pesántez, PhD} and Lauren {Smith, PhD}},
+      author = {Dionne Argyropoulos and Eamon Conway and Caitlin Bourke and Connie Li-Wai-Suen and Shazia Ruybal-Pesántez and Lauren Smith and Ivo Mueller and Rhea Longley},
       year = {2026},
-      note = {R package version 1.1.1},
-      url = {https://github.com/dionnecargy/SeroTrackR},
+      doi = {10.32614/CRAN.package.SeroTrackR},
+      url = {https://CRAN.R-project.org/package=SeroTrackR},
     }
