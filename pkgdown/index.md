@@ -4,6 +4,7 @@ title: "Getting Started"
 
 # SeroTrackR 
 
+
 `{SeroTrackR}` is a tool to for serology data analysis and visualisation, and for the application of the machine learning algorithms implemented in the `{PvSeroApp}`. The R package is intended to give users more flexibility in assessing serology data and manipulate data visualisations to the user's interest. 
 You can download the R package using the following: 
 
@@ -24,8 +25,9 @@ library(SeroTrackR)
 
 ## Tutorials
 
-- [PvSeroApp in R Tutorial](articles/02_PvSeroApp_R_Tutorial.html)
-- [Pk/Pv/Pf Serology R Tutorial](articles/03_Pk_Pv_Pf_Serology_Tutorial.html)
-- [PvLDH Tutorial](articles/04_PvLDH_Tutorial.html)
-- [FAQs](articles/05_FAQs.html)
+- [Before You Begin](articles/setup.html)
+- [PvSeroApp in R Tutorial](articles/PvSeroApp_R_Tutorial.html)
+- [PvLDH Tutorial](articles/PvLDH_Tutorial.html)
+- [Pk/Pv/Pf Serology Tutorial](articles/Pk_Pv_Pf_Serology_Tutorial.html)
+- [FAQs](articles/FAQs.html)
 

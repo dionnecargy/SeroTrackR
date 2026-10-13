@@ -38,7 +38,13 @@ Package dependencies are installed automatically by `install.packages()` or `pak
 
 ## How can I use the package?
 
-Please see the [tutorial](https://dionnecargy.github.io/SeroTrackR/) or see the vignettes inside the package by running the following commands: 
+Please see a comprehensive [ebook](https://vispa-malaria.github.io/sero-analysis/) for detailed steps to use the R package as intended for the fit-for-purpose tool described in [Argyropoulos et al. 2026 VeriXiv](https://verixiv.org/articles/3-313/v1 and for pathogen-agnostic uses. 
+
+Additionally, there is a [`pkgdown` website](https://dionnecargy.github.io/SeroTrackR/) that provides a graphical user interface to view the functions and vignettes within the `SeroTrackR` package.
+
+<!-- TODO: create a pathogen-agnostic tutorial vignette and add it to the pkgdown articles -->
+
+You can also see the vignettes inside `SeroTrackR` by running the following commands: 
 
 ```{r}
 browseVignettes("SeroTrackR") 

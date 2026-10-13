@@ -14,6 +14,37 @@ template:
     type: image/x-icon
 development:
   mode: auto
+home:
+  sidebar:
+    structure:
+    - status
+    - links
+    - license
+    - citation
+    - authors
+    components:
+      status:
+        title: Status
+        text: |
+          [![DOI](https://zenodo.org/badge/1016494729.svg)](https://doi.org/10.5281/zenodo.23095199)
+          [![CRAN status](https://www.r-pkg.org/badges/version/SeroTrackR)](https://CRAN.R-project.org/package=SeroTrackR)
+          [![R-CMD-check-CRAN](https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml/badge.svg)](https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml)
+          [![CRAN downloads per month](https://cranlogs.r-pkg.org/badges/SeroTrackR)](https://CRAN.R-project.org/package=SeroTrackR)
+          [![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/SeroTrackR)](https://CRAN.R-project.org/package=SeroTrackR)
+articles:
+- title: Getting started
+  contents:
+  - setup
+- title: Fit-for-purpose tool
+  contents:
+  - PvSeroApp_R_Tutorial
+- title: Malaria-specific tools
+  contents:
+  - PvLDH_Tutorial
+  - Pk_Pv_Pf_Serology_Tutorial
+- title: Other
+  contents:
+  - FAQs
 navbar:
   structure:
     left:

@@ -1,0 +1,41 @@
+citHeader("To cite SeroTrackR in publications, please use:")
+
+bibentry(
+  bibtype = "Article",
+  title = "SeroTrackR: An R Package for Serological Data Analysis, Visualisation and Machine Learning Classification",
+  author = c(
+    person("Dionne", "Argyropoulos"),
+    person("Eamon", "Conway"),
+    person("Caitlin", "Bourke"),
+    person("Connie", "Li-Wai-Suen"),
+    person("Shazia", "Ruybal-Pes\u00e1ntez"),
+    person("Lauren", "Smith"),
+    person("Ivo", "Mueller"),
+    person("Rhea", "Longley")
+  ),
+  journal = "VeriXiv",
+  year = "2026",
+  volume = "3",
+  pages = "313",
+  url = "https://verixiv.org/articles/3-313/v1"
+)
+
+citFooter("To cite the SeroTrackR package itself, please use:")
+
+bibentry(
+  bibtype = "Manual",
+  title = "SeroTrackR: Serology-Based Data Analysis and Visualization",
+  author = c(
+    person("Dionne", "Argyropoulos"),
+    person("Eamon", "Conway"),
+    person("Caitlin", "Bourke"),
+    person("Connie", "Li-Wai-Suen"),
+    person("Shazia", "Ruybal-Pes\u00e1ntez"),
+    person("Lauren", "Smith"),
+    person("Ivo", "Mueller"),
+    person("Rhea", "Longley")
+  ),
+  year = "2026",
+  doi = "10.32614/CRAN.package.SeroTrackR",
+  url = "https://CRAN.R-project.org/package=SeroTrackR"
+)
