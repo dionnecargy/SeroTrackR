@@ -38,7 +38,25 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Getting started</h6></li>
+    <li><a class="dropdown-item" href="articles/setup.html">Before You Begin</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Fit-for-purpose tool</h6></li>
+    <li><a class="dropdown-item" href="articles/PvSeroApp_R_Tutorial.html">PvSeroApp in R Tutorial</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Malaria-specific tools</h6></li>
+    <li><a class="dropdown-item" href="articles/PvLDH_Tutorial.html">PvLDH Tutorial</a></li>
+    <li><a class="dropdown-item" href="articles/Pk_Pv_Pf_Serology_Tutorial.html">Pk/Pv/Pf Serology Tutorial</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
+    <li><a class="dropdown-item" href="articles/FAQs.html">FAQs</a></li>
+  </ul>
+</li>
+<li class="nav-item"><a class="external-link nav-link" href="https://vispa-malaria.github.io/sero-analysis/">Ebook</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -66,6 +84,9 @@
 <img src="logo.png" class="logo" alt=""><h1 id="serotrackr">SeroTrackR<a class="anchor" aria-label="anchor" href="#serotrackr"></a>
 </h1>
 </div>
+<blockquote>
+<p><strong>This site is the function reference</strong> — use it to look up functions, arguments, and vignettes. For a guided, end-to-end workflow (the comprehensive <em>guide</em>), see the <a href="https://vispa-malaria.github.io/sero-analysis/" class="external-link">ebook</a>.</p>
+</blockquote>
 <p><a href="https://github.com/dionnecargy/SeroTrackR" class="external-link">SeroTrackR</a> is a tool to for serology data analysis and visualisation, and for the application of the machine learning algorithms implemented in the <code>{PvSeroApp}</code>. The R package is intended to give users more flexibility in assessing serology data and manipulate data visualisations to the user’s interest. You can download the R package using the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"SeroTrackR"</span><span class="op">)</span></span>
@@ -92,7 +113,7 @@
   </main><aside class="col-md-3"><div class="status">
 <h2 data-toc-skip>Status</h2>
 <ul class="list-unstyled">
-<li><p><a href="https://doi.org/10.5281/zenodo.23095199" class="external-link"><img src="https://zenodo.org/badge/1016494729.svg" alt="DOI"></a> <a href="https://CRAN.R-project.org/package=SeroTrackR" class="external-link"><img src="https://www.r-pkg.org/badges/version/SeroTrackR" alt="CRAN status"></a> <a href="https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml" class="external-link"><img src="https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml/badge.svg" alt="R-CMD-check-CRAN"></a> <a href="https://CRAN.R-project.org/package=SeroTrackR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/SeroTrackR" alt="CRAN downloads per month"></a> <a href="https://CRAN.R-project.org/package=SeroTrackR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/SeroTrackR" alt="CRAN downloads total"></a></p></li>
+<li><p><a href="https://doi.org/10.12688/verixiv.3797.1" class="external-link"><img src="https://img.shields.io/badge/preprint-10.12688%2Fverixiv.3797.1-blue" alt="Preprint DOI"></a> <a href="https://CRAN.R-project.org/package=SeroTrackR" class="external-link"><img src="https://www.r-pkg.org/badges/version/SeroTrackR" alt="CRAN status"></a> <a href="https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml" class="external-link"><img src="https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml/badge.svg" alt="R-CMD-check-CRAN"></a> <a href="https://CRAN.R-project.org/package=SeroTrackR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/SeroTrackR" alt="CRAN downloads per month"></a> <a href="https://CRAN.R-project.org/package=SeroTrackR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/SeroTrackR" alt="CRAN downloads total"></a></p></li>
 </ul>
 </div>
 

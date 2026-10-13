@@ -25,18 +25,21 @@ Source:
 [`inst/CITATION`](https://github.com/dionnecargy/SeroTrackR/blob/master/inst/CITATION)
 
 Argyropoulos D, Conway E, Bourke C, Li-Wai-Suen C, Ruybal-Pesántez S,
-Smith L, Mueller I, Longley R (2026). “SeroTrackR: An R Package for
-Serological Data Analysis, Visualisation and Machine Learning
-Classification.” *VeriXiv*, **3**, 313.
+Smith L, Mueller I, Longley R (2026). “PvSeroApp and SeroTrackR: An
+automated pipeline for Plasmodium vivax malaria serological analyses and
+machine learning classification of recent exposure.” *VeriXiv*, **3**,
+313.
+[doi:10.12688/verixiv.3797.1](https://doi.org/10.12688/verixiv.3797.1).
 <https://verixiv.org/articles/3-313/v1>.
 
     @Article{,
-      title = {SeroTrackR: An R Package for Serological Data Analysis, Visualisation and Machine Learning Classification},
+      title = {PvSeroApp and SeroTrackR: An automated pipeline for Plasmodium vivax malaria serological analyses and machine learning classification of recent exposure},
       author = {Dionne Argyropoulos and Eamon Conway and Caitlin Bourke and Connie Li-Wai-Suen and Shazia Ruybal-Pesántez and Lauren Smith and Ivo Mueller and Rhea Longley},
       journal = {VeriXiv},
       year = {2026},
       volume = {3},
       pages = {313},
+      doi = {10.12688/verixiv.3797.1},
       url = {https://verixiv.org/articles/3-313/v1},
     }
 

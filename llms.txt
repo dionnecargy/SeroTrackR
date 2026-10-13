@@ -1,5 +1,10 @@
 # SeroTrackR
 
+> **This site is the function reference** — use it to look up functions,
+> arguments, and vignettes. For a guided, end-to-end workflow (the
+> comprehensive *guide*), see the
+> [ebook](https://vispa-malaria.github.io/sero-analysis/).
+
 [SeroTrackR](https://github.com/dionnecargy/SeroTrackR) is a tool to for
 serology data analysis and visualisation, and for the application of the
 machine learning algorithms implemented in the `{PvSeroApp}`. The R
