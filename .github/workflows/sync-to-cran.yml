@@ -30,7 +30,19 @@ jobs:
         run: echo "CRAN_SUBMISSION=true" >> $GITHUB_ENV
 
       - name: Merge master into CRAN
-        run: git merge origin/master --no-ff -m "Auto-sync from master"
+        # Two structural conflicts recur by design and are safe to auto-resolve:
+        # - _pkgdown.yml: deleted on CRAN, modified on master -> keep the deletion
+        #   (the "Remove pkgdown-related files" step deletes it again anyway).
+        # - .Rbuildignore: divergent edits on both branches -> take master's
+        #   version (the "Update .Rbuildignore" step re-appends the CRAN lines).
+        run: |
+          git merge origin/master --no-ff -m "Auto-sync from master" || true
+          git rm -q --ignore-unmatch _pkgdown.yml
+          if git status --porcelain .Rbuildignore | grep -q '^UU'; then
+            git checkout --theirs .Rbuildignore
+            git add .Rbuildignore
+          fi
+          git commit -m "Auto-sync from master" || echo "Nothing to commit"
 
       - name: Remove pkgdown-related files and oversized data
         run: |

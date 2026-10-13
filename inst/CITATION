@@ -1,0 +1,42 @@
+citHeader("To cite SeroTrackR in publications, please cite both the article and the package:")
+
+bibentry(
+  bibtype = "Article",
+  title = "PvSeroApp and SeroTrackR: An automated pipeline for Plasmodium vivax malaria serological analyses and machine learning classification of recent exposure",
+  author = c(
+    person("Dionne", "Argyropoulos"),
+    person("Eamon", "Conway"),
+    person("Caitlin", "Bourke"),
+    person("Connie", "Li-Wai-Suen"),
+    person("Shazia", "Ruybal-Pes\u00e1ntez"),
+    person("Lauren", "Smith"),
+    person("Ivo", "Mueller"),
+    person("Rhea", "Longley")
+  ),
+  journal = "VeriXiv",
+  year = "2026",
+  volume = "3",
+  pages = "313",
+  doi = "10.12688/verixiv.3797.1",
+  url = "https://verixiv.org/articles/3-313/v1"
+)
+
+citFooter("The article is the preferred citation for the method; the package DOI cites the software itself.")
+
+bibentry(
+  bibtype = "Manual",
+  title = "SeroTrackR: Serology-Based Data Analysis and Visualization",
+  author = c(
+    person("Dionne", "Argyropoulos"),
+    person("Eamon", "Conway"),
+    person("Caitlin", "Bourke"),
+    person("Connie", "Li-Wai-Suen"),
+    person("Shazia", "Ruybal-Pes\u00e1ntez"),
+    person("Lauren", "Smith"),
+    person("Ivo", "Mueller"),
+    person("Rhea", "Longley")
+  ),
+  year = "2026",
+  doi = "10.32614/CRAN.package.SeroTrackR",
+  url = "https://CRAN.R-project.org/package=SeroTrackR"
+)

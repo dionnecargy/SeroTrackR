@@ -1,9 +1,10 @@
 <!-- badges: start -->
-[![DOI](https://zenodo.org/badge/1016494729.svg)](https://doi.org/10.5281/zenodo.23095199)
+[![Preprint DOI](https://img.shields.io/badge/preprint-10.12688%2Fverixiv.3797.1-blue)](https://doi.org/10.12688/verixiv.3797.1)
 [![CRAN status](https://www.r-pkg.org/badges/version/SeroTrackR)](https://CRAN.R-project.org/package=SeroTrackR)
 [![R-CMD-check-CRAN](https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml/badge.svg)](https://github.com/dionnecargy/SeroTrackR/actions/workflows/R-CMD-check-CRAN.yaml)
 [![CRAN downloads per month](https://cranlogs.r-pkg.org/badges/SeroTrackR)](https://CRAN.R-project.org/package=SeroTrackR)
 [![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/SeroTrackR)](https://CRAN.R-project.org/package=SeroTrackR)
+[![Code archive (Zenodo)](https://img.shields.io/badge/code_archive-Zenodo-lightgrey)](https://doi.org/10.5281/zenodo.23095199)
 <!-- badges: end -->
 
 # <img src="man/figures/SeroTrackR_sticker.png" width="25%" height="25%" align="left"/> SeroTrackR
@@ -36,9 +37,14 @@ The GitHub (master) version also bundles the trained classification model file l
 
 Package dependencies are installed automatically by `install.packages()` or `pak::pak()`. If you are missing system libraries needed to build a dependency from source (e.g. `curl`, `openssl`, `xml2` on Linux), `pak::pak()` will usually install the required system requirements for you; otherwise install the appropriate system package for your OS first.
 
-## How can I use the package?
+## Documentation
 
-Please see the [tutorial](https://dionnecargy.github.io/SeroTrackR/) or see the vignettes inside the package by running the following commands: 
+Two sites serve different purposes:
+
+- **[ebook](https://vispa-malaria.github.io/sero-analysis/)**: the comprehensive *guide*: end-to-end workflows for the fit-for-purpose tool described in [Argyropoulos et al. 2026 VeriXiv](https://doi.org/10.12688/verixiv.3797.1) and for pathogen-agnostic uses. Start here if you're learning the package.
+- **[pkgdown site](https://dionnecargy.github.io/SeroTrackR/)**: the *reference*: function documentation, arguments, and the vignettes as articles. Use this for quick lookups.
+
+The same vignettes are also available offline inside R: 
 
 ```{r}
 browseVignettes("SeroTrackR") 
@@ -47,6 +53,17 @@ browseVignettes("SeroTrackR")
 vignette("PvSeroApp_R_Tutorial")
 vignette("Pk_Pv_Pf_Serology_Tutorial")
 ```
+
+## Citing SeroTrackR
+
+If you use `SeroTrackR` in your work, please cite **both** the pre-print describing the method and the package itself:
+
+- Argyropoulos D, Conway E, Bourke C, Li-Wai-Suen C, Ruybal-Pesántez S, Smith L, Mueller I, Longley R. *PvSeroApp and SeroTrackR: An automated pipeline for Plasmodium vivax malaria serological analyses and machine learning classification of recent exposure.* VeriXiv 2026; 3:313. <https://doi.org/10.12688/verixiv.3797.1>
+- `SeroTrackR` R package (CRAN): <https://doi.org/10.32614/CRAN.package.SeroTrackR>
+
+Run `citation("SeroTrackR")` in R to get both entries in BibTeX format.
+
+The source code of each release is additionally archived on [Zenodo](https://doi.org/10.5281/zenodo.23095199) for long-term preservation; the preferred citations are the two above.
 
 ## For Maintainers
 
@@ -65,3 +82,9 @@ vignette("Pk_Pv_Pf_Serology_Tutorial")
   - `Sync to CRAN Branch` merges master into CRAN and re-applies the deletions. If it fails on merge conflicts, resolve manually: `git checkout CRAN && git merge master`, fix conflicts, push.
   - `R-CMD-check-CRAN` then runs `R CMD check --as-cran` on the CRAN branch; its badge above shows the latest result.
 [] **Before a CRAN submission**, confirm the CRAN branch version number matches master, that the `R-CMD-check-CRAN` badge is passing with no warnings, and that the runtime-fetched URLs still resolve.
+
+<!-- add pathogen-agnostic use-case vignette -->
+<!-- add link on vispa-malaria/sero-analysis repo to pkgdown website and include dois -->
+<!-- update in pvseroapp the dois and references -->
+<!-- update in vispa-malaria/sero-analysis the dois and references -->
+<!-- is there a google analytics for vispa-malaria/sero-analysis? -->

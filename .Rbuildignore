@@ -14,15 +14,4 @@
 ^docs$
 ^pkgdown$
 ^\.github$
-^docs$
-^inst/hex$
-^inst/tutorials$
-^_pkgdown.yml$
-^\.github/workflows/pkgdown\.yaml$
-^inst/extdata/PvSeroTaTmodel\.rds$
-^docs$
-^inst/hex$
-^inst/tutorials$
-^_pkgdown.yml$
-^\.github/workflows/pkgdown\.yaml$
-^inst/extdata/PvSeroTaTmodel\.rds$
+^CITATION\.cff$
