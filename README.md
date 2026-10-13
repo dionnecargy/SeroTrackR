@@ -39,10 +39,10 @@ Package dependencies are installed automatically by `install.packages()` or `pak
 
 ## Documentation
 
-Two sites serve different purposes — pick based on what you need:
+Two sites serve different purposes:
 
-- **[ebook](https://vispa-malaria.github.io/sero-analysis/)** — the comprehensive *guide*: end-to-end workflows for the fit-for-purpose tool described in [Argyropoulos et al. 2026 VeriXiv](https://doi.org/10.12688/verixiv.3797.1) and for pathogen-agnostic uses. Start here if you're learning the package.
-- **[pkgdown site](https://dionnecargy.github.io/SeroTrackR/)** — the *reference*: function documentation, arguments, and the vignettes as articles. Use this for quick lookups.
+- **[ebook](https://vispa-malaria.github.io/sero-analysis/)**: the comprehensive *guide*: end-to-end workflows for the fit-for-purpose tool described in [Argyropoulos et al. 2026 VeriXiv](https://doi.org/10.12688/verixiv.3797.1) and for pathogen-agnostic uses. Start here if you're learning the package.
+- **[pkgdown site](https://dionnecargy.github.io/SeroTrackR/)**: the *reference*: function documentation, arguments, and the vignettes as articles. Use this for quick lookups.
 
 The same vignettes are also available offline inside R: 
 
@@ -82,3 +82,9 @@ The source code of each release is additionally archived on [Zenodo](https://doi
   - `Sync to CRAN Branch` merges master into CRAN and re-applies the deletions. If it fails on merge conflicts, resolve manually: `git checkout CRAN && git merge master`, fix conflicts, push.
   - `R-CMD-check-CRAN` then runs `R CMD check --as-cran` on the CRAN branch; its badge above shows the latest result.
 [] **Before a CRAN submission**, confirm the CRAN branch version number matches master, that the `R-CMD-check-CRAN` badge is passing with no warnings, and that the runtime-fetched URLs still resolve.
+
+<!-- add pathogen-agnostic use-case vignette -->
+<!-- add link on vispa-malaria/sero-analysis repo to pkgdown website and include dois -->
+<!-- update in pvseroapp the dois and references -->
+<!-- update in vispa-malaria/sero-analysis the dois and references -->
+<!-- is there a google analytics for vispa-malaria/sero-analysis? -->
