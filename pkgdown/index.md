@@ -4,6 +4,8 @@ title: "Getting Started"
 
 # SeroTrackR 
 
+> **This site is the function reference** — use it to look up functions, arguments, and vignettes. For a guided, end-to-end workflow (the comprehensive *guide*), see the [ebook](https://vispa-malaria.github.io/sero-analysis/).
+
 
 `{SeroTrackR}` is a tool to for serology data analysis and visualisation, and for the application of the machine learning algorithms implemented in the `{PvSeroApp}`. The R package is intended to give users more flexibility in assessing serology data and manipulate data visualisations to the user's interest. 
 You can download the R package using the following: 

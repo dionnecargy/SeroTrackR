@@ -77,7 +77,7 @@ Imports:
     workflows
 Remotes:
     Appsilon/shiny.fluent
-URL: https://github.com/dionnecargy/SeroTrackR, https://dionnecargy.github.io/SeroTrackR/
+URL: https://github.com/dionnecargy/SeroTrackR, https://dionnecargy.github.io/SeroTrackR/, https://vispa-malaria.github.io/sero-analysis/
 BugReports: https://github.com/dionnecargy/SeroTrackR/issues
 Suggests: 
     glue,

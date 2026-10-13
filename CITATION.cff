@@ -1,0 +1,59 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+title: "SeroTrackR: Serology-Based Data Analysis and Visualization"
+version: 1.1.1
+doi: 10.32614/CRAN.package.SeroTrackR
+url: https://CRAN.R-project.org/package=SeroTrackR
+repository-code: https://github.com/dionnecargy/SeroTrackR
+license: CC-BY-4.0
+authors:
+  - family-names: Argyropoulos
+    given-names: Dionne
+    orcid: https://orcid.org/0000-0002-8068-0215
+  - family-names: Conway
+    given-names: Eamon
+  - family-names: Bourke
+    given-names: Caitlin
+  - family-names: Li-Wai-Suen
+    given-names: Connie
+  - family-names: Ruybal-Pesántez
+    given-names: Shazia
+  - family-names: Smith
+    given-names: Lauren
+  - family-names: Mueller
+    given-names: Ivo
+  - family-names: Longley
+    given-names: Rhea
+preferred-citation:
+  type: article
+  title: >-
+    PvSeroApp and SeroTrackR: An automated pipeline for
+    Plasmodium vivax malaria serological analyses and machine
+    learning classification of recent exposure
+  journal: VeriXiv
+  year: 2026
+  volume: 3
+  issue: "313"
+  doi: 10.12688/verixiv.3797.1
+  url: https://verixiv.org/articles/3-313/v1
+  authors:
+    - family-names: Argyropoulos
+      given-names: Dionne
+      orcid: https://orcid.org/0000-0002-8068-0215
+    - family-names: Conway
+      given-names: Eamon
+    - family-names: Bourke
+      given-names: Caitlin
+    - family-names: Li-Wai-Suen
+      given-names: Connie
+    - family-names: Ruybal-Pesántez
+      given-names: Shazia
+    - family-names: Smith
+      given-names: Lauren
+    - family-names: Mueller
+      given-names: Ivo
+    - family-names: Longley
+      given-names: Rhea
