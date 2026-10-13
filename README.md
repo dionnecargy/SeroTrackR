@@ -74,14 +74,14 @@ The source code of each release is additionally archived on [Zenodo](https://doi
 
 ### Maintainer checklist
 
-[] **Do not commit directly to `CRAN`** unless resolving a merge conflict; all changes should flow from master.
-[] **When adding a new large data file** (approaching CRAN's 5 MB limit) to `inst/extdata/`:
+- [ ] **Do not commit directly to `CRAN`** unless resolving a merge conflict; all changes should flow from master.
+- [ ] **When adding a new large data file** (approaching CRAN's 5 MB limit) to `inst/extdata/`:
   1. Add its removal to the "Remove pkgdown-related files and oversized data" step of [`.github/workflows/sync-to-cran.yml`](.github/workflows/sync-to-cran.yml) and a matching line to the `.Rbuildignore` step.
   2. Write the loading code to fall back to the raw GitHub URL when the local file is absent (see `classifyResults()` for the pattern).
-[] **After pushing to master**, check the Actions tab to confirm both workflows succeeded:
+- [ ] **After pushing to master**, check the Actions tab to confirm both workflows succeeded:
   - `Sync to CRAN Branch` merges master into CRAN and re-applies the deletions. If it fails on merge conflicts, resolve manually: `git checkout CRAN && git merge master`, fix conflicts, push.
   - `R-CMD-check-CRAN` then runs `R CMD check --as-cran` on the CRAN branch; its badge above shows the latest result.
-[] **Before a CRAN submission**, confirm the CRAN branch version number matches master, that the `R-CMD-check-CRAN` badge is passing with no warnings, and that the runtime-fetched URLs still resolve.
+- [ ] **Before a CRAN submission**, confirm the CRAN branch version number matches master, that the `R-CMD-check-CRAN` badge is passing with no warnings, and that the runtime-fetched URLs still resolve.
 
 <!-- add pathogen-agnostic use-case vignette -->
 <!-- add link on vispa-malaria/sero-analysis repo to pkgdown website and include dois -->
