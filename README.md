@@ -59,6 +59,7 @@ vignette("Pk_Pv_Pf_Serology_Tutorial")
 If you use `SeroTrackR` in your work, please cite **both** the pre-print describing the method and the package itself:
 
 > Argyropoulos D, Conway E, Bourke C, Li-Wai-Suen C, Ruybal-Pesántez S, Smith L, Mueller I, Longley R. *PvSeroApp and SeroTrackR: An automated pipeline for Plasmodium vivax malaria serological analyses and machine learning classification of recent exposure.* VeriXiv 2026; 3:313. <https://doi.org/10.12688/verixiv.3797.2>
+
 > `SeroTrackR` R package (CRAN): <https://doi.org/10.32614/CRAN.package.SeroTrackR>
 
 Run `citation("SeroTrackR")` in R to get both entries in BibTeX format.
