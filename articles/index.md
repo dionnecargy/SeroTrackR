@@ -17,6 +17,11 @@
 - [Pk/Pv/Pf Serology
   Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/Pk_Pv_Pf_Serology_Tutorial.md):
 
+### Pathogen-agnostic tools
+
+- [Pathogen-agnostic Sero-analysis
+  Tutorial](https://dionnecargy.github.io/SeroTrackR/articles/Pathogen_Agnostic_Tutorial.md):
+
 ### Other
 
 - [FAQs](https://dionnecargy.github.io/SeroTrackR/articles/FAQs.md):

@@ -3,11 +3,12 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   FAQs: FAQs.html
+  Pathogen_Agnostic_Tutorial: Pathogen_Agnostic_Tutorial.html
   Pk_Pv_Pf_Serology_Tutorial: Pk_Pv_Pf_Serology_Tutorial.html
   PvLDH_Tutorial: PvLDH_Tutorial.html
   PvSeroApp_R_Tutorial: PvSeroApp_R_Tutorial.html
   setup: setup.html
-last_built: 2026-10-28T03:38Z
+last_built: 2026-10-28T04:13Z
 urls:
   reference: https://dionnecargy.github.io/SeroTrackR/reference
   article: https://dionnecargy.github.io/SeroTrackR/articles

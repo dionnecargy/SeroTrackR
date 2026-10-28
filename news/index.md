@@ -4,6 +4,8 @@
 
 CRAN release: 2026-05-27
 
+- Added the “Pathogen-agnostic Sero-analysis Tutorial” vignette for
+  running the pipeline without the PvSEM classification algorithm
 - Removed warning messaging for
   [`MFItoRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU.md)
 - Patched
