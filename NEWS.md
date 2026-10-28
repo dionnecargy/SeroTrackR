@@ -1,5 +1,6 @@
 # SeroTrackR 1.1.1
 
+* Added the "Pathogen-agnostic Sero-analysis Tutorial" vignette for running the pipeline without the PvSEM classification algorithm
 * Removed warning messaging for `MFItoRAU()`
 * Patched `.clean_luminex()` line 404 to be specifically for characters
 * Patched `.relabel_columns()`: changed PvRBP to PvRBP2b as error arose with PvRBP2a
