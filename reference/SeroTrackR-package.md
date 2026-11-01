@@ -11,6 +11,8 @@ Useful links:
 
 - <https://dionnecargy.github.io/SeroTrackR/>
 
+- <https://vispa-malaria.github.io/sero-analysis/>
+
 - Report bugs at <https://github.com/dionnecargy/SeroTrackR/issues>
 
 ## Author
@@ -19,6 +21,9 @@ Useful links:
 ([ORCID](https://orcid.org/0000-0002-8068-0215))
 
 Authors:
+
+- Dionne Argyropoulos, PhD <argyropoulos.d@wehi.edu.au>
+  ([ORCID](https://orcid.org/0000-0002-8068-0215))
 
 - Eamon Conway, PhD
 
