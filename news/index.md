@@ -1,11 +1,16 @@
 # Changelog
 
+## SeroTrackR 1.1.2
+
+- Added the “Pathogen-agnostic Sero-analysis Tutorial” vignette for
+  running the pipeline without the PvSEM classification algorithm
+- Updated intelliflex data processing in
+  [`readSeroData()`](https://dionnecargy.github.io/SeroTrackR/reference/readSeroData.md)
+
 ## SeroTrackR 1.1.1
 
 CRAN release: 2026-05-27
 
-- Added the “Pathogen-agnostic Sero-analysis Tutorial” vignette for
-  running the pipeline without the PvSEM classification algorithm
 - Removed warning messaging for
   [`MFItoRAU()`](https://dionnecargy.github.io/SeroTrackR/reference/MFItoRAU.md)
 - Patched
