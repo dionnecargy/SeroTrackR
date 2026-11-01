@@ -124,8 +124,12 @@ This exports a list of data frames:
 
 You can access each data frame, for example the `getCountsQC_output` data frame, like this:
 
-```{r}
+```{r, eval=FALSE}
 qc_results$getCountsQC_output
+```
+
+```{r, echo=FALSE}
+qc_results$getCountsQC_output %>% head()
 ```
 
 You can also visualise QC results using the `sero_data` and `qc_results` variables. 
@@ -196,8 +200,12 @@ The `mfi_to_rau_output` variable contains the processed MFI and RAU data for eac
 1. ``[[2]]``: Contains correct SampleID's, MFI and RAU values per antigen and QC results. **Cleaner data frame!**
 1. ``[[3]]``: Raw MFI to RAU conversion data per antigen. 
 
-```{r}
+```{r, eval=FALSE}
 mfi_to_rau_output[[2]]
+```
+
+```{r, echo=FALSE}
+mfi_to_rau_output[[2]] %>% head()
 ```
 
 The results from this log-log conversion should look relatively linear for each antigen and can be plotted using the `plotModel()` function suite. 
