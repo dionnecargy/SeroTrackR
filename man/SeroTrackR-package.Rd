@@ -15,6 +15,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/dionnecargy/SeroTrackR}
   \item \url{https://dionnecargy.github.io/SeroTrackR/}
+  \item \url{https://vispa-malaria.github.io/sero-analysis/}
   \item Report bugs at \url{https://github.com/dionnecargy/SeroTrackR/issues}
 }
 
@@ -24,6 +25,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Dionne Argyropoulos, PhD \email{argyropoulos.d@wehi.edu.au} (\href{https://orcid.org/0000-0002-8068-0215}{ORCID})
   \item Eamon Conway, PhD
   \item Caitlin Bourke, PhD
   \item Connie Li-Wai-Suen, PhD
